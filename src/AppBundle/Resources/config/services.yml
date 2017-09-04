@@ -1,0 +1,13 @@
+# services:
+#   app_bundle.registration_mail_sender:
+#        class: AppBundle\Services\Email\Security\RegistrationConfirmationMailSender
+#       arguments:
+#            - "@mailer"
+        
+#   app_bundle.registration_listener:
+#        class: AppBundle\Services\Email\Security\RegistrationListener
+#        arguments:
+#            - "@app_bundle.registration_mail_sender"
+#        tags:
+#            - { name: kernel.event_listener, event: app_bundle.user_registered, method: processConfirmation }
+    

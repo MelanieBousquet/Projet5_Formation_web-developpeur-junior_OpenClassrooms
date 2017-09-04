@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Gentelella Alela! | </title>
+
+    <!-- Bootstrap -->
+    <link href="{{ asset('vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{ asset('vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{{ asset('vendors/nprogress/nprogress.css') }}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{{ asset('vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
+    <!-- bootstrap-wysiwyg -->
+    <link href="{{ asset('vendors/google-code-prettify/bin/prettify.min.css') }}" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="{{ asset('vendors/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="{{ asset('vendors/switchery/dist/switchery.min.css') }}" rel="stylesheet">
+    <!-- starrr -->
+    <link href="{{ asset('vendors/starrr/dist/starrr.css') }}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{{ asset('build/css/custom.min.css') }}" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="{{ asset('images/img.jpg') }}" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>John Doe</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="index.html">Dashboard</a></li>
+                      <li><a href="index2.html">Dashboard2</a></li>
+                      <li><a href="index3.html">Dashboard3</a></li>
+                    </ul>
+                  </li>
+
+                   <li><a><i class="fa fa-paw"></i> Animaux <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="{{ path('admin_animal_add') }}">Ajout d'un animal</a>
+                        <li><a>Liste animaux à adopter<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="{{ path('admin_animal', {'animalType': 'Chat', 'state': 'adoptable'}) }}">Chats à adopter</a>
+                            </li>
+                            <li><a href="#level2_1">Chiens à adopter</a>
+                            </li>
+                          </ul>
+                        </li>
+                        <li><a>Liste animaux réservés<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="level2.html">Chats réservés</a>
+                            </li>
+                            <li><a href="#level2_1">Chiens réservés</a>
+                            </li>
+                          </ul>
+                        </li>
+                        <li><a>Liste animaux adoptés<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="level2.html">Chats adoptés</a>
+                            </li>
+                            <li><a href="#level2_1">Chiens adoptés</a>
+                            </li>
+                          </ul>
+                        </li>
+                        <li><a>Liste animaux perdus<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="level2.html">Chats perdus</a>
+                            </li>
+                            <li><a href="#level2_1">Chiens perdus</a>
+                            </li>
+                          </ul>
+                        </li>
+                    </ul>
+                  </li>
+
+                </ul>
+              </div>
+
+
+            </div>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ asset('images/img.jpg') }}" alt="">John Doe
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="javascript:;"> Profile</a></li>
+                    <li>
+                      <a href="javascript:;">
+                        <span class="badge bg-red pull-right">50%</span>
+                        <span>Settings</span>
+                      </a>
+                    </li>
+                    <li><a href="javascript:;">Help</a></li>
+                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  </ul>
+                </li>
+
+                <li role="presentation" class="dropdown">
+                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-envelope-o"></i>
+                    <span class="badge bg-green">6</span>
+                  </a>
+                  <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                    <li>
+                      <a>
+                        <span class="image"><img src="{{ asset('images/img.jpg') }}" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image"><img src="{{ asset('images/img.jpg') }}" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image"><img src="{{ asset('images/img.jpg') }}" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image"><img src="{{ asset('images/img.jpg') }}" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="text-center">
+                        <a>
+                          <strong>See All Alerts</strong>
+                          <i class="fa fa-angle-right"></i>
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Nouvel animal</h3>
+              </div>
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Ajout d'un animal </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    {{ form_start(form, {'attr': {'class': 'form-horizontal form-label-left'}, 'id': 'demo-form2'}) }}
+
+                      {# Les erreurs générales du formulaire. #}
+                      {{ form_errors(form) }}
+
+                      <div class="form-group">
+                            {{ form_label(form.name, "Nom", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.name) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{ form_widget(form.name, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+                            </div>
+                      </div>
+
+                       <div class="form-group">
+                            {{ form_label(form.birthday, "Date de naissance", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.birthday) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{ form_widget(form.birthday, {'attr': {'class': 'col-md-7 col-xs-12'}}) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.sex, "Sexe", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.sex) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                             <p>
+                              {{ form_widget(form.sex) }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.type, "Type", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.type) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{ form_widget(form.type, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.breed, "Race", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.breed) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{ form_widget(form.breed, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.sterilised, "Stérilisé(e)", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.sterilised) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{ form_widget(form.sterilised, {'attr': {'class': 'js-switch'}}) }}
+                            </div>
+                      </div>
+
+                       <div class="form-group">
+                            {{ form_label(form.typeIdentification, "Identification", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.typeIdentification) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                             <p>
+                              {{ form_widget(form.typeIdentification) }}
+                                </p>
+                            </div>
+                        </div>
+
+                       <div class="form-group">
+                            {{ form_label(form.identificationNumber, "Numéro d'identification", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.identificationNumber) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{ form_widget(form.identificationNumber, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+                            </div>
+                        </div>
+
+                      <div class="form-group">
+                            {{ form_label(form.descriptions, "Descriptions", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.descriptions) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{ form_widget(form.descriptions, {'attr': {'class': 'form-control col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+                            </div>
+                      <a href="#" id="add_description" class="btn btn-default">Ajouter une description</a>
+                      </div>
+                         <div class="form-group">
+                            {{ form_label(form.images, "Photos", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.images) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{ form_widget(form.images, {'attr': {'class': 'form-control col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+                            </div>
+                      <a href="#" id="add_image" class="btn btn-default">Ajouter une photo</a>
+                      </div>
+                        
+                        <div class="form-group">
+                            {{ form_label(form.animalStates, "Statuts de l'animal", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                            {{ form_errors(form.animalStates) }}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{ form_widget(form.animalStates, {'attr': {'class': 'form-control col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+                            </div>
+                      <a href="#" id="add_state" class="btn btn-default">Ajouter un statut</a>
+                      </div>
+
+                         <div class="form-group">
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                          {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-success'}}) }}
+                        </div>
+                      </div>
+
+                          {# Génération automatique des champs pas encore écrits.
+                             Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+                             et tous les champs cachés (type « hidden »). #}
+                          {{ form_rest(form) }}
+
+                          {# Fermeture de la baliseform du formulaire HTML #}
+                          {{ form_end(form) }}
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    </div>
+      </div>
+
+
+
+
+    <!-- jQuery -->
+    <script src="{{ asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+    <!-- Bootstrap -->
+    <script src="{{ asset('vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <!-- FastClick -->
+    <script src="{{ asset('vendors/fastclick/lib/fastclick.js') }}"></script>
+    <!-- NProgress -->
+    <script src="{{ asset('vendors/nprogress/nprogress.js') }}"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="{{ asset('vendors/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
+    <!-- iCheck -->
+    <script src="{{ asset('vendors/iCheck/icheck.min.js') }}"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <!-- bootstrap-wysiwyg -->
+    <script src="{{ asset('vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js') }}"></script>
+    <script src="{{ asset('vendors/jquery.hotkeys/jquery.hotkeys.js') }}"></script>
+    <script src="{{ asset('vendors/google-code-prettify/src/prettify.js') }}"></script>
+    <!-- jQuery Tags Input -->
+    <script src="{{ asset('vendors/jquery.tagsinput/src/jquery.tagsinput.js') }}"></script>
+    <!-- Switchery -->
+    <script src="{{ asset('vendors/switchery/dist/switchery.min.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{ asset('vendors/select2/dist/js/select2.full.min.js') }}"></script>
+    <!-- Parsley -->
+    <script src="{{ asset('vendors/parsleyjs/dist/parsley.min.js') }}"></script>
+    <!-- Autosize -->
+    <script src="{{ asset('vendors/autosize/dist/autosize.min.js') }}"></script>
+    <!-- jQuery autocomplete -->
+    <script src="{{ asset('vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js') }}"></script>
+    <!-- starrr -->
+    <script src="{{ asset('vendors/starrr/dist/starrr.js') }}"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="{{ asset('build/js/custom.min.js') }}"></script>
+
+ <script type="text/javascript">
+  $(document).ready(function() {
+    // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
+    var $container = $('div#appbundle_animal_animalStates');
+    var $container2 = $('div#appbundle_animal_descriptions');
+    var $container3 = $('div#appbundle_animal_images');
+
+    // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
+    var index = $container.find(':input').length;
+    var index2 = $container2.find(':input').length;
+    var index3 = $container3.find(':input').length;
+
+    // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
+    $('#add_state').click(function(e) {
+      addState($container);
+
+      e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+      return false;
+    });
+
+    $('#add_description').click(function(e) {
+      addDescription($container2);
+
+      e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+      return false;
+    });
+      
+    $('#add_image').click(function(e) {
+      addImage($container3);
+
+      e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+      return false;
+    });
+
+    // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'un nouvel animal par exemple).
+    if (index == 0) {
+      addState($container);
+    } else {
+      // S'il existe déjà des statuts, on ajoute un lien de suppression pour chacuns d'entre eux
+      $container.children('div').each(function() {
+        addDeleteLink($(this));
+      });
+    }
+
+    // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'un nouvel animal par exemple).
+    if (index2 == 0) {
+      addDescription($container2);
+    } else {
+      // S'il existe déjà des statuts, on ajoute un lien de suppression pour chacuns d'entre eux
+      $container2.children('div').each(function() {
+        addDeleteLink($(this));
+      });
+    }
+    
+        // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'un nouvel animal par exemple).
+    if (index3 == 0) {
+      addImage($container3);
+    } else {
+      // S'il existe déjà des statuts, on ajoute un lien de suppression pour chacuns d'entre eux
+      $container3.children('div').each(function() {
+        addDeleteLink($(this));
+      });
+    }
+
+    // La fonction qui ajoute un formulaire CategoryType
+    function addState($container) {
+      // Dans le contenu de l'attribut « data-prototype », on remplace :
+      // - le texte "__name__label__" qu'il contient par le label du champ
+      // - le texte "__name__" qu'il contient par le numéro du champ
+      var template = $container.attr('data-prototype')
+        .replace(/__name__label__/g, 'Statut n°' + (index+1))
+        .replace(/__name__/g,        index)
+      ;
+
+      // On crée un objet jquery qui contient ce template
+      var $prototype = $(template);
+
+      // On ajoute au prototype un lien pour pouvoir supprimer le statut
+      addDeleteLink($prototype);
+
+      // On ajoute le prototype modifié à la fin de la balise <div>
+      $container.append($prototype);
+
+      // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+      index++;
+    }
+
+    // La fonction qui ajoute un formulaire CategoryType
+    function addDescription($container2) {
+      // Dans le contenu de l'attribut « data-prototype », on remplace :
+      // - le texte "__name__label__" qu'il contient par le label du champ
+      // - le texte "__name__" qu'il contient par le numéro du champ
+      var template = $container2.attr('data-prototype')
+        .replace(/__name__label__/g, 'Description n°' + (index2+1))
+        .replace(/__name__/g,        index2)
+      ;
+
+      // On crée un objet jquery qui contient ce template
+      var $prototype = $(template);
+
+      // On ajoute au prototype un lien pour pouvoir supprimer le statut
+      addDeleteLink($prototype);
+
+      // On ajoute le prototype modifié à la fin de la balise <div>
+      $container2.append($prototype);
+
+      // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+      index2++;
+    }
+
+    // La fonction qui ajoute un formulaire CategoryType
+    function addImage($container3) {
+      // Dans le contenu de l'attribut « data-prototype », on remplace :
+      // - le texte "__name__label__" qu'il contient par le label du champ
+      // - le texte "__name__" qu'il contient par le numéro du champ
+      var template = $container3.attr('data-prototype')
+        .replace(/__name__label__/g, 'Photo n°' + (index3+1))
+        .replace(/__name__/g,        index3)
+      ;
+
+      // On crée un objet jquery qui contient ce template
+      var $prototype = $(template);
+
+      // On ajoute au prototype un lien pour pouvoir supprimer le statut
+      addDeleteLink($prototype);
+
+      // On ajoute le prototype modifié à la fin de la balise <div>
+      $container3.append($prototype);
+
+      // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+      index3++;
+    }
+
+    // La fonction qui ajoute un lien de suppression d'un statut
+    function addDeleteLink($prototype) {
+      // Création du lien
+      var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+      // Ajout du lien
+      $prototype.append($deleteLink);
+
+      // Ajout du listener sur le clic du lien pour effectivement supprimer le statut
+      $deleteLink.click(function(e) {
+        $prototype.remove();
+
+        e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+        return false;
+      });
+    }
+  });
+</script>
+
+
+ <script>
+var $type = $('#appbundle_animal_type');
+// When type gets selected ...
+$type.change(function() {
+  // ... retrieve the corresponding form.
+  var $form = $(this).closest('form');
+  // Simulate form data, but only include the selected type value.
+  var data = {};
+  data[$type.attr('name')] = $type.val();
+  // Submit data via AJAX to the form's action path.
+  $.ajax({
+    url : $form.attr('action'),
+    type: $form.attr('method'),
+    data : data,
+    success: function(html) {
+      // Replace current position field ...
+      $('#appbundle_animal_breed').replaceWith(
+        // ... with the returned one from the AJAX response.
+        $(html).find('#appbundle_animal_breed')
+      );
+      // breed field now displays the appropriate breeds.
+    }
+  });
+});
+</script>
+
+
+
+  </body>
+</html>
+
+
+
