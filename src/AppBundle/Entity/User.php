@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @UniqueEntity(fields="userPseudo", message="Nom d'utilisateur déjà existant")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks
+ * @ORM\EntityListeners({"UserListener"}) 
  */
 class User implements AdvancedUserInterface
 {
@@ -116,7 +117,7 @@ class User implements AdvancedUserInterface
      * Set plainPassword
      *
      */
-    public function setplainPassword($plainPassword)
+    public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
 

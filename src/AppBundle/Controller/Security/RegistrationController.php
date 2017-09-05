@@ -8,6 +8,7 @@ use AppBundle\Entity\User;
 use AppBundle\Event\UserRegistrationEvent;
 use AppBundle\Event\AppBundleEvents;
 use AppBundle\Services\Email\Security\RegistrationListener;
+use AppBundle\Entity\UserListener;
 use AppBundle\Services\Email\Security\RegistrationConfirmationMailSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,7 +21,7 @@ class RegistrationController extends Controller
     /**
      * @Route("/register", name="user_registration")
      */
-    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer)
+    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         // build the form
         $user = new User();
@@ -31,19 +32,22 @@ class RegistrationController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             
             //Encode the password 
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
+            // $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            // $user->setPassword($password);
             
             // save the User!
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            
            
             // send confirmation email (event creation and dispatch)
             $event = new UserRegistrationEvent($user);
-            $dispatcher = new EventDispatcher();
+            $dispatcher = $this->get('event_dispatcher');
+            //$listener = new RegistrationListener();
+            //$dispatcher->addListener(AppBundleEvents::USER_REGISTERED, array($listener, 'processConfirmation'));
             $dispatcher->dispatch(AppBundleEvents::USER_REGISTERED, $event);
-            $emailUser = $user->getEmail();
+          //  $emailUser = $user->getEmail();
        // $pseudoUser = $user->getUserPseudo();
         
        // $message = \Swift_Message::newInstance()

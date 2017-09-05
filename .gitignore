@@ -1,0 +1,5 @@
+/vendor
+/var
+/tests
+/bin
+parameters.yml

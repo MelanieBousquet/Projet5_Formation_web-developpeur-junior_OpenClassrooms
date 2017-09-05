@@ -7,9 +7,9 @@ services:
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
-        autowire: true
+        autowire: false
         # automatically registers your services as commands, event subscribers, etc.
-        autoconfigure: true
+        autoconfigure: false
         # this means you cannot fetch services directly from the container via $container->get()
         # if you need to do this, you can override this setting on individual services
         public: false
@@ -47,3 +47,9 @@ services:
         tags:
             - { name: kernel.event_listener, event: app_bundle.user_registered, method: processConfirmation }
     
+    app_bundle.user_listener:
+        class: AppBundle\Entity\UserListener
+        arguments:
+            - "@security.encoder_factory"
+        tags:
+            - { name: doctrine.orm.entity_listener }
