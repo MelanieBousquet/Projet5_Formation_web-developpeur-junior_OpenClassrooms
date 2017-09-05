@@ -37,7 +37,12 @@ class User implements AdvancedUserInterface
     
     /**
      * @Assert\NotBlank()
-     * @Assert\Length(max=4096)
+     * @Assert\Length(
+     *      max=4096,
+     *      min=6,
+     *      maxMessage = "Le mot de passe ne doit pas contenir plus de 4096 caractères",
+     *      minMessage = "Le mot de passe doit contenir plus de 6 caractères" 
+     *      )
      */
     private $plainPassword;
 
