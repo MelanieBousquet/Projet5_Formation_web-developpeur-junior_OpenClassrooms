@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
+
 /**
  * User
  *
@@ -76,7 +77,18 @@ class User implements AdvancedUserInterface
      */
     private $isActive = true;
     
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $confirmationToken = null;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $isAlreadyRequested = false;
+    
     /**
      * @var array
      *
@@ -320,5 +332,54 @@ class User implements AdvancedUserInterface
     public function getIsActive()
     {
         return $this->isActive;
+    }
+    
+
+    /**
+     * Set confirmationToken
+     *
+     * @param string $confirmationToken
+     *
+     * @return User
+     */
+    public function setConfirmationToken($confirmationToken)
+    {
+        $this->confirmationToken = $confirmationToken;
+
+        return $this;
+    }
+
+    /**
+     * Get confirmationToken
+     *
+     * @return string
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * Set isAlreadyRequested
+     *
+     * @param boolean $isAlreadyRequested
+     *
+     * @return User
+     */
+    public function setIsAlreadyRequested($isAlreadyRequested)
+    {
+        $this->isAlreadyRequested = $isAlreadyRequested;
+
+        return $this;
+    }
+
+    /**
+     * Get isAlreadyRequested
+     *
+     * @return boolean
+     */
+    public function getIsAlreadyRequested()
+    {
+        return $this->isAlreadyRequested;
     }
 }

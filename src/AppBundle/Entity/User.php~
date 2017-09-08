@@ -13,9 +13,10 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @ORM\Table(name="user")
  * @ORM\Entity
  * @UniqueEntity(fields="email", message="Email déjà existant")
- * @UniqueEntity(fields="username", message="Nom d'utilisateur déjà existant")
+ * @UniqueEntity(fields="userPseudo", message="Nom d'utilisateur déjà existant")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks
+ * @ORM\EntityListeners({"UserListener"}) 
  */
 class User implements AdvancedUserInterface
 {
@@ -36,7 +37,12 @@ class User implements AdvancedUserInterface
     
     /**
      * @Assert\NotBlank()
-     * @Assert\Length(max=4096)
+     * @Assert\Length(
+     *      max=4096,
+     *      min=6,
+     *      maxMessage = "Le mot de passe ne doit pas contenir plus de 4096 caractères",
+     *      minMessage = "Le mot de passe doit contenir plus de 6 caractères" 
+     *      )
      */
     private $plainPassword;
 
@@ -69,15 +75,26 @@ class User implements AdvancedUserInterface
      * @ORM\Column(type="boolean")
      */
     private $isActive = true;
+    
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $confirmationToken = null;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $isAlreadyRequested = false;
+    
     /**
      * @var array
      *
      * @ORM\Column(name="roles", type="array")
      */
     private $roles = array();
-
-
+    
     /**
      * Get id
      *
@@ -116,7 +133,7 @@ class User implements AdvancedUserInterface
      * Set plainPassword
      *
      */
-    public function setplainPassword($plainPassword)
+    public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
 
@@ -245,18 +262,6 @@ class User implements AdvancedUserInterface
     }
     
     /**
-     * Set encode password
-     *
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function encodePassword()
-    {
-        $password = $passwordEncoder->encodePassword($this, $this->getPlainPassword());
-        $this->setPassword($password);
-    }
-    
-    /**
      * Set basic user role
      *
      * @ORM\PrePersist()
@@ -302,5 +307,31 @@ class User implements AdvancedUserInterface
     {
         return true;
     }
+
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return User
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+    
 
 }

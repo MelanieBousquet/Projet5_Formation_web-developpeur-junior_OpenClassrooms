@@ -2,7 +2,7 @@
 
 namespace AppBundle\Services\Email\Security;
 
-use AppBundle\Event\UserRegistrationEvent;
+use AppBundle\Event\UserEvent;
 
 class RegistrationListener
 {
@@ -16,7 +16,7 @@ class RegistrationListener
         $this->registrationConfirmMail = $registrationConfirmMail;
     }
     
-    public function processConfirmation(UserRegistrationEvent $event)
+    public function processConfirmation(UserEvent $event)
     {
         $this->registrationConfirmMail->confirmByEmail($event->getUser());
     }

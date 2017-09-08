@@ -23,8 +23,7 @@ class ChangePasswordController extends Controller
  
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $user = $data->getUser(); 
-            var_dump($this->getUser());
-            var_dump($data->getOldPassword());
+            
             if ($encoder->isPasswordValid($this->getUser(), $data->getOldPassword())) {
                 $user->setPlainPassword($data->getNewPassword());
 

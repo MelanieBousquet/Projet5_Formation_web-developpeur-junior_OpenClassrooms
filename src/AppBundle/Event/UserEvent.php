@@ -5,7 +5,7 @@ namespace AppBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserRegistrationEvent extends Event
+class UserEvent extends Event
 {    
     protected $user;
     

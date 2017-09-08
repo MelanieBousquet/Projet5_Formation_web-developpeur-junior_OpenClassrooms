@@ -4,7 +4,7 @@ namespace AppBundle\Controller\Security;
 
 use AppBundle\Form\UserType;
 use AppBundle\Entity\User;
-use AppBundle\Event\UserRegistrationEvent;
+use AppBundle\Event\UserEvent;
 use AppBundle\Event\AppBundleEvents;
 use AppBundle\Services\Email\Security\RegistrationListener;
 use AppBundle\Entity\UserListener;
@@ -31,7 +31,7 @@ class RegistrationController extends Controller
             $em->flush();
             
             // send confirmation email (event creation and dispatch)
-            $event = new UserRegistrationEvent($user);
+            $event = new UserEvent($user);
             $dispatcher = $this->get('event_dispatcher');
             $dispatcher->dispatch(AppBundleEvents::USER_REGISTERED, $event);
 

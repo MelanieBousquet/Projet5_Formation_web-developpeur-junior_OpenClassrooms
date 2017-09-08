@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * UserRepository
  *
@@ -10,4 +13,23 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getUserByEmailOrPseudo($identifier)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb
+            ->andWhere(
+                $qb->expr()->orX(
+                    'u.userPseudo = :identifier', 'u.email = :identifier'
+                )
+            )
+            ->setParameter('identifier', $identifier);
+
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

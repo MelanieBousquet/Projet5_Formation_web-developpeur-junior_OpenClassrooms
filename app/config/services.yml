@@ -7,9 +7,9 @@ services:
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
-        autowire: false
+        autowire: true
         # automatically registers your services as commands, event subscribers, etc.
-        autoconfigure: false
+        autoconfigure: true
         # this means you cannot fetch services directly from the container via $container->get()
         # if you need to do this, you can override this setting on individual services
         public: false
@@ -53,3 +53,63 @@ services:
             - "@security.encoder_factory"
         tags:
             - { name: doctrine.orm.entity_listener }
+    
+    app_bundle.requested_password_sender:
+        class: AppBundle\Services\Email\Security\RequestedPasswordSender
+        arguments: 
+            - "@mailer"
+            - "@router"
+            - "@security.csrf.token_generator"
+            - "@doctrine.orm.entity_manager"
+            - "@session"
+        
+    app_bundle.requested_password_listener:
+        class: AppBundle\Services\Email\Security\RequestedPasswordListener
+        arguments: 
+            - "@app_bundle.requested_password_sender"
+        tags:
+            - { name: kernel.event_listener, event: app_bundle.password_requested, method: processPasswordRequest }
+    
+    app_bundle.identifier_validator:
+        class: AppBundle\Validator\Constraints\EmailOrPseudoUserValidator
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'app_bundle.identifier_validator' }
+    
+    
+    app_bundle.identifier_constraints:
+        class: AppBundle\Validator\Constraints\EmailOrPseudoUser
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
