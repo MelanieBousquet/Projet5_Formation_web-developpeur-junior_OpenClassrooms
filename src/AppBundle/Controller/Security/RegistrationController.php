@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class RegistrationController extends Controller
 {
     /**
-     * @Route("/register", name="user_registration")
+     * @Route("/senregistrer", name="user_registration")
      */
     public function registerAction(Request $request)
     {

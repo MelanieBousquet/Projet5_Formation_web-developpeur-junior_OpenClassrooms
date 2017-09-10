@@ -12,7 +12,7 @@ class LoginController extends Controller
     /**
      * Login
      *
-     * @Route("/login", name="login")
+     * @Route("/connexion", name="login")
      */
     public function loginAction(Request $request)
     {

@@ -27,7 +27,7 @@ security:
             anonymous: true
             provider: main
             form_login:
-                login_path: login
+                login_path: connexion
                 check_path: login_check
                 csrf_token_generator: security.csrf.token_manager
                 failure_path: login

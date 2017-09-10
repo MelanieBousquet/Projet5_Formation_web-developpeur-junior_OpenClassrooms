@@ -7,7 +7,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
-
 /**
  * User
  *
@@ -271,6 +270,7 @@ class User implements AdvancedUserInterface
     {
         $this->setRoles(array('ROLE_USER'));
     }
+    
     
     /**
      * Checks whether the user is enabled

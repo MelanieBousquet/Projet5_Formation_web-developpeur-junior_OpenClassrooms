@@ -1,0 +1,152 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}{{ parent() }} Fiche de {{ animal.name }} ({{animal.breed.type.name }}) {% endblock %}
+
+{% block contentTitle %}Fiche de {{ animal.name }} {% endblock %}
+
+{% block contentSubtitle %}Informations{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-7 col-sm-7 col-xs-12">
+        <div class="product-image">
+            <img src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}" />
+        </div>
+        <div class="product_gallery">
+            {% for image in animal.images %}
+            <a>
+                <img src="{{ asset(image.webPath) }}" alt="{{ asset(image.alt) }}" />
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-5 col-sm-5 col-xs-12" style="border:0px solid #e5e5e5;">
+        <div class="title-right">
+            <a class="btn btn-danger btn-xs pull-right" href="#"><i class="fa fa-trash"></i> Supprimer</a>
+            <a class="btn btn-primary btn-xs pull-right" href="{{ path('admin_animal_edit', {'id': animal.getId() }) }}"><i class="fa fa-pencil"></i> Editer</a>
+        </div>
+        <div class="title-left">
+            <h3 class="prod_title">{{ animal.name|upper }} - {{ animal.age }}</h3>
+        </div>
+
+        {% for description in animal.descriptions %}
+            <p>{{ description.content }}</p>
+        {% endfor %}
+        <br />
+
+        <div class="project_detail">
+            <p class="title">Sexe</p>
+            <p>{{ animal.sex.type|capitalize }}</p>
+        </div>
+        <div class="project_detail">
+            <p class="title">Race</p>
+            <p>{{ animal.breed.name|capitalize }}</p>
+        </div>
+        <div class="project_detail">
+            <p class="title">Identification</p>
+            <p>{{ animal.typeIdentification.name|capitalize }} - Numéro : {{ animal.identificationNumber }}</p>
+        </div>
+            <div class="project_detail">
+            <p class="title">Stérilisé(e)
+            {% if animal.sterilised %}
+                <i class="fa fa-check-square-o"></i>
+            {% else %}
+                <i class="fa fa-times-circle"></i>
+            {% endif %}
+            </p>
+        </div>
+
+    </div>
+
+         <div class="col-md-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Notes internes</h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Settings 1</a>
+                        </li>
+                        <li><a href="#">Settings 2</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <ul class="list-unstyled msg_list">
+                    <li>
+                      <a>
+                        <span class="image">
+                          <img src="{{ asset('images/img.jpg') }}" alt="img" />
+                        </span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image">
+                          <img src="{{ asset('images/img.jpg') }}" alt="img" />
+                        </span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image">
+                          <img src="{{ asset('images/img.jpg') }}" alt="img" />
+                        </span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image">
+                          <img src="{{ asset('images/img.jpg') }}" alt="img" />
+                        </span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          <div class="clearfix"></div>
+    
+
+
+              
+{% endblock %}
+
+

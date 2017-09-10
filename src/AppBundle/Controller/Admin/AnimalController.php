@@ -1,7 +1,5 @@
 <?php
 
-/* */
-
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Animal;
@@ -31,7 +29,7 @@ class AnimalController extends Controller
     *
     * @Route("/admin/{animalType}/{state}", name="admin_animal")
     */
-    public function viewListAction($animalType, $state)
+    public function viewListAction($animalType, $state, Request $request)
     {
         $repository = $this
             ->getDoctrine()
@@ -49,6 +47,25 @@ class AnimalController extends Controller
 
         return $this->render('admin/animal/viewList.html.twig', array(
             'listAnimals' => $listAnimals
+        ));
+    }
+    
+    /**
+    * View a specific animal
+    *
+    * @Route("/admin/animal/{id}/fiche", name="admin_animal_card", requirements={"id": "\d+"})
+    */
+    public function viewAction($id, Request $request)
+    {
+        $repository = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('AppBundle:Animal');
+
+        $animal = $repository->findOneById($id);
+
+        return $this->render('admin/animal/view.html.twig', array(
+            'animal' => $animal
         ));
     }
 
@@ -106,18 +123,31 @@ class AnimalController extends Controller
     public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $animal = $em->getRepository('AppBundle:Animal')->find($id);
 
-        $publication = $em->getRepository('AppBundle:Animal')->find($id);
+        $form = $this->get('form.factory')->create(AnimalType::class, $animal);
 
-        $form = $this->get('form.factory')->create(AnimalEditType::class, $animal);
-
-        if (null === $publication) {
+        if (null === $animal) {
             throw new NotFoundHttpException("L'animal d'id ".id. " n'existe pas.");
         }
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-
-            $em = $this->getDoctrine()->getManager();
+             if ($animal->getAnimalStates()) {
+                foreach($animal->getAnimalStates() as $animalState) {
+                    $animalState->setAnimal($animal);
+                }
+            }            
+            if ($animal->getDescriptions()) {
+                foreach($animal->getDescriptions() as $description) {
+                    $description->setAnimal($animal);
+                }
+            }
+            if ($animal->getImages()) {
+                foreach($animal->getImages() as $image)
+                {
+                   $image->setAnimal($animal);
+                }
+            }            
             $em->persist($animal);
             $em->flush();
 
@@ -142,7 +172,7 @@ class AnimalController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $publication = $em->getRepository('AppBundle:Animal')->find($id);
+        $animal = $em->getRepository('AppBundle:Animal')->find($id);
 
         if (null === $publication) {
             throw new NotFoundHttpException("L'animal d'id ".id. " n'existe pas.");
@@ -151,7 +181,7 @@ class AnimalController extends Controller
         $form = $this->get('form.factory')->create();
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-          $em->remove($publication);
+          $em->remove($animal);
           $em->flush();
 
           $request->getSession()->getFlashBag()->add('info', "L'animal a bien été supprimé.");

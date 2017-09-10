@@ -5,12 +5,14 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * TypeIdentification
  *
  * @ORM\Table(name="type_identification")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TypeIdentificationRepository")
+ * @UniqueEntity(fields="name", message="Ce type d'identification existe déjà")
  */
 class TypeIdentification
 {

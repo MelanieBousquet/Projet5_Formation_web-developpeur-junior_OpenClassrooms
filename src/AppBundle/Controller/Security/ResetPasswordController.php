@@ -6,8 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-//use AppBundle\Form\ResetPasswordType;
-//use AppBundle\Entity\Password\ResetPassword;
+use AppBundle\Form\ResetPasswordType;
 use AppBundle\Entity\User;
 use AppBundle\Event\UserEvent;
 use AppBundle\Event\AppBundleEvents;
@@ -20,7 +19,33 @@ class ResetPasswordController extends Controller
      */
     public function resetPasswordAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        $token = $request->query->get('token');
+        $user = $em->getRepository('AppBundle:User')->findOneByConfirmationToken($token);
         
+        if ($user)  {
+            $form = $this->get('form.factory')->create(ResetPasswordType::class, $user);
+
+            if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+                $user->setIsAlreadyRequested(false);
+                $user->setConfirmationToken(null);
+                $em->persist($user);
+                $em->flush();
+
+                $request->getSession()->getFlashBag()->add('Success', 'Votre nouveau mot de passe a bien été enregistré !. Reconnectez-vous avec vos nouveaux identifiants.');
+
+                return $this->redirectToRoute('login');
+            }
+            
+        } else {
+            $request->getSession()->getFlashBag()->add('Error', 'Lien de réinitialisation de mot de passe incorrect, veuillez vérifier le lien envoyé par mail.');
+            return $this->redirectToRoute('login');
+        }
+        
+        return $this->render('security/reset-password.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
+    
     
 }

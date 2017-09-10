@@ -5,12 +5,14 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * State
  *
  * @ORM\Table(name="state")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StateRepository")
+ * @UniqueEntity(fields="type", message="Ce statut existe déjà")
  */
 class State
 {

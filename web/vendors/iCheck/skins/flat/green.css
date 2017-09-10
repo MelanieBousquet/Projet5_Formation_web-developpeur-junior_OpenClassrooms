@@ -6,6 +6,8 @@
     *display: inline;
     vertical-align: middle;
     margin: 0;
+    margin-left: 3px;
+    margin-right: 3px;
     padding: 0;
     width: 20px;
     height: 20px;

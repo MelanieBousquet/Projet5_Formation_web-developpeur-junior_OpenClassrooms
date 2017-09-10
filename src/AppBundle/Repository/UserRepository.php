@@ -24,12 +24,26 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                 )
             )
             ->setParameter('identifier', $identifier);
-
         ;
 
         return $qb
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+    
+    public function getUsersWithSpecificRole($role)
+    {
+        $qb = $this->createQueryBuilder('u');
+        
+        $qb
+            ->andWhere('u.roles LIKE :role')
+            ->setParameter('role', '%"'.$role.'"%')
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getResult()
         ;
     }
 }

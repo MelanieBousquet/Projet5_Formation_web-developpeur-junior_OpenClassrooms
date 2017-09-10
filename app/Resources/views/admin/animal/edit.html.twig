@@ -1,6 +1,6 @@
 {% extends "admin/base.html.twig" %}
 
-{% block title %}{{ parent() }}Ajout d'un animal : {{app.request.query.get("animalType")}}, statut : {{app.request.query.get("state")}}, en base données {% endblock %}
+{% block title %}{{ parent() }}Edition d'un animal en base de données {% endblock %}
 
 {% block CSSfiles %}
     {{ parent() }}
@@ -14,9 +14,9 @@
     <link href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
 {% endblock %}
 
-{% block contentTitle %}Nouvel animal{% endblock %}
+{% block contentTitle %}Edition d'un animal{% endblock %}
 
-{% block contentSubtitle %}Ajout d'un animal{% endblock %}
+{% block contentSubtitle %}{{ animal.name }}{% endblock %}
 
 {% block content %}
     

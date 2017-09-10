@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+   
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}Association test ! | Panneau d'administration | {% endblock %}</title>
+    
+    {% block CSSfiles %}
+        <!-- Bootstrap -->
+        <link href="{{ asset('vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="{{ asset('vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+        <!-- NProgress - Slim progress bars -->
+        <link href="{{ asset('vendors/nprogress/nprogress.css') }}" rel="stylesheet">
+        <!-- Custom Theme Style -->
+        <link href="{{ asset('build/css/custom.min.css') }}" rel="stylesheet">
+    {% endblock %}
+    
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                    <a href="{{ path('home') }}" class="site_title"><i class="fa fa-paw"></i> <span>Asso Test !</span></a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    {% block menuprofile %}
+                        <div class="profile clearfix">
+                            <div class="profile_pic">
+                                <img src="{{ asset('images/img.jpg') }}" alt="photo de profil" class="img-circle profile_img">
+                            </div>
+                            <div class="profile_info">
+                                <span>Bienvenue,</span>
+                                <h2>{{ app.user.userPseudo|capitalize }}</h2>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    {% endblock %}
+                    <!-- /menu profile quick info -->
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <ul class="nav side-menu">
+                                <li><a><i class="fa fa-home"></i> Accueil Admin</a></li>
+                            </ul>
+                            <br/>
+                            <h3>Listes en base de données</h3>
+                            <ul class="nav side-menu">
+                            
+                                <li><a><i class="fa fa-paw"></i> Animaux <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        {% if is_granted('ROLE_ADMIN') %}<li><a href="{{ path('admin_animal_add') }}">Ajout d'un animal</a>{% endif %}
+                                        <li><a>A adopter<span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chat', 'state': 'adoptable'}) }}">Chats</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chien', 'state': 'adoptable'}) }}">Chiens</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a>Réservés<span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chat', 'state': 'réservé'}) }}">Chats</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chien', 'state': 'réservé'}) }}">Chiens</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a>Adoptés<span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chat', 'state': 'adopté'}) }}">Chats</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chien', 'state': 'adopté'}) }}">Chiens</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a>Perdus<span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chat', 'state': 'perdu'}) }}">Chats</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chien', 'state': 'perdu'}) }}">Chiens</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a>Trouvés<span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chat', 'state': 'trouvé'}) }}">Chats</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chien', 'state': 'trouvé'}) }}">Chiens</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <li><a href="{{ path('admin_breeds') }}"><i class="fa fa-paw"></i> Races</a></li>
+                                {% endif %}
+                                
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <li><a><i class="fa fa-tags"></i>Tags</a></li>
+                                {% endif %}
+                                
+                                {# href="{{ path('admin_fa_users') }} #}
+                                <li><a ><i class="fa fa-user"></i> Familles d'accueil</a></li>
+                            </ul>
+                            
+                            <br/>
+                            <h3>Publications</h3>
+                            <ul class="nav side-menu">
+                                <li><a><i class="fa fa-calendar"></i> Evénements <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <li><a href="#">Publier un nouveau</a>
+                                        {% endif %}
+                                        <li><a href="#">Liste des événements</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-exclamation-circle"></i> Annonces <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <li><a href="#">Publier une nouvelle</a>
+                                        {% endif %}
+                                        <li><a href="#">Liste des annonces</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-pencil-square-o"></i> Brouillons</a></li>
+                            </ul>
+                            <br/>
+                            <h3>Gestion des droits</h3>
+                            <ul class="nav side-menu">
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <li><a href="{{ path('admin_users') }}"><i class="fa fa-user"></i> Utilisateurs</a></li>
+                                {% endif %}
+                            </ul>
+
+                        </div>
+                    </div>
+                    <!-- /sidebar menu -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{{ path('logout') }}"><i class="fa fa-sign-out"></i> Déconnexion</a></li>
+                            <li><a><i class="fa fa-eye"></i> Voir le site</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>{% block contentTitle %}{% endblock %}</h3>
+                        </div>
+
+                        <div class="title_right">
+                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Chercher un animal..">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">OK</button>
+                                </span>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>{% block contentSubtitle %}{% endblock %}</h2>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    {% block content %}{% endblock %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /page content -->
+
+        </div>
+    </div>
+    
+    {% block JSfiles %}
+        <!-- jQuery -->
+        <script src="{{ asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+        <!-- Bootstrap -->
+        <script src="{{ asset('vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+        <!-- FastClick - Remove click delays on mobile browsers -->
+        <script src="{{ asset('vendors/fastclick/lib/fastclick.js') }}"></script>
+        <!-- NProgress - Slim Progress Bars -->
+        <script src="{{ asset('vendors/nprogress/nprogress.js') }}"></script>
+        <!-- Custom Theme Scripts -->
+        <script src="{{ asset('build/js/custom.min.js') }}"></script>
+    {% endblock %}
+    
+</body>
+</html>
