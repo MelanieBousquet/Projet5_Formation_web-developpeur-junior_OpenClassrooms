@@ -90,4 +90,26 @@ class AnimalRepository extends \Doctrine\ORM\EntityRepository
             ->getResult()
         ;
     }
+    
+    public function getAnimalsAlone() 
+    {
+        $qb = $this->createQueryBuilder('a');
+        
+        $qb
+            ->andWhere('a.user is NULL')
+            ->innerJoin('a.animalStates', 'ls')
+            ->addSelect('ls')
+            ->innerJoin('ls.state', 's')
+            ->addSelect('s')
+            ->andWhere('s.type != :type')
+            ->setParameter('type', 'adopté')
+            ->andWhere('s.type != :otherType')
+            ->setParameter('otherType', 'perdu')
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

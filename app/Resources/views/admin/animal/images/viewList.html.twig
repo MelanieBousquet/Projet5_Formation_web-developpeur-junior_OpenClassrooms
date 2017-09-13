@@ -1,0 +1,85 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}{{ parent() }}Liste des images {% endblock %}
+
+{% block contentTitle %}
+    Liste des Photos 
+{% endblock %}
+
+{% block contentSubtitle %}
+    <a href="{{ path('admin_animal_card', {'id': animal.id }) }}" class="btn btn-success btn-xs "><i class="fa fa-arrow-left"></i> Retour à la fiche</a>
+    Photos de {{ animal.name }}
+{% endblock %}
+
+{% block content %}
+   
+    {{ form_start(form, {'attr': {'class': 'form-horizontal form-label-left'}, 'id': 'demo-form2'}) }}
+    
+    <div>
+       <h3>Ajouter une photo</h3>
+        {{ form_errors(form) }}
+    </div>
+       <div>
+        {{ form_label(form.file, "Photo", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+        {{ form_errors(form.file) }}
+        <div class="col-md-4 col-sm-6 col-xs-12">
+        {{ form_widget(form.file, {'attr': {'class': 'form-control ', 'style': 'height:100%;'}}) }}
+        {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-primary'}}) }}
+        </div>
+    </div>
+
+
+    {# Automatic generation of hidden fields, and CSRF field #}
+    {{ form_rest(form) }}
+
+    {{ form_end(form) }}
+    
+    <div class="col-md-12 center-block">
+        <h3>Photo principale</h3>
+        <div class="col-md-55">
+            <div class="thumbnail">
+                <div class="image view view-first">
+                    {% if mainImage %}
+                        <img style="width: 100%; display: block;" src="{{ asset(mainImage.webPath) }}" alt="{{ mainImage.alt }}" />
+                    {% elseif listImages %}
+                        <img style="width: 100%; display: block;" src="{{ asset(listImages[0].webPath) }}" alt="{{ listImages[0].alt }}" />
+                    {% else %}
+                    
+                    {% endif %}
+                </div>
+                <div class="caption">
+                    <p>Photo principale</p>
+                    <a href="" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Photos</h3>
+    {% for image in listImages %}
+        <div class="col-md-55">
+            <div class="thumbnail">
+                <div class="image view view-first">
+                        <img style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" alt="{{ image.alt }}"/>
+                </div>
+                <div class="caption">    
+                    <a href="{{ path('admin_animal_mainimage', {'animalId': animal.id, 'imageId': image.id }) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Définir comme photo principale</a>
+                    <a href="{{ path('admin_image_delete', {'animalId': animal.id, 'imageId': image.id }) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+              
+{% endblock %}
+
+{% block JSfiles %}
+{{ parent() }}
+<script>
+    $(document).ready(function () {
+
+        $('#flashbagModal').modal('show');
+
+    });
+    </script>
+{% endblock %}

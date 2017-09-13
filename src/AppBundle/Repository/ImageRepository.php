@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\NoResultException;
+
 /**
  * ImageRepository
  *
@@ -10,4 +12,44 @@ namespace AppBundle\Repository;
  */
 class ImageRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findImagesByAnimal($id)
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb
+            ->innerJoin('i.animal','a')
+            ->addSelect('a')
+            ->andWhere('a.id = :id')
+            ->setParameter('id', $id)
+            ->andWhere('i.main != true')
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }    
+    
+    public function findMainImageByAnimal($id)
+    {
+        try {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb
+            ->innerJoin('i.animal','a')
+            ->addSelect('a')
+            ->andWhere('a.id = :id')
+            ->setParameter('id', $id)
+            ->andWhere('i.main = true')
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getSingleResult()
+        ;
+            
+        } catch (NoResultException $e) {
+            return null ;
+        }
+    }
 }

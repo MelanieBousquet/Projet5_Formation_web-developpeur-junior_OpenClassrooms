@@ -3,15 +3,17 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Animal;
+use AppBundle\Entity\Note;
 use AppBundle\Entity\Publication;
 use AppBundle\Entity\Breed;
-use AppBundle\Entity\Description;
 use AppBundle\Entity\Sex;
 use AppBundle\Entity\State;
 use AppBundle\Entity\AnimalState;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\TypeIdentification;
 use AppBundle\Form\AnimalType;
+use AppBundle\Form\AnimalEditType;
+use AppBundle\Form\NoteType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +22,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 
 
 class AnimalController extends Controller
@@ -36,7 +40,6 @@ class AnimalController extends Controller
             ->getManager()
             ->getRepository('AppBundle:Animal');
 
-
         if ($state == 'adoptable') {
             $listAnimals = $repository->animalsToAdoptList($animalType) ;
         } else if ($state == 'reserve') {
@@ -44,9 +47,20 @@ class AnimalController extends Controller
         } else {
             $listAnimals = $repository->animalsNotToAdoptList($animalType, $state) ;
         }
+        
+        $haveMainImage = array();
+        foreach ($listAnimals as $animal) {
+            $animalId = $animal->getId();
+            foreach($animal->getImages() as $image) {
+                if ($image->getMain()) {                    
+                    array_push($haveMainImage, $animalId);
+                }
+            }
+        }
 
         return $this->render('admin/animal/viewList.html.twig', array(
-            'listAnimals' => $listAnimals
+            'listAnimals' => $listAnimals,
+            'haveMainImage' => $haveMainImage
         ));
     }
     
@@ -57,15 +71,30 @@ class AnimalController extends Controller
     */
     public function viewAction($id, Request $request)
     {
-        $repository = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository('AppBundle:Animal');
-
-        $animal = $repository->findOneById($id);
+        $em = $this->getDoctrine()->getManager();
+        $animal = $em->getRepository('AppBundle:Animal')->findOneById($id);
+        $mainImage = $em->getRepository('AppBundle:Image')->findMainImageByAnimal($id);
+        
+        $note = new Note();
+        $form = $this->get('form.factory')->create(NoteType::class, $note);
+        
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $note->setUser($user);
+        $note->setAnimal($animal);
+        
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em->persist($note);
+            $em->flush();
+            
+            $request->getSession()->getFlashBag()->add('info', 'Votre note a bien été ajoutée');
+            
+            $this->redirectToRoute('admin_animal_card', array('id' => $animal->getId()));
+        }
 
         return $this->render('admin/animal/view.html.twig', array(
-            'animal' => $animal
+            'animal' => $animal,
+            'mainImage' => $mainImage,
+            'form' => $form->createView()
         ));
     }
 
@@ -88,12 +117,6 @@ class AnimalController extends Controller
                     $animalState->setAnimal($animal);
                 }
             }
-            
-            if ($animal->getDescriptions()) {
-                foreach($animal->getDescriptions() as $description) {
-                    $description->setAnimal($animal);
-                }
-            }
 
             if ($animal->getImages()) {
                 foreach($animal->getImages() as $image)
@@ -105,9 +128,9 @@ class AnimalController extends Controller
             $em->persist($animal);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('Info', 'Animal bien enregistré');
+            $request->getSession()->getFlashBag()->add('info', 'Animal bien enregistré');
 
-            return $this->redirectToRoute('admin_animal_add');
+            return $this->redirectToRoute('admin_animal_card', array('id' => $animal->getId()));
         }
 
         return $this->render('admin/animal/add.html.twig', array(
@@ -125,7 +148,7 @@ class AnimalController extends Controller
         $em = $this->getDoctrine()->getManager();
         $animal = $em->getRepository('AppBundle:Animal')->find($id);
 
-        $form = $this->get('form.factory')->create(AnimalType::class, $animal);
+        $form = $this->get('form.factory')->create(AnimalEditType::class, $animal);
 
         if (null === $animal) {
             throw new NotFoundHttpException("L'animal d'id ".id. " n'existe pas.");
@@ -137,23 +160,13 @@ class AnimalController extends Controller
                     $animalState->setAnimal($animal);
                 }
             }            
-            if ($animal->getDescriptions()) {
-                foreach($animal->getDescriptions() as $description) {
-                    $description->setAnimal($animal);
-                }
-            }
-            if ($animal->getImages()) {
-                foreach($animal->getImages() as $image)
-                {
-                   $image->setAnimal($animal);
-                }
-            }            
+        
             $em->persist($animal);
             $em->flush();
 
             $request->getSession()->getFlashBag()->add('info', 'Animal bien édité');
 
-            return $this->redirectToRoute('admin_animal_add');
+            return $this->redirectToRoute('admin_animal_card', array('id' => $animal->getId()));
 
         }
 
@@ -174,25 +187,17 @@ class AnimalController extends Controller
 
         $animal = $em->getRepository('AppBundle:Animal')->find($id);
 
-        if (null === $publication) {
+        if (null === $animal) {
             throw new NotFoundHttpException("L'animal d'id ".id. " n'existe pas.");
         }
 
-        $form = $this->get('form.factory')->create();
+        $em->remove($animal);
+        $em->flush();
 
-        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-          $em->remove($animal);
-          $em->flush();
+        $request->getSession()->getFlashBag()->add('info', "L'animal a bien été supprimé !");
 
-          $request->getSession()->getFlashBag()->add('info', "L'animal a bien été supprimé.");
+        return $this->redirectToRoute('adminhome');
 
-          return $this->redirectToRoute('admin_animal_add');
-        }
-
-        return $this->render('admin/animal/delete.html.twig', array(
-          'animal' => $animal,
-          'form'   => $form->createView(),
-        ));
     }
 
 }

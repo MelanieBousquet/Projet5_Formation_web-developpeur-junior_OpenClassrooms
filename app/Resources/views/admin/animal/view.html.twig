@@ -7,32 +7,62 @@
 {% block contentSubtitle %}Informations{% endblock %}
 
 {% block content %}
+    
+    {% for message in app.session.flashbag.get('Info') %}
+        <div  class="modal fade" id="flashbagModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{{ message }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <a href="" class="btn btn-primary">Définir la photo principale à mettre en avant</a>
+                        <a href="" class="btn btn-primary">Publier une annonce concernant cet animal</a>
+                        <a href="{{ path('admin_animal_add') }}" class="btn btn-primary">Ajouter un autre animal avant publication</a><br/>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    </div>
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        
+    {% endfor %}
 
     <div class="col-md-7 col-sm-7 col-xs-12">
         <div class="product-image">
-            <img src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}" />
+            {% if mainImage %}
+                <img src="{{ asset(mainImage.webPath) }}" alt="{{ mainImage.alt }}" />
+            {% elseif animal.images[0] is defined %}
+                <img src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}" />
+            {% else %}
+                <img src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut" />
+            {% endif %}
         </div>
         <div class="product_gallery">
-            {% for image in animal.images %}
-            <a>
-                <img src="{{ asset(image.webPath) }}" alt="{{ asset(image.alt) }}" />
-            </a>
-            {% endfor %}
+            {% if animal.images %}
+                {% for image in animal.images %}
+                <a>
+                    <img src="{{ asset(image.webPath) }}" alt="{{ asset(image.alt) }}" />
+                </a>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 
     <div class="col-md-5 col-sm-5 col-xs-12" style="border:0px solid #e5e5e5;">
         <div class="title-right">
-            <a class="btn btn-danger btn-xs pull-right" href="#"><i class="fa fa-trash"></i> Supprimer</a>
+            <a class="btn btn-danger btn-xs pull-right" href="{{ path('admin_animal_delete', {'id': animal.getId() }) }}"><i class="fa fa-trash"></i> Supprimer</a>
             <a class="btn btn-primary btn-xs pull-right" href="{{ path('admin_animal_edit', {'id': animal.getId() }) }}"><i class="fa fa-pencil"></i> Editer</a>
+            <a class="btn btn-success btn-xs pull-right" href="{{ path('admin_animal_images', {'id': animal.getId() }) }}"><i class="fa fa-camera-retro"></i> Gestion des photos</a>
         </div>
         <div class="title-left">
             <h3 class="prod_title">{{ animal.name|upper }} - {{ animal.age }}</h3>
         </div>
 
-        {% for description in animal.descriptions %}
-            <p>{{ description.content }}</p>
-        {% endfor %}
+        <p>{{ animal.description }}</p>
         <br />
 
         <div class="project_detail">
@@ -56,6 +86,7 @@
             {% endif %}
             </p>
         </div>
+
 
     </div>
 
@@ -125,28 +156,48 @@
                       </a>
                     </li>
                     <li>
+                     {{ form_start(form) }}
+                     {{ form_errors(form) }}
                       <a>
-                        <span class="image">
-                          <img src="{{ asset('images/img.jpg') }}" alt="img" />
-                        </span>
                         <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
+                          <span>
+                            Ajout d'une note
+                          </span>
+                          <span class="time">{{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-success'}}) }}</span>
                         </span>
                         <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
+                          {{ form_label(form.message) }}
+                            {{ form_errors(form.message) }}
+                            {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
                         </span>
                       </a>
+                          {# Automatic generation of hidden fields, and CSRF field #}
+                            {{ form_rest(form) }}
+
+                            {{ form_end(form) }}
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
           <div class="clearfix"></div>
-    
+
+
+
 
 
               
+{% endblock %}
+
+{% block JSfiles %}
+{{ parent() }}
+<script>
+    $(document).ready(function () {
+
+        $('#flashbagModal').modal('show');
+
+    });
+    </script>
 {% endblock %}
 
 

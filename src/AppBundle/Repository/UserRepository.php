@@ -39,6 +39,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         $qb
             ->andWhere('u.roles LIKE :role')
             ->setParameter('role', '%"'.$role.'"%')
+            ->orderBy('u.userPseudo', 'ASC')
         ;
         
         return $qb

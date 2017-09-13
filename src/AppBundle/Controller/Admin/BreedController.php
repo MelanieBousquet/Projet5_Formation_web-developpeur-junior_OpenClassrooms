@@ -24,12 +24,13 @@ class BreedController extends Controller
     */
     public function addAction(Request $request)
     {
-        $listBreeds = $this
+        $repository = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository('AppBundle:Breed')
-            ->findAll();
-
+        ;
+        $catBreeds = $repository->getCatBreeds();
+        $dogBreeds = $repository->getDogBreeds();
 
         $breed = new Breed();
         $form = $this->get('form.factory')->create(BreedType::class, $breed);
@@ -39,14 +40,15 @@ class BreedController extends Controller
             $em->persist($breed);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('Info', 'Race ajoutée');
+            $request->getSession()->getFlashBag()->add('info', 'Race ajoutée');
 
             return $this->redirectToRoute('admin_breeds');
         }
 
         return $this->render('admin/breed/add.html.twig', array(
             'form' => $form->createView(),
-            'listBreeds' => $listBreeds
+            'catBreeds' => $catBreeds,
+            'dogBreeds' => $dogBreeds
         ));
     }
 
@@ -94,9 +96,10 @@ class BreedController extends Controller
     */
     public function deleteAction($id, Request $request)
     {
-        $breed = $this
+        $em = $this
             ->getDoctrine()
-            ->getManager()
+            ->getManager();
+        $breed = $em
             ->getRepository('AppBundle:Breed')
             ->find($id);
 
@@ -104,21 +107,12 @@ class BreedController extends Controller
             throw new NotFoundHttpException("La race d'id ".id. " n'existe pas.");
         }
 
-        $form = $this->get('form.factory')->create();
+        $em->remove($breed);
+        $em->flush();
 
-        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-          $em->remove($breed);
-          $em->flush();
+        $request->getSession()->getFlashBag()->add('info', "La race a bien été supprimée.");
 
-          $request->getSession()->getFlashBag()->add('info', "La race a bien été supprimée.");
-
-          return $this->redirectToRoute('admin_breeds');
-        }
-
-        return $this->render('admin/breed/delete.html.twig', array(
-          'breed' => $breed,
-          'form'   => $form->createView(),
-        ));
+        return $this->redirectToRoute('admin_breeds');
     }
 
 }

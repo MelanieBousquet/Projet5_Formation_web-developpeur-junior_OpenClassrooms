@@ -100,6 +100,55 @@ class User implements AdvancedUserInterface
      *
      * @return int
      */
+    
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Animal", mappedBy="user", cascade={"persist"})
+     */
+    private $animals;
+    
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->animals = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add animal
+     *
+     * @param \AppBundle\Entity\Animal $animal
+     *
+     * @return User
+     */
+    public function addAnimal(\AppBundle\Entity\Animal $animal)
+    {
+        $this->animals[] = $animal;
+        $animal->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove animal
+     *
+     * @param \AppBundle\Entity\Animal $animal
+     */
+    public function removeAnimal(\AppBundle\Entity\Animal $animal)
+    {
+        $this->animals->removeElement($animal);
+    }
+
+    /**
+     * Get animals
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAnimals()
+    {
+        return $this->animals;
+    }
+    
     public function getId()
     {
         return $this->id;
@@ -382,4 +431,5 @@ class User implements AdvancedUserInterface
     {
         return $this->isAlreadyRequested;
     }
+
 }

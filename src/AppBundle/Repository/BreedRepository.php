@@ -10,4 +10,37 @@ namespace AppBundle\Repository;
  */
 class BreedRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getCatBreeds()
+    {
+        $qb = $this->createQueryBuilder('b');
+
+        $qb
+            ->innerJoin('b.type','t')
+            ->addSelect('t')
+            ->andWhere('t.name = :name')
+            ->setParameter('name', 'chat')
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }    
+    
+    public function getDogBreeds()
+    {
+        $qb = $this->createQueryBuilder('b');
+
+        $qb
+            ->innerJoin('b.type','t')
+            ->addSelect('t')
+            ->andWhere('t.name = :name')
+            ->setParameter('name', 'chien')
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

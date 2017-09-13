@@ -21,7 +21,7 @@ use AppBundle\Entity\Type;
 use AppBundle\Entity\Description;
 use AppBundle\Entity\Image;
 
-class AnimalType extends AbstractType
+class AnimalEditType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -39,12 +39,6 @@ class AnimalType extends AbstractType
             ->add('type', EntityType::class, array('class' => 'AppBundle:Type', 'placeholder' => 'Sélectionner un type d\'animal', 'choice_label' => 'name', 'mapped' => false))
             ->add('typeIdentification', EntityType::class, array('class' => 'AppBundle:TypeIdentification', 'choice_label' => 'name',  'choice_attr' => function () { return array('class' => 'flat', 'name' => 'iCheck'); } , 'expanded' => 'true'), array('required' => false))
             ->add('description', TextType::class, array('required' => false))
-            ->add('images', CollectionType::class, array(
-                'entry_type' => ImageType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ))
             ->add('animalStates', CollectionType::class, array(
                 'entry_type' => AnimalStateType::class,
                 'allow_add' => 'true',

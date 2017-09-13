@@ -39,7 +39,7 @@
                     {% block menuprofile %}
                         <div class="profile clearfix">
                             <div class="profile_pic">
-                                <img src="{{ asset('images/img.jpg') }}" alt="photo de profil" class="img-circle profile_img">
+                                <img src="{{ asset('uploads/img/23.jpeg') }}" alt="photo de profil" class="img-circle profile_img">
                             </div>
                             <div class="profile_info">
                                 <span>Bienvenue,</span>
@@ -124,8 +124,8 @@
                                     <li><a><i class="fa fa-tags"></i>Tags</a></li>
                                 {% endif %}
                                 
-                                {# href="{{ path('admin_fa_users') }} #}
-                                <li><a ><i class="fa fa-user"></i> Familles d'accueil</a></li>
+                                {#  #}
+                                <li><a href="{{ path('admin_host_families') }}"><i class="fa fa-user"></i> Familles d'accueil</a></li>
                             </ul>
                             
                             <br/>
@@ -150,13 +150,24 @@
                                 <li><a><i class="fa fa-pencil-square-o"></i> Brouillons</a></li>
                             </ul>
                             <br/>
+                            {% if is_granted('ROLE_ADMIN') %}
                             <h3>Gestion des droits</h3>
                             <ul class="nav side-menu">
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <li><a href="{{ path('admin_users') }}"><i class="fa fa-user"></i> Utilisateurs</a></li>
-                                {% endif %}
+                                <li><a href="{{ path('admin_users') }}"><i class="fa fa-user"></i> Utilisateurs</a></li>
                             </ul>
-
+                            <br/>
+                            {% endif %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <h3>Gestion du site</h3>
+                            <ul class="nav side-menu">
+                                <li><a href="#"><i class="fa fa-pencil"></i> Pages <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">Page</a>
+                                        <li><a href="#">Page</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            {% endif %}
                         </div>
                     </div>
                     <!-- /sidebar menu -->
@@ -201,7 +212,32 @@
                     </div>
 
                     <div class="clearfix"></div>
+                    
+                    {% block flashbag %}
+                        {% for message in app.session.flashbag.get('info') %}
+                            <div  class="modal fade" id="flashbagModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Information</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            {{ message }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                        </div>
 
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+
+                        {% endfor %}
+                    {% endblock %}
+                   
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">

@@ -34,13 +34,21 @@ class Image
 
     /**
      * @ORM\Column(name="extension", type="string", length=255)
-     * @Assert\NotNull()
      */
     private $extension;
+    
+    /**
+     * @ORM\Column(name="main", type="boolean")
+     */
+    private $main;
 
     /**
+     * @ORM\Column(name="date", type="date")
+     */
+    private $date;
+    
+    /**
      * @ORM\Column(name="alt", type="string", length=255)
-     * @Assert\NotNull()
      */
     private $alt;
     
@@ -51,7 +59,13 @@ class Image
     private $file;
     
     private $tempFilename;
-
+    
+    public function __construct() 
+    {
+        $this->main = false;
+        $this->date = new \Datetime();
+    }
+    
     public function getFile()
     {
         return $this->file;
@@ -156,11 +170,6 @@ class Image
         
         $this->resizeImage($this->file);
 
-        /* On déplace le fichier envoyé dans le répertoire de notre choix
-        $this->file->move(
-            $this->getUploadRootDir(), // Le répertoire de destination
-            $this->id.'.'.$this->extension   // Le nom du fichier à créer, ici « id.extension »
-        ); */
     }
 
     /**
@@ -215,6 +224,11 @@ class Image
 
         //Resize dimensions are bigger than original image, stop processing
         if ($width > $width_orig){
+            // On déplace le fichier envoyé dans le répertoire de notre choix
+        $this->file->move(
+            $this->getUploadRootDir(), // Le répertoire de destination
+            $this->id.'.'.$this->extension   // Le nom du fichier à créer, ici « id.extension »
+        ); 
             return false;
         }
 
@@ -252,4 +266,67 @@ class Image
         
     }
     
+
+    /**
+     * Set extension
+     *
+     * @param string $extension
+     *
+     * @return Image
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+
+        return $this;
+    }
+
+    /**
+     * Set main
+     *
+     * @param boolean $main
+     *
+     * @return Image
+     */
+    public function setMain($main)
+    {
+        $this->main = $main;
+
+        return $this;
+    }
+
+    /**
+     * Get main
+     *
+     * @return boolean
+     */
+    public function getMain()
+    {
+        return $this->main;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Image
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
 }

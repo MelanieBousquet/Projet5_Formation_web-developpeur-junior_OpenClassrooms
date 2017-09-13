@@ -68,26 +68,34 @@ class Animal
      *
      */
     private $typeIdentification;
-
+    
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", inversedBy="animals", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="animals", cascade={"persist"})
+     *
+     */
+    private $user;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", inversedBy="animals", cascade={"persist"})
      */
     private $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="animal", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="animal", cascade={"persist", "remove"})
      */
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AnimalState", mappedBy="animal",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AnimalState", mappedBy="animal",cascade={"persist", "remove"})
      */
     private $animalStates;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Description", mappedBy="animal", cascade={"persist"})
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
-    private $descriptions;
+    private $description;
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Publication", mappedBy="animals", cascade={"persist"})
@@ -100,10 +108,9 @@ class Animal
         $this->images = new ArrayCollection();
         $this->animalStates = new ArrayCollection();
         $this->publications = new ArrayCollection();
-        $this->descriptions = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
-
-
+    
 
     /**
      * Get id
@@ -318,40 +325,6 @@ class Animal
         return $this->animalStates;
     }
 
-    /**
-     * Add description
-     *
-     * @param \AppBundle\Entity\Description $description
-     *
-     * @return Animal
-     */
-    public function addDescription(\AppBundle\Entity\Description $description)
-    {
-        $this->descriptions[] = $description;
-        $description->setAnimal($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove description
-     *
-     * @param \AppBundle\Entity\Description $description
-     */
-    public function removeDescription(\AppBundle\Entity\Description $description)
-    {
-        $this->descriptions->removeElement($description);
-    }
-
-    /**
-     * Get descriptions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getDescriptions()
-    {
-        return $this->descriptions;
-    }
 
     /**
      * Add publication
@@ -435,6 +408,31 @@ class Animal
     {
         return $this->breed;
     }
+    
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\user $user
+     *
+     * @return Animal
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->User;
+    }
+
 
     /**
      * Set birthday
@@ -484,7 +482,7 @@ class Animal
                         $age .= ' et 1/2' ;
                     }
                     if ($months == 0) {
-                        $age = $days ;
+                        $age = $days . ' jours' ;
                     }
                     break;
                 default:
@@ -495,5 +493,29 @@ class Animal
         }
         
         
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Animal
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

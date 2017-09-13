@@ -8,7 +8,7 @@
 
 {% block content %}
     
-{% for message in app.session.flashbag.get('Info') %}
+{% for message in app.session.flashbag.get('info') %}
     <div class="col-md-12 alert alert-success">
         {{ message }}
     </div>
@@ -46,6 +46,85 @@
     {{ form_rest(form) }}
 
     {{ form_end(form) }}
+    
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Races de chat</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                        <th>Race</th>
+                        <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>                 
+                        {% for breed in catBreeds %}
+                            <tr>
+                                <td>{{ breed.name|capitalize }}</td>
+                                <td>
+                                    <button class="btn btn-primary"><i class="fa fa-pencil"></i> Editer</button>
+                                    <button class="btn btn-danger"><i class="fa fa-trash"></i> Supprimer</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div> 
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Races de chien</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                        <th>Race</th>
+                        <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>                 
+                        {% for breed in dogBreeds %}
+                            <tr>
+                                <td>{{ breed.name|capitalize }}</td>
+                                <td>
+                                    <button class="btn btn-primary" title="Modifier cette race" data-toggle="modal" data-target="#breedDialog{{ breed.id }}"><i class="fa fa-pencil"></i> Editer</button>
+                                    <button class="btn btn-danger" title="Supprimer cette race" data-toggle="modal" data-target="#breedDialog{{ breed.id }}"><i class="fa fa-trash"></i> Supprimer</button>
+                                </td>
+                                 
+                                <div class="modal fade" id="breedDialog{{ breed.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">Confirmation requise</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                Souhaitez-vous vraiment supprimer cette race ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                <a href="{{ path('admin_breed_delete', { 'id': breed.getId() }) }}" class="btn btn-primary">Confirmer</a>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div> 
 
 
 {% endblock %}

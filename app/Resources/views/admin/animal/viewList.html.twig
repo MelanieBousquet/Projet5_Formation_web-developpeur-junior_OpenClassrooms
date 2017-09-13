@@ -13,11 +13,21 @@
             <div class="thumbnail">
                 <div class="image view view-first">
                     <a href="{{ path('admin_animal_card', { 'id': animal.getId() }) }}">
-                        <img style="width: 100%; display: block;" src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}"/>
+                        {% if animal.id in haveMainImage %}
+                            {% for image in animal.images %}
+                                {% if image.main %}
+                                    <img style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" alt="{{ image.alt }}"/>
+                                {% endif %}
+                            {% endfor %}
+                        {% elseif animal.images[0] is defined %}
+                                <img style="width: 100%; display: block;" src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}"/>
+                        {% else %}
+                            <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpg') }}" alt="image par défaut"/>
+                        {% endif %}
                     </a>
                 </div>
                 <div class="caption">    
-                    <p>{{ animal.name|capitalize }}, {{ animal.breed.name|capitalize }}, {{ animal.sex.type }}</p>
+                    <p><a href="{{ path('admin_animal_card', { 'id': animal.getId() }) }}">{{ animal.name|capitalize }}</a>, {{ animal.breed.name|capitalize }}, {{ animal.sex.type }}</p>
                     <p>{{ animal.age }}</p>
                 </div>
             </div>
