@@ -99,9 +99,10 @@ class AnimalController extends Controller
     }
 
     /**
-    * Add a animalToAdopt
+    * Add a animal
     *
     * @Route("/admin/animaux-ajout", name="admin_animal_add")
+    * @Security("has_role('ROLE_ADMIN')")
     */
     public function addAction(Request $request)
     {
@@ -142,6 +143,7 @@ class AnimalController extends Controller
     * Edit a animal
     *
     * @Route("/admin/animaux/{id}/edit", name="admin_animal_edit", requirements={"id": "\d+"})
+    * @Security("has_role('ROLE_ADMIN')")
     */
     public function editAction($id, Request $request)
     {
@@ -180,6 +182,7 @@ class AnimalController extends Controller
     * Delete a Animal
     *
     * @Route("/admin/animaux/{id}/supprimer", name="admin_animal_delete", requirements={"id": "\d+"})
+    * @Security("has_role('ROLE_ADMIN')")
     */
     public function deleteAction($id, Request $request)
     {

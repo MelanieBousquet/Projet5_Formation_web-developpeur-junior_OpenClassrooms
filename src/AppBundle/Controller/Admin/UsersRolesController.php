@@ -14,6 +14,7 @@ class UsersRolesController extends Controller
 {
     /**
      * @Route("/admin/gestion-utilisateurs", name="admin_users")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function viewUsersListAction(Request $request)
     {
@@ -36,6 +37,7 @@ class UsersRolesController extends Controller
     
     /**
      * @Route("/admin/{id}/{role}/ajout-role-utilisateur", name="admin_set_user_role", requirements={"id": "\d+", "role": "\w+"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function setRoleAction($id, $role, Request $request)
     {

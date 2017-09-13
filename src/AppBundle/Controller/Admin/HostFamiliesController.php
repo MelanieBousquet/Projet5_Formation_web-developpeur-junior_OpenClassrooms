@@ -31,6 +31,7 @@ class HostFamiliesController extends Controller
     
     /**
      * @Route("admin/famille-daccueil/{userId}/ajout-animal/{animalId}", name="admin_host_families_add_animal", requirements={"userId": "\d+", "animalId": "\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function addAnimalAction($userId, $animalId, Request $request)
     {
@@ -49,6 +50,7 @@ class HostFamiliesController extends Controller
     
     /**
      * @Route("admin/famille-daccueil/{userId}/retrait-animal/{animalId}", name="admin_host_families_remove_animal", requirements={"userId": "\d+", "animalId": "\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function removeAnimalAction($userId, $animalId, Request $request)
     {

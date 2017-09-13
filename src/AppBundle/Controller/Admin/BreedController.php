@@ -21,6 +21,7 @@ class BreedController extends Controller
     * List all breeds and Add a breed
     *
     * @Route("/admin/races", name="admin_breeds")
+    * @Security("has_role('ROLE_ADMIN')")
     */
     public function addAction(Request $request)
     {
@@ -56,6 +57,7 @@ class BreedController extends Controller
     * Edit a breed
     *
     * @Route("/admin/race/{id}/edit", name="admin_breed_edit", requirements={"id": "\d+"})
+    * @Security("has_role('ROLE_ADMIN')")
     */
     public function editAction($id, Request $request)
     {
@@ -93,6 +95,7 @@ class BreedController extends Controller
     * Delete a Breed
     *
     * @Route("/admin/race/{id}/supprimer", name="admin_breed_delete", requirements={"id": "\d+"})
+    * @Security("has_role('ROLE_ADMIN')")
     */
     public function deleteAction($id, Request $request)
     {
