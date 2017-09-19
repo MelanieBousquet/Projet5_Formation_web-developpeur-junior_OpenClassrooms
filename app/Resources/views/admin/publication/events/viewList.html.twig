@@ -1,0 +1,60 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}{{ parent() }}Liste des événements de l'association{% endblock %}
+
+{% block contentTitle %}Liste des événements{% endblock %}
+
+{% block contentSubtitle %}Evénements{% endblock %}
+
+{% block content %}
+    
+    <div class="row">
+    {% for event in events %}
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>{{ event.title }}</h2>
+                    {% if event.published %}
+                        <button class="btn btn-round btn-info  pull-right">Publié</button>
+                    {% else %}
+                        <button class="btn btn-round btn-warning btn-xs pull-right">Brouillon</button>
+                    {% endif %}
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="col-md-4 col-sm-6 col-xs-6">
+                        <div class="thumbnail">
+                            <div class="image view view-first">
+                                <a href="{{ path('admin_event_card', { 'id': event.getId() }) }}">
+                                   <!--
+                                   {#
+                                    {% if event.id in haveMainImage %}
+                                        {% for image in event.images %}
+                                            {% if image.main %}
+                                                <img style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" alt="{{ image.alt }}"/>
+                                            {% endif %}
+                                        {% endfor %} #}  -->
+                                    {% if event.images[0] is defined %}
+                                            <img style="width: 100%; display: block;" src="{{ asset(event.images[0].webPath) }}" alt="{{ event.images[0].alt }}"/>
+                                    {% else %}
+                                        <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut"/>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="caption">    
+                                <p><a href="{{ path('admin_event_card', { 'id': event.getId() }) }}">{{ event.event.beginningDateEvent|date("d/m/Y") }} - {{ event.event.endingDateEvent|date("d/m/Y") }}</a></p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p><b>Lieu :</b> {{ event.event.place }}</p>
+                        <p><b>Description :</b> {{ event.content }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+    </div>
+{% endblock %}

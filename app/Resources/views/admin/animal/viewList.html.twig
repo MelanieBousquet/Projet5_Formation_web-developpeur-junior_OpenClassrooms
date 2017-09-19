@@ -4,36 +4,50 @@
 
 {% block contentTitle %}Liste des animaux{% endblock %}
 
+{% block search %}
+    <div class="title_right">
+        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Chercher un animal..">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">OK</button>
+                </span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block contentSubtitle %}{{app.request.attributes.get("animalType")|capitalize }}s {{app.request.attributes.get("state")}}s{% endblock %}
 
 {% block content %}
 
-    {% for animal in listAnimals %}
-        <div class="col-md-55">
-            <div class="thumbnail">
-                <div class="image view view-first">
-                    <a href="{{ path('admin_animal_card', { 'id': animal.getId() }) }}">
-                        {% if animal.id in haveMainImage %}
-                            {% for image in animal.images %}
-                                {% if image.main %}
-                                    <img style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" alt="{{ image.alt }}"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% elseif animal.images[0] is defined %}
-                                <img style="width: 100%; display: block;" src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}"/>
-                        {% else %}
-                            <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpg') }}" alt="image par défaut"/>
-                        {% endif %}
-                    </a>
-                </div>
-                <div class="caption">    
-                    <p><a href="{{ path('admin_animal_card', { 'id': animal.getId() }) }}">{{ animal.name|capitalize }}</a>, {{ animal.breed.name|capitalize }}, {{ animal.sex.type }}</p>
-                    <p>{{ animal.age }}</p>
+    <div class="x_content">
+        {% for animal in listAnimals %}
+            <div class="col-md-55">
+                <div class="thumbnail">
+                    <div class="image view view-first">
+                        <a href="{{ path('admin_animal_card', { 'id': animal.getId() }) }}">
+                            {% if animal.id in haveMainImage %}
+                                {% for image in animal.images %}
+                                    {% if image.main %}
+                                        <img style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" alt="{{ image.alt }}"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% elseif animal.images[0] is defined %}
+                                    <img style="width: 100%; display: block;" src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}"/>
+                            {% else %}
+                                <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpg') }}" alt="image par défaut"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="caption">    
+                        <p><a href="{{ path('admin_animal_card', { 'id': animal.getId() }) }}">{{ animal.name|capitalize }}</a>, {{ animal.breed.name|capitalize }}, {{ animal.sex.type }}</p>
+                        <p>{{ animal.age }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
-
+        {% endfor %}
+    </div>
               
 {% endblock %}
 

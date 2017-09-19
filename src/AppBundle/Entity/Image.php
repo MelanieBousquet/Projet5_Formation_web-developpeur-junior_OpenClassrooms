@@ -30,7 +30,12 @@ class Image
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal", inversedBy="images")
      */
-    private $animal;
+    private $animal;    
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Publication", inversedBy="images")
+     */
+    private $publication;
 
     /**
      * @ORM\Column(name="extension", type="string", length=255)
@@ -167,7 +172,6 @@ class Image
                 unlink($oldFile);
             }
         }
-        
         $this->resizeImage($this->file);
 
     }
@@ -209,10 +213,11 @@ class Image
     {
         return $this->getUploadDir().'/'.$this->getId().'.'.$this->getExtension();
     }
+
     
     public function resizeImage($originalImage)
     {
-          // Get current dimensions
+        // Get current dimensions
         $ImageDetails = getimagesize($originalImage);
         $height_orig = $ImageDetails[1];
         $width_orig = $ImageDetails[0];
@@ -221,21 +226,29 @@ class Image
         $jpegQuality = 75;
         $width = 800;
         $newPath = $this->getUploadRootDir();
+        
+        // Get orientation informations
+        $exif = exif_read_data($originalImage);
+        $orientation = $exif['Orientation'];
 
-        //Resize dimensions are bigger than original image, stop processing
+        // Resize dimensions are bigger than original image, move to the folder and stop processing
         if ($width > $width_orig){
-            // On déplace le fichier envoyé dans le répertoire de notre choix
-        $this->file->move(
-            $this->getUploadRootDir(), // Le répertoire de destination
-            $this->id.'.'.$this->extension   // Le nom du fichier à créer, ici « id.extension »
-        ); 
+            // Move to folder
+            $this->file->move(
+                $this->getUploadRootDir(), // Folder
+                $this->id.'.'.$this->extension   // File name : « id.extension »
+            ); 
             return false;
         }
-
+        
+        // Define the height 
         $height = $width / $ratio;
         $height = round($height);
-
+        
+        // Define a new image with the new dimension (empty)
         $gd_image_dest = imagecreatetruecolor($width, $height);
+        // Create $gd_image_src from the uploaded image, according to the extension,
+        // so we can handle imagecopyresampled() and orientation fixing next  
         $gd_image_src = null;
         switch( $fileExtention ){
             case 'png' :
@@ -249,8 +262,26 @@ class Image
                 break;
             default: break;
         }
-
+        
+        // Copy  $gd_image_src (original image) in $gd_image_dest 
         imagecopyresampled($gd_image_dest, $gd_image_src, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+        
+        // Fix orientation
+        switch($orientation)
+        {
+            case 3: // 180 rotate left
+                $gd_image_dest = imagerotate($gd_image_dest, 180, 0);
+                break;
+
+
+            case 6: // 90 rotate right
+                $gd_image_dest = imagerotate($gd_image_dest, -90, 0);
+                break;
+
+            case 8:    // 90 rotate left
+                $gd_image_dest = imagerotate($gd_image_dest, 90, 0);
+                break;
+        }
 
         $filesystem = new Filesystem();
         $filesystem->mkdir($newPath, 0744);
@@ -329,4 +360,42 @@ class Image
         return $this->date;
     }
 
+
+    /**
+     * Set alt
+     *
+     * @param string $alt
+     *
+     * @return Image
+     */
+    public function setAlt($alt)
+    {
+        $this->alt = $alt;
+
+        return $this;
+    }
+
+    /**
+     * Set publication
+     *
+     * @param \AppBundle\Entity\Publication $publication
+     *
+     * @return Image
+     */
+    public function setPublication(\AppBundle\Entity\Publication$publication = null)
+    {
+        $this->publication = $publication;
+
+        return $this;
+    }
+
+    /**
+     * Get publication
+     *
+     * @return \AppBundle\Entity\Publication
+     */
+    public function getPublication()
+    {
+        return $this->publication;
+    }
 }

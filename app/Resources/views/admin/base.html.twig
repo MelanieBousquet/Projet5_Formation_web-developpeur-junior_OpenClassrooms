@@ -134,9 +134,9 @@
                                 <li><a><i class="fa fa-calendar"></i> Evénements <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         {% if is_granted('ROLE_ADMIN') %}
-                                            <li><a href="#">Publier un nouveau</a>
+                                            <li><a href="{{ path('admin_event_add') }}">Publier un nouveau</a>
                                         {% endif %}
-                                        <li><a href="#">Liste des événements</a></li>
+                                        <li><a href="{{ path('admin_events') }}">Liste des événements</a></li>
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-exclamation-circle"></i> Annonces <span class="fa fa-chevron-down"></span></a>
@@ -198,17 +198,8 @@
                         <div class="title_left">
                             <h3>{% block contentTitle %}{% endblock %}</h3>
                         </div>
-
-                        <div class="title_right">
-                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Chercher un animal..">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">OK</button>
-                                </span>
-                            </div>
-                            </div>
-                        </div>
+                        {% block searchbar %}
+                        {% endblock %}
                     </div>
 
                     <div class="clearfix"></div>
@@ -237,21 +228,9 @@
 
                         {% endfor %}
                     {% endblock %}
-                   
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel">
-                                <div class="x_title">
-                                    <h2>{% block contentSubtitle %}{% endblock %}</h2>
-
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-                                    {% block content %}{% endblock %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
+                    {% block content %}{% endblock %}
+                    
                 </div>
             </div>
             <!-- /page content -->

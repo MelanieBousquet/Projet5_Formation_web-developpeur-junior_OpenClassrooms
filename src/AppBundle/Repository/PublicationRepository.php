@@ -10,4 +10,17 @@ namespace AppBundle\Repository;
  */
 class PublicationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findEventPublications()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->andWhere('p.event IS NOT NULL')
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

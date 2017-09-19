@@ -8,8 +8,9 @@
 
 {% block content %}
     
-    {% for message in app.session.flashbag.get('Info') %}
-        <div  class="modal fade" id="flashbagModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    {# modal informations on page load after submitting a new animal form #}
+    {% for message in app.session.flashbag.get('info') %}
+        <div class="modal fade" id="flashbagModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -30,167 +31,147 @@
         </div>
         
     {% endfor %}
-
-    <div class="col-md-7 col-sm-7 col-xs-12">
-        <div class="product-image">
-            {% if mainImage %}
-                <img src="{{ asset(mainImage.webPath) }}" alt="{{ mainImage.alt }}" />
-            {% elseif animal.images[0] is defined %}
-                <img src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}" />
-            {% else %}
-                <img src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut" />
-            {% endif %}
-        </div>
-        <div class="product_gallery">
-            {% if animal.images %}
-                {% for image in animal.images %}
-                <a>
-                    <img src="{{ asset(image.webPath) }}" alt="{{ asset(image.alt) }}" />
-                </a>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="col-md-5 col-sm-5 col-xs-12" style="border:0px solid #e5e5e5;">
-        <div class="title-right">
-            <a class="btn btn-danger btn-xs pull-right" href="{{ path('admin_animal_delete', {'id': animal.getId() }) }}"><i class="fa fa-trash"></i> Supprimer</a>
-            <a class="btn btn-primary btn-xs pull-right" href="{{ path('admin_animal_edit', {'id': animal.getId() }) }}"><i class="fa fa-pencil"></i> Editer</a>
-            <a class="btn btn-success btn-xs pull-right" href="{{ path('admin_animal_images', {'id': animal.getId() }) }}"><i class="fa fa-camera-retro"></i> Gestion des photos</a>
-        </div>
-        <div class="title-left">
-            <h3 class="prod_title">{{ animal.name|upper }} - {{ animal.age }}</h3>
-        </div>
-
-        <p>{{ animal.description }}</p>
-        <br />
-
-        <div class="project_detail">
-            <p class="title">Sexe</p>
-            <p>{{ animal.sex.type|capitalize }}</p>
-        </div>
-        <div class="project_detail">
-            <p class="title">Race</p>
-            <p>{{ animal.breed.name|capitalize }}</p>
-        </div>
-        <div class="project_detail">
-            <p class="title">Identification</p>
-            <p>{{ animal.typeIdentification.name|capitalize }} - Numéro : {{ animal.identificationNumber }}</p>
-        </div>
-            <div class="project_detail">
-            <p class="title">Stérilisé(e)
-            {% if animal.sterilised %}
-                <i class="fa fa-check-square-o"></i>
-            {% else %}
-                <i class="fa fa-times-circle"></i>
-            {% endif %}
-            </p>
-        </div>
-
-
-    </div>
-
-         <div class="col-md-12">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2>Notes internes</h2>
-                  <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings 1</a>
-                        </li>
-                        <li><a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li><a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>
-                  </ul>
-                  <div class="clearfix"></div>
+    
+    {# animal card #}
+    <div class="col-md-12">
+        <div class="x-content">
+            <div class="x_panel">
+               
+               {# animal pictures #}
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                    <div class="product-image">
+                        {% if mainImage %}
+                            <img src="{{ asset(mainImage.webPath) }}" alt="{{ mainImage.alt }}" />
+                        {% elseif animal.images[0] is defined %}
+                            <img src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}" />
+                        {% else %}
+                            <img src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut" />
+                        {% endif %}
+                    </div>
+                    <div class="product_gallery">
+                        {% if animal.images %}
+                            {% for image in animal.images %}
+                            <a style="overflow:hidden;">
+                                <img src="{{ asset(image.webPath) }}" alt="{{ asset(image.alt) }}" />
+                            </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="x_content">
-                  <ul class="list-unstyled msg_list">
-                    <li>
-                      <a>
-                        <span class="image">
-                          <img src="{{ asset('images/img.jpg') }}" alt="img" />
-                        </span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image">
-                          <img src="{{ asset('images/img.jpg') }}" alt="img" />
-                        </span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image">
-                          <img src="{{ asset('images/img.jpg') }}" alt="img" />
-                        </span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                     {{ form_start(form) }}
-                     {{ form_errors(form) }}
-                      <a>
-                        <span>
-                          <span>
-                            Ajout d'une note
-                          </span>
-                          <span class="time">{{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-success'}}) }}</span>
-                        </span>
-                        <span class="message">
-                          {{ form_label(form.message) }}
-                            {{ form_errors(form.message) }}
-                            {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
-                        </span>
-                      </a>
-                          {# Automatic generation of hidden fields, and CSRF field #}
-                            {{ form_rest(form) }}
+                {# end animal pictures #}
+        
+                {# animal text presentation #}
+                <div class="col-md-5 col-sm-5 col-xs-12" style="border:0px solid #e5e5e5;">
 
-                            {{ form_end(form) }}
-                    </li>
-                  </ul>
+                    <div class="title-right">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="btn btn-danger btn-xs pull-right" href="{{ path('admin_animal_delete', {'id': animal.getId() }) }}"><i class="fa fa-trash"></i> Supprimer</a>
+                            <a class="btn btn-primary btn-xs pull-right" href="{{ path('admin_animal_edit', {'id': animal.getId() }) }}"><i class="fa fa-pencil"></i> Editer</a>
+                        {% endif %}
+                        <a class="btn btn-success btn-xs pull-right" href="{{ path('admin_animal_images', {'id': animal.getId() }) }}"><i class="fa fa-camera-retro"></i> Gestion des photos</a>
+                    </div>
+                    <div class="title-left">
+                        <h3 class="prod_title">{{ animal.name|upper }} - {{ animal.age }}</h3>
+                    </div>
+
+                    <p>{{ animal.description }}</p>
+                    <br />
+
+                    <div class="project_detail">
+                        <p class="title">Sexe</p>
+                        <p>{{ animal.sex.type|capitalize }}</p>
+                    </div>
+                    <div class="project_detail">
+                        <p class="title">Race</p>
+                        <p>{{ animal.breed.name|capitalize }}</p>
+                    </div>
+                    <div class="project_detail">
+                        <p class="title">Identification</p>
+                        <p>{{ animal.typeIdentification.name|capitalize }} - Numéro : {{ animal.identificationNumber }}</p>
+                    </div>
+                        <div class="project_detail">
+                        <p class="title">Stérilisé(e)
+                        {% if animal.sterilised %}
+                            <i class="fa fa-check-square-o"></i>
+                        {% else %}
+                            <i class="fa fa-times-circle"></i>
+                        {% endif %}
+                        </p>
+                    </div>
+                    <br/>
+                    <div class="project_detail">
+                        <p class="title">Famille d'accueil :</p>
+                        <p>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a class="btn btn-primary btn-xs" title="Changer de famille d'accueil" href=""><i class="fa fa-pencil-square-o"></i></a>
+                            {% endif %}
+                            {{ animal.user.userPseudo|capitalize  }}
+                        </p>
+                    </div>
                 </div>
-              </div>
+                {# end animal text presentation #}
+                
             </div>
-          <div class="clearfix"></div>
+        </div>
+    </div>
+    {# end animal card #}
+    
+    {# Notes on the animal #}
+    <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Notes internes</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <ul class="list-unstyled msg_list">
+                    {% for note in listNotes %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="btn btn-danger btn-xs pull-left" style="position:relative; top:8px;" href="{{ path('admin_note_delete', { 'objectOfTheNote': 'animal', 'id': animal.id , 'noteId': note.id }) }}"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-primary btn-xs pull-left" style="position:relative; top:8px;" href=""><i class="fa fa-pencil"></i></a>
+                        {% endif %}
+                        <li>
+                            <a>
+                                <span class="image">
+                                    <img src="{{ asset('uploads/img/23.jpeg') }}" alt="img" />
+                                </span>
+                                <span>
+                                    <b>{{ note.user.userPseudo|capitalize }} - {{ note.date|date("d/m/Y") }}</b>
+                                </span>
+                                <span class="message">{{ note.message|nl2br }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
 
+                <div>
+                    <h4>Ajout d'une note</h4>
+                    <span class="message" >
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+                        {{ form_label(form.message) }}
+                        {{ form_errors(form.message) }}
+                        {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-success btn-xs'}}) }}
 
+                        {# Automatic generation of hidden fields, and CSRF field #}
+                        {{ form_rest(form) }}
 
-
-
+                        {{ form_end(form) }}
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    
               
 {% endblock %}
 
 {% block JSfiles %}
 {{ parent() }}
+
 <script>
     $(document).ready(function () {
 

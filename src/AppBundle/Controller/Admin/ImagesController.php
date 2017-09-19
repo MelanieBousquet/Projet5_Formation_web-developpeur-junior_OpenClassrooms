@@ -4,24 +4,26 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Animal;
 use AppBundle\Entity\Image;
-use AppBundle\Form\AnimalImageType;
+use AppBundle\Form\ObjectImageType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 
 
-class AnimalImagesController extends Controller
+class ImagesController extends Controller
 {
     /**
     * List of images of a specific animal
     *
     * @Route("/admin/animal/{id}/photos", name="admin_animal_images", requirements={"id": "\d+"})
+    * @Security("has_role('ROLE_FA')")
     */
     public function viewListAction($id, Request $request)
     {
@@ -32,11 +34,11 @@ class AnimalImagesController extends Controller
         $animalRepository = $em->getRepository('AppBundle:Animal');
         
         $listImages = $imgRepository->findImagesByAnimal($id);
-        $mainImage = $imgRepository->findMainImageByAnimal($id);
+        $mainImage = $imgRepository->findMainImageByObject('animal', $id);
         $animal = $animalRepository->findOneBy(array('id' => $id));
         
         $image = new Image();
-        $form = $this->get('form.factory')->create(AnimalImageType::class, $image);
+        $form = $this->get('form.factory')->create(ObjectImageType::class, $image);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -62,6 +64,7 @@ class AnimalImagesController extends Controller
      * Define the main image of a specific animal
      *
      * @Route("/admin/animal/{animalId}/photo-principale/{imageId}", name="admin_animal_mainimage", requirements={"animalId": "\d+", "imageId": "\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function changeMainImageAction($animalId, $imageId, Request $request)
     {
@@ -90,6 +93,7 @@ class AnimalImagesController extends Controller
     * Delete an Image 
     *
     * @Route("/admin/animal/{animalId}image/{imageId}/supprimer", name="admin_image_delete", requirements={"animalId": "\d+", "imageId": "\d+"})
+    * @Security("has_role('ROLE_ADMIN')")
     */
     public function deleteAction($animalId, $imageId, Request $request)
     {

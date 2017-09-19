@@ -30,15 +30,17 @@ class ImageRepository extends \Doctrine\ORM\EntityRepository
         ;
     }    
     
-    public function findMainImageByAnimal($id)
+    public function findMainImageByObject($object, $id)
     {
         try {
         $qb = $this->createQueryBuilder('i');
-
+        
+        $join = 'i.' . $object;
+          
         $qb
-            ->innerJoin('i.animal','a')
-            ->addSelect('a')
-            ->andWhere('a.id = :id')
+            ->innerJoin($join,'ob')
+            ->addSelect('ob')
+            ->andWhere('ob.id = :id')
             ->setParameter('id', $id)
             ->andWhere('i.main = true')
         ;

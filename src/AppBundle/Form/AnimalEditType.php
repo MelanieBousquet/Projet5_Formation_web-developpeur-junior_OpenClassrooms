@@ -38,7 +38,7 @@ class AnimalEditType extends AbstractType
             ->add('sex', EntityType::class, array('class' => 'AppBundle:Sex', 'choice_label' => 'type', 'choice_attr' => function () { return array('class' => 'flat', 'name' => 'iCheck'); } , 'expanded' => 'true'), array('required' => false))
             ->add('type', EntityType::class, array('class' => 'AppBundle:Type', 'placeholder' => 'Sélectionner un type d\'animal', 'choice_label' => 'name', 'mapped' => false))
             ->add('typeIdentification', EntityType::class, array('class' => 'AppBundle:TypeIdentification', 'choice_label' => 'name',  'choice_attr' => function () { return array('class' => 'flat', 'name' => 'iCheck'); } , 'expanded' => 'true'), array('required' => false))
-            ->add('description', TextType::class, array('required' => false))
+            ->add('description', TextAreaType::class, array('required' => false))
             ->add('animalStates', CollectionType::class, array(
                 'entry_type' => AnimalStateType::class,
                 'allow_add' => 'true',

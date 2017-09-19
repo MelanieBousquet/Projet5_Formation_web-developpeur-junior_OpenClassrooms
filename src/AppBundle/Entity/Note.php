@@ -29,7 +29,15 @@ class Note
      * @ORM\Column(name="date", type="datetime")
      * @Assert\DateTime()
      */
-    private $date;
+    private $date;    
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
+     */
+    private $updatedDate;
 
     /**
      * @var string
@@ -40,18 +48,19 @@ class Note
     private $message;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotNull()
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal", inversedBy="notes", cascade={"persist"})
      */
     private $animal;
     
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotNull()
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      */
-    private $user;
+    private $user;    
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Publication", inversedBy="notes", cascade={"persist"})
+     */
+    private $publication;
 
     /**
      * Constructor
@@ -59,6 +68,7 @@ class Note
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->updatedDate = new \DateTime();
     }
 
     /**

@@ -1,0 +1,144 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}{{ parent() }} Fiche événement: {{ event.title }} - {{event.event.place }} {% endblock %}
+
+{% block contentTitle %}
+    Fiche événement 
+    {% if event.published %}
+        <button class="btn btn-round btn-info">Publié</button>
+    {% else %}
+        <button class="btn btn-round btn-warning btn-xs">Brouillon</button>
+    {% endif %}{% endblock %}
+
+{% block content %}
+    
+    {# event card #}
+    <div class="col-md-12">
+        <div class="x-content">
+            <div class="x_panel">
+               
+               {# event pictures #}
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                    <div class="product-image">
+                        {% if mainImage %}
+                            <img src="{{ asset(mainImage.webPath) }}" alt="{{ mainImage.alt }}" />
+                        {% elseif event.images[0] is defined %}
+                            <img src="{{ asset(event.images[0].webPath) }}" alt="{{ event.images[0].alt }}" />
+                        {% else %}
+                            <img src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut" />
+                        {% endif %}
+                    </div>
+                    <div class="product_gallery">
+                        {% if event.images %}
+                            {% for image in event.images %}
+                            <a style="overflow:hidden;">
+                                <img src="{{ asset(image.webPath) }}" alt="{{ asset(image.alt) }}" />
+                            </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                {# end event pictures #}
+        
+                {# event text presentation #}
+                <div class="col-md-5 col-sm-5 col-xs-12" style="border:0px solid #e5e5e5;">
+
+                    <div class="title-right">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="btn btn-danger btn-xs pull-right" href="{{ path('admin_event_edit', {'id': event.id })}}"><i class="fa fa-trash"></i> Supprimer</a>
+                            <a class="btn btn-primary btn-xs pull-right" href="{{ path('admin_event_edit', {'id': event.id })}}"><i class="fa fa-pencil"></i> Editer</a>
+                        {% endif %}
+                        <a class="btn btn-success btn-xs pull-right" href=""><i class="fa fa-camera-retro"></i> Gestion des photos</a>
+                    </div>
+                    <div class="title-left">
+                        <h3 class="prod_title">{{ event.title|upper }}</h3>
+                    </div>
+                    
+                    <div class="project_detail">
+                        <p class="title">Dates</p>
+                        <p>{{ event.event.beginningDateEvent|date("d/m/Y") }} - {{ event.event.endingDateEvent|date("d/m/Y") }}</p>
+                    </div>
+                    
+                    <div class="project_detail">
+                        <p class="title">Lieu</p>
+                        <p>{{ event.event.place }}</p>
+                    </div>
+                    
+                    <p>{{ event.content }}</p>
+                    <br />
+                    
+                    
+                </div>
+                {# end event text presentation #}
+                
+            </div>
+        </div>
+    </div>
+    {# end event card #}
+    
+    {# Notes on the event #}
+    <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Notes internes</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <ul class="list-unstyled msg_list">
+                    {% for note in listNotes %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="btn btn-danger btn-xs pull-left" style="position:relative; top:8px;" href="{{ path('admin_note_delete', { 'objectOfTheNote': 'evenement', 'id': event.id , 'noteId': note.id }) }}"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-primary btn-xs pull-left" style="position:relative; top:8px;" href=""><i class="fa fa-pencil"></i></a>
+                        {% endif %}
+                        <li>
+                            <a>
+                                <span class="image">
+                                    <img src="{{ asset('uploads/img/23.jpeg') }}" alt="img" />
+                                </span>
+                                <span>
+                                    <b>{{ note.user.userPseudo|capitalize }} - {{ note.date|date("d/m/Y") }}</b>
+                                </span>
+                                <span class="message">{{ note.message|nl2br }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div>
+                    <h4>Ajout d'une note</h4>
+                    <span class="message" >
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+                        {{ form_label(form.message) }}
+                        {{ form_errors(form.message) }}
+                        {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-success btn-xs'}}) }}
+
+                        {# Automatic generation of hidden fields, and CSRF field #}
+                        {{ form_rest(form) }}
+
+                        {{ form_end(form) }}
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    
+              
+{% endblock %}
+
+{% block JSfiles %}
+{{ parent() }}
+
+<script>
+    $(document).ready(function () {
+
+        $('#flashbagModal').modal('show');
+
+    });
+    </script>
+{% endblock %}
+
+

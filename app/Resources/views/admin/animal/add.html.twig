@@ -19,114 +19,116 @@
 {% block contentSubtitle %}Ajout d'un animal{% endblock %}
 
 {% block content %}
+   <div class="x-content">
     
-    {{ form_start(form, {'attr': {'class': 'form-horizontal form-label-left'}, 'id': 'demo-form2'}) }}
-    
-    <div>
-        {{ form_errors(form) }}
-    </div>
+        {{ form_start(form, {'attr': {'class': 'form-horizontal form-label-left'}, 'id': 'demo-form2'}) }}
 
-    <div class="form-group">
-        {{ form_label(form.name, "Nom", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.name) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.name, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+        <div>
+            {{ form_errors(form) }}
         </div>
-    </div>
 
-    <div class="form-group">
-        {{ form_label(form.birthday, "Date de naissance", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.birthday) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.birthday, {'attr': {'class': 'col-md-7 col-xs-12'}}) }}
+        <div class="form-group">
+            {{ form_label(form.name, "Nom", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.name) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.name, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        {{ form_label(form.sex, "Sexe", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.sex) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            <p>{{ form_widget(form.sex, {'attr': {'class': 'capitalize'}}) }}</p>
+        <div class="form-group">
+            {{ form_label(form.birthday, "Date de naissance", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.birthday) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.birthday, {'attr': {'class': 'col-md-7 col-xs-12'}}) }}
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-    {{ form_label(form.type, "Type", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-    {{ form_errors(form.type) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.type, {'attr': {'class': 'form-control col-md-7 col-xs-12 capitalize'}}) }}
+        <div class="form-group">
+            {{ form_label(form.sex, "Sexe", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.sex) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <p>{{ form_widget(form.sex, {'attr': {'class': 'capitalize'}}) }}</p>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        {{ form_label(form.breed, "Race", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.breed) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.breed, {'attr': {'class': 'form-control col-md-7 col-xs-12 capitalize'}}) }}
+        <div class="form-group">
+        {{ form_label(form.type, "Type", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+        {{ form_errors(form.type) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.type, {'attr': {'class': 'form-control col-md-7 col-xs-12 capitalize'}}) }}
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        {{ form_label(form.sterilised, "Stérilisé(e)", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.sterilised) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.sterilised, {'attr': {'class': 'js-switch'}}) }}
+        <div class="form-group" id ="breed-form">
+            {{ form_label(form.breed, "Race", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.breed) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.breed, {'attr': {'class': 'form-control col-md-7 col-xs-12 capitalize'}}) }}
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        {{ form_label(form.typeIdentification, "Identification", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.typeIdentification) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            <p>{{ form_widget(form.typeIdentification, {'attr': {'class': 'capitalize'}}) }}</p>
+        <div class="form-group">
+            {{ form_label(form.sterilised, "Stérilisé(e)", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.sterilised) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.sterilised, {'attr': {'class': 'js-switch'}}) }}
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        {{ form_label(form.identificationNumber, "Numéro d'identification", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.identificationNumber) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.identificationNumber, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+        <div class="form-group">
+            {{ form_label(form.typeIdentification, "Identification", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.typeIdentification) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <p>{{ form_widget(form.typeIdentification, {'attr': {'class': 'capitalize'}}) }}</p>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        {{ form_label(form.description, "Description", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.description) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.description, {'attr': {'class': 'form-control col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+        <div class="form-group">
+            {{ form_label(form.identificationNumber, "Numéro d'identification", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.identificationNumber) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.identificationNumber, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+            </div>
         </div>
-    </div>
-    
-    <div class="form-group">
-        {{ form_label(form.images, "Photos", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.images) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.images, {'attr': {'class': 'form-control col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+
+        <div class="form-group">
+            {{ form_label(form.description, "Description", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.description) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.description, {'attr': {'class': 'form-control resizable_textarea col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+            </div>
         </div>
-        <a href="#" id="add_image" class="btn btn-default">Ajouter une photo</a>
-    </div>
 
-    <div class="form-group">
-        {{ form_label(form.animalStates, "Statuts de l'animal", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.animalStates) }}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.animalStates, {'attr': {'class': 'form-control col-md-7 col-xs-12 capitalize', 'style': 'height:100%;'}}) }}
+        <div class="form-group">
+            {{ form_label(form.images, "Photos", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.images) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.images, {'attr': {'class': 'form-control col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+            </div>
+            <a href="#" id="add_image" class="btn btn-default">Ajouter une photo</a>
         </div>
-        <a href="#" id="add_state" class="btn btn-default">Ajouter un statut</a>
+
+        <div class="form-group">
+            {{ form_label(form.animalStates, "Statuts de l'animal", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.animalStates) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.animalStates, {'attr': {'class': 'form-control col-md-7 col-xs-12 capitalize', 'style': 'height:100%;'}}) }}
+            </div>
+            <a href="#" id="add_state" class="btn btn-default">Ajouter un statut</a>
+        </div>
+
+        <div class="form-group">
+
+        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+            {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-primary'}}) }}
+        </div>
+        </div>
+
+        {# Automatic generation of hidden fields, and CSRF field #}
+        {{ form_rest(form) }}
+
+        {{ form_end(form) }}
     </div>
-
-    <div class="form-group">
-
-    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-        {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-primary'}}) }}
-    </div>
-    </div>
-
-    {# Automatic generation of hidden fields, and CSRF field #}
-    {{ form_rest(form) }}
-
-    {{ form_end(form) }}
 
 {% endblock %}
 
@@ -149,6 +151,9 @@
     <script src="{{ asset('vendors/autosize/dist/autosize.min.js') }}"></script>
     <script src="{{ asset('js/collection-form.js') }}"></script>
     <script src="{{ asset('js/dynamic-form.js')}}"></script>
+    <script>
+        $(document).ready(function () { $('#breed-form').hide('fast'); });
+    </script>
 {% endblock %}
 
 

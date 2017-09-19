@@ -78,7 +78,12 @@ class Animal
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", inversedBy="animals", cascade={"persist"})
      */
-    private $tags;
+    private $tags;    
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Publication", inversedBy="animals", cascade={"persist"})
+     */
+    private $publications;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="animal", cascade={"persist", "remove"})
@@ -97,18 +102,20 @@ class Animal
      */
     private $description;
 
+    
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Publication", mappedBy="animals", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="animal", cascade={"persist", "remove"})
+     *
      */
-    private $publications;
+    private $notes;
 
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->animalStates = new ArrayCollection();
-        $this->publications = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
     
 
@@ -327,41 +334,6 @@ class Animal
 
 
     /**
-     * Add publication
-     *
-     * @param \AppBundle\Entity\Publication $publication
-     *
-     * @return Animal
-     */
-    public function addPublication(\AppBundle\Entity\Publication $publication)
-    {
-        $this->publications[] = $publication;
-        $publication->addAnimal($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove publication
-     *
-     * @param \AppBundle\Entity\Publication $publication
-     */
-    public function removePublication(\AppBundle\Entity\Publication $publication)
-    {
-        $this->publications->removeElement($publication);
-    }
-
-    /**
-     * Get publications
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPublications()
-    {
-        return $this->publications;
-    }
-
-    /**
      * Set sex
      *
      * @param \AppBundle\Entity\Sex $sex
@@ -412,7 +384,7 @@ class Animal
     /**
      * Set user
      *
-     * @param \AppBundle\Entity\user $user
+     * @param \AppBundle\Entity\User $user
      *
      * @return Animal
      */
@@ -430,7 +402,7 @@ class Animal
      */
     public function getUser()
     {
-        return $this->User;
+        return $this->user;
     }
 
 

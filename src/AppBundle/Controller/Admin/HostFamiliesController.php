@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use AppBundle\Entity\User;
 
@@ -14,6 +15,7 @@ class HostFamiliesController extends Controller
 {
     /**
      * @Route("admin/familles-daccueil", name="admin_host_families")
+     * @Security("has_role('ROLE_FA')")
      */
     public function viewAction()
     {

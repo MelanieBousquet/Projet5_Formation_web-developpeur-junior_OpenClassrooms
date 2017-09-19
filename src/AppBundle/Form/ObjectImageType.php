@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AnimalImageType extends AbstractType
+class ObjectImageType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,7 @@ class AnimalImageType extends AbstractType
                 'required' => false
             ))
             ->add('Enregistrer', SubmitType::class)
-            ;
+        ;
     }
 
     /**

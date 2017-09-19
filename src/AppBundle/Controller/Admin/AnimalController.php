@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -31,7 +32,7 @@ class AnimalController extends Controller
     /**
     * List of animals
     *
-    * @Route("/admin/{animalType}/{state}", name="admin_animal")
+    * @Route("/admin/liste/{animalType}/{state}", name="admin_animal")
     */
     public function viewListAction($animalType, $state, Request $request)
     {
@@ -65,7 +66,7 @@ class AnimalController extends Controller
     }
     
     /**
-    * View a specific animal
+    * View a specific animal and notes
     *
     * @Route("/admin/animal/{id}/fiche", name="admin_animal_card", requirements={"id": "\d+"})
     */
@@ -73,28 +74,28 @@ class AnimalController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $animal = $em->getRepository('AppBundle:Animal')->findOneById($id);
-        $mainImage = $em->getRepository('AppBundle:Image')->findMainImageByAnimal($id);
+        $mainImage = $em->getRepository('AppBundle:Image')->findMainImageByObject('animal', $id);
+        $listNotes = $em->getRepository('AppBundle:Note')->findNotesByObject('animal', $id);
         
         $note = new Note();
         $form = $this->get('form.factory')->create(NoteType::class, $note);
-        
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $note->setUser($user);
-        $note->setAnimal($animal);
+            $note->setUser($user);
+            $note->setAnimal($animal);
         
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em->persist($note);
             $em->flush();
-            
-            $request->getSession()->getFlashBag()->add('info', 'Votre note a bien été ajoutée');
-            
-            $this->redirectToRoute('admin_animal_card', array('id' => $animal->getId()));
+
+            $request->getSession()->getFlashBag()->add('info', 'Votre note a bien été ajoutée !');
+            return $this->redirectToRoute('admin_animal_card', array('id' => $animal->getId()));
         }
 
         return $this->render('admin/animal/view.html.twig', array(
             'animal' => $animal,
             'mainImage' => $mainImage,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'listNotes'  => $listNotes
         ));
     }
 
@@ -182,7 +183,7 @@ class AnimalController extends Controller
     * Delete a Animal
     *
     * @Route("/admin/animaux/{id}/supprimer", name="admin_animal_delete", requirements={"id": "\d+"})
-    * @Security("has_role('ROLE_ADMIN')")
+    * @Security("has_role('ROLE_ADMINy')")
     */
     public function deleteAction($id, Request $request)
     {

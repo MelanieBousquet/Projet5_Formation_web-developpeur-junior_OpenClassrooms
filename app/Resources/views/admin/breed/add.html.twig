@@ -7,124 +7,138 @@
 {% block contentSubtitle %}Ajout d'une race{% endblock %}
 
 {% block content %}
+    <div class="x_content">
     
-{% for message in app.session.flashbag.get('info') %}
-    <div class="col-md-12 alert alert-success">
-        {{ message }}
-    </div>
-{% endfor %}
 
-    <br />
-    {{ form_start(form, {'attr': {'class': 'form-horizontal form-label-left'}, 'id': 'demo-form2'}) }}
-    <div>
-        {{ form_errors(form) }}
-    </div>
-    
-    <div class="form-group">
-        {{ form_label(form.type, "Animal", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-        {{ form_errors(form.type) }}
+        {{ form_start(form, {'attr': {'class': 'form-horizontal form-label-left'}, 'id': 'demo-form2'}) }}
+        <div>
+            {{ form_errors(form) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.type, "Animal", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.type) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.type, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_errors(form.name, {'attr': {'class': 'control-label col-md-3 col-xs-12'}}) }}
+            {{ form_label(form.name, "Race", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.name, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-success'}}) }}
+            </div>
+        </div>
+
+        {# Automatic generation of hidden fields, and CSRF field #}
+        {{ form_rest(form) }}
+
+        {{ form_end(form) }}
+
         <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.type, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
-        </div>
-    </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Races de chat</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                            <th>Race</th>
+                            <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>                 
+                            {% for breed in catBreeds %}
+                                <tr>
+                                    <td>{{ breed.name|capitalize }}</td>
+                                    <td>
+                                        <button class="btn btn-primary" title="Modifier cette race" data-toggle="modal" data-target="#catBreedDialog{{ breed.id }}"><i class="fa fa-pencil"></i> Editer</button>
+                                        <button class="btn btn-danger" title="Supprimer cette race" data-toggle="modal" data-target="#catBreedDialog{{ breed.id }}"><i class="fa fa-trash"></i> Supprimer</button>
+                                    </td>
 
-    <div class="form-group">
-        {{ form_errors(form.name, {'attr': {'class': 'control-label col-md-3 col-xs-12'}}) }}
-        {{ form_label(form.name, "Race", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                                    <div class="modal fade" id="catBreedDialog{{ breed.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Confirmation requise</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Souhaitez-vous vraiment supprimer cette race ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                    <a href="{{ path('admin_breed_delete', { 'id': breed.getId() }) }}" class="btn btn-primary">Confirmer</a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div> 
         <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ form_widget(form.name, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-            {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-success'}}) }}
-        </div>
-    </div>
-
-    {# Automatic generation of hidden fields, and CSRF field #}
-    {{ form_rest(form) }}
-
-    {{ form_end(form) }}
-    
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="x_panel">
-            <div class="x_title">
-                <h2>Races de chat</h2>
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                        <th>Race</th>
-                        <th>Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>                 
-                        {% for breed in catBreeds %}
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Races de chien</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <table class="table table-hover">
+                        <thead>
                             <tr>
-                                <td>{{ breed.name|capitalize }}</td>
-                                <td>
-                                    <button class="btn btn-primary"><i class="fa fa-pencil"></i> Editer</button>
-                                    <button class="btn btn-danger"><i class="fa fa-trash"></i> Supprimer</button>
-                                </td>
+                            <th>Race</th>
+                            <th>Options</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>                 
+                            {% for breed in dogBreeds %}
+                                <tr>
+                                    <td>{{ breed.name|capitalize }}</td>
+                                    <td>
+                                        <button class="btn btn-primary" title="Modifier cette race" data-toggle="modal" data-target="#dogBreedDialog{{ breed.id }}"><i class="fa fa-pencil"></i> Editer</button>
+                                        <button class="btn btn-danger" title="Supprimer cette race" data-toggle="modal" data-target="#dogBreedDialog{{ breed.id }}"><i class="fa fa-trash"></i> Supprimer</button>
+                                    </td>
 
-            </div>
-        </div>
-    </div> 
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="x_panel">
-            <div class="x_title">
-                <h2>Races de chien</h2>
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                        <th>Race</th>
-                        <th>Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>                 
-                        {% for breed in dogBreeds %}
-                            <tr>
-                                <td>{{ breed.name|capitalize }}</td>
-                                <td>
-                                    <button class="btn btn-primary" title="Modifier cette race" data-toggle="modal" data-target="#breedDialog{{ breed.id }}"><i class="fa fa-pencil"></i> Editer</button>
-                                    <button class="btn btn-danger" title="Supprimer cette race" data-toggle="modal" data-target="#breedDialog{{ breed.id }}"><i class="fa fa-trash"></i> Supprimer</button>
-                                </td>
-                                 
-                                <div class="modal fade" id="breedDialog{{ breed.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title" id="myModalLabel">Confirmation requise</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                Souhaitez-vous vraiment supprimer cette race ?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                                <a href="{{ path('admin_breed_delete', { 'id': breed.getId() }) }}" class="btn btn-primary">Confirmer</a>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div><!-- /.modal -->
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                                    <div class="modal fade" id="dogBreedDialog{{ breed.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Confirmation requise</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Souhaitez-vous vraiment supprimer cette race ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                    <a href="{{ path('admin_breed_delete', { 'id': breed.getId() }) }}" class="btn btn-primary">Confirmer</a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
 
+                </div>
             </div>
-        </div>
-    </div> 
+        </div> 
+</div>
 
 
 {% endblock %}

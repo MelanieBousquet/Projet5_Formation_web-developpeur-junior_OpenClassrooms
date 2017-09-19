@@ -29,7 +29,7 @@ class Event
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
      */
-    private $beginningDateEvent = null;    
+    private $beginningDateEvent;    
     
     /**
      * @var \DateTime
@@ -37,7 +37,7 @@ class Event
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
      */
-    private $endingDateEvent ;
+    private $endingDateEvent;
 
     /**
      * @var string
@@ -60,13 +60,6 @@ class Event
      */
     private $lng;
     
-    /**
-     * Constructor
-     */
-    public function __construct() 
-    {
-        $this->endingDateEvent= null;
-    }
 
 
     /**
@@ -173,53 +166,5 @@ class Event
     public function getEndingDateEvent()
     {
         return $this->endingDateEvent;
-    }
-
-    /**
-     * Set lat
-     *
-     * @param integer $lat
-     *
-     * @return Event
-     */
-    public function setLat($lat)
-    {
-        $this->lat = $lat;
-
-        return $this;
-    }
-
-    /**
-     * Get lat
-     *
-     * @return integer
-     */
-    public function getLat()
-    {
-        return $this->lat;
-    }
-
-    /**
-     * Set lng
-     *
-     * @param integer $lng
-     *
-     * @return Event
-     */
-    public function setLng($lng)
-    {
-        $this->lng = $lng;
-
-        return $this;
-    }
-
-    /**
-     * Get lng
-     *
-     * @return integer
-     */
-    public function getLng()
-    {
-        return $this->lng;
     }
 }

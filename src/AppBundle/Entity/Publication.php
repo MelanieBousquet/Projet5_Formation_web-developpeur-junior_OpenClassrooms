@@ -38,6 +38,14 @@ class Publication
      * @Assert\DateTime()
      */
     private $date;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
+     */
+    private $updatedDate;
 
     /**
      * @var string
@@ -55,16 +63,39 @@ class Publication
     private $content;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Animal", inversedBy="publications")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Animal", mappedBy="publications")
      *
      */
     private $animals;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="publication", cascade={"persist", "remove"})
+     */
+    private $images;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Event", cascade={"persist"})
      *
      */
     private $event;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="publication", cascade={"persist", "remove"})
+     *
+     */
+    private $notes;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->animals = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->notes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->images = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->date = new \DateTime();
+        $this->updatedDate = new \DateTime();
+    }
 
     /**
      * Get id
@@ -197,13 +228,6 @@ class Publication
     {
         return $this->event;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->animals = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add animal
@@ -238,4 +262,98 @@ class Publication
     {
         return $this->animal;
     }
+
+    /**
+     * Set updatedDate
+     *
+     * @param \DateTime $updatedDate
+     *
+     * @return Publication
+     */
+    public function setUpdatedDate($updatedDate)
+    {
+        $this->UpdatedDate = $updatedDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedDate
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedDate()
+    {
+        return $this->UpdatedDate;
+    }
+
+    /**
+     * Add image
+     *
+     * @param \AppBundle\Entity\Image $image
+     *
+     * @return Publication
+     */
+    public function addImage(\AppBundle\Entity\Image $image)
+    {
+        $this->images[] = $image;
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param \AppBundle\Entity\Image $image
+     */
+    public function removeImage(\AppBundle\Entity\Image $image)
+    {
+        $this->images->removeElement($image);
+    }
+
+    /**
+     * Get images
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }    
+    
+    /**
+     * Add note
+     *
+     * @param \AppBundle\Entity\Note $note
+     *
+     * @return Publication
+     */
+    public function addNote(\AppBundle\Entity\Note $note)
+    {
+        $this->notes[] = $notes;
+
+        return $this;
+    }
+
+    /**
+     * Remove note
+     *
+     * @param \AppBundle\Entity\Note $note
+     */
+    public function removeNote(\AppBundle\Entity\Note $note)
+    {
+        $this->notes->removeElement($note);
+    }
+
+    /**
+     * Get notes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+    
+
 }

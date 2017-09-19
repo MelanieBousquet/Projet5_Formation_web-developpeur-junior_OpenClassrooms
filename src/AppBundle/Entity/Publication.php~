@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Publication
@@ -25,6 +27,7 @@ class Publication
      * @var bool
      *
      * @ORM\Column(name="published", type="boolean")
+     * @Assert\NotNull()
      */
     private $published;
 
@@ -32,13 +35,23 @@ class Publication
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     * @Assert\DateTime()
      */
     private $date;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
+     */
+    private $UpdatedDate;
 
     /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -53,14 +66,20 @@ class Publication
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Animal", inversedBy="publications")
      *
      */
-    private $animal;
+    private $animals;
     
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="publication", cascade={"persist", "remove"})
+     */
+    private $images;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Event", cascade={"persist"})
      *
      */
     private $event;
     
+
     /**
      * Get id
      *
@@ -70,7 +89,7 @@ class Publication
     {
         return $this->id;
     }
-                                                                                                                                                                                   
+
     /**
      * Set published
      *
@@ -191,5 +210,46 @@ class Publication
     public function getEvent()
     {
         return $this->event;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->animals = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add animal
+     *
+     * @param \AppBundle\Entity\Animal $animal
+     *
+     * @return Publication
+     */
+    public function addAnimal(\AppBundle\Entity\Animal $animal)
+    {
+        $this->animals[] = $animal;
+
+        return $this;
+    }
+
+    /**
+     * Remove animal
+     *
+     * @param \AppBundle\Entity\Animal $animal
+     */
+    public function removeAnimal(\AppBundle\Entity\Animal $animal)
+    {
+        $this->animals->removeElement($animal);
+    }
+
+    /**
+     * Get animal
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAnimals()
+    {
+        return $this->animal;
     }
 }

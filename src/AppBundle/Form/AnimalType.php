@@ -18,7 +18,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use AppBundle\Entity\Type;
-use AppBundle\Entity\Description;
 use AppBundle\Entity\Image;
 
 class AnimalType extends AbstractType
@@ -38,7 +37,7 @@ class AnimalType extends AbstractType
             ->add('sex', EntityType::class, array('class' => 'AppBundle:Sex', 'choice_label' => 'type', 'choice_attr' => function () { return array('class' => 'flat', 'name' => 'iCheck'); } , 'expanded' => 'true'), array('required' => false))
             ->add('type', EntityType::class, array('class' => 'AppBundle:Type', 'placeholder' => 'Sélectionner un type d\'animal', 'choice_label' => 'name', 'mapped' => false))
             ->add('typeIdentification', EntityType::class, array('class' => 'AppBundle:TypeIdentification', 'choice_label' => 'name',  'choice_attr' => function () { return array('class' => 'flat', 'name' => 'iCheck'); } , 'expanded' => 'true'), array('required' => false))
-            ->add('description', TextType::class, array('required' => false))
+            ->add('description', TextAreaType::class, array('required' => false))
             ->add('images', CollectionType::class, array(
                 'entry_type' => ImageType::class,
                 'allow_add' => true,

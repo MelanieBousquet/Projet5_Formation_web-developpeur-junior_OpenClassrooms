@@ -1,4 +1,5 @@
 var $type = $('#appbundle_animal_type');
+var $breed = $('#breed-form');
 // When type gets selected ...
 $type.change(function() {
   // ... retrieve the corresponding form.
@@ -17,6 +18,7 @@ $type.change(function() {
         // ... with the returned one from the AJAX response.
         $(html).find('#appbundle_animal_breed')
       );
+      $breed.show();
       // breed field now displays the appropriate breeds.
     }
   });

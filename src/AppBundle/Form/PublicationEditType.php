@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use AppBundle\Entity\Image;
 use AppBundle\Entity\Event;
 
-class PublicationType extends AbstractType
+class PublicationEditType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -25,13 +25,6 @@ class PublicationType extends AbstractType
             ->add('title', TextType::class)
             ->add('content', TextAreaType::class, array('required' => false))
             ->add('event', EventType::class)
-            ->add('images', CollectionType::class, array(
-                'entry_type' => ImageType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'required' => false
-            ))
             ->add('submit', SubmitType::class, array('label' => "Enregistrer"))
         ;
     }
