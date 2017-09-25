@@ -40,10 +40,8 @@
                {# animal pictures #}
                 <div class="col-md-7 col-sm-7 col-xs-12">
                     <div class="product-image">
-                        {% if mainImage %}
-                            <img src="{{ asset(mainImage.webPath) }}" alt="{{ mainImage.alt }}" />
-                        {% elseif animal.images[0] is defined %}
-                            <img src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}" />
+                        {% if animal.mainImage is not null %}
+                            <img src="{{ asset(animal.mainImage.webPath) }}" alt="{{ animal.mainImage.alt }}" />
                         {% else %}
                             <img src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut" />
                         {% endif %}
@@ -115,6 +113,51 @@
         </div>
     </div>
     {# end animal card #}
+    
+    {# Publication #}
+    <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Publications sur le site</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+               {% for animalState in animal.AnimalStates %}
+                <div class="col-md-3" style="text-align:center; background-color:#f7f7f7;">
+                    <h4 style="text-align:center;">Statut : "{{ animalState.state.type }}"</h4>
+                <p>{{ animalState.date|date('d/m/Y')}}</p>
+                <a class="btn btn-app" href="{{ path('admin_animal_publication_card', {'state': animalState.state.type, 'animalStateId': animalState.id , 'publicationId': animalState.publication.id })}}">
+                   {% if animalState.publication is not null %}
+                    <span class="badge bg-green">Modifier</span>                    
+                    <i class="fa fa-edit"></i> 
+                    {% if animalState.state.type == 'adoptable' %}A l'adoption
+                    {% elseif animalState.state.type == 'adopté' %}News des adoptés
+                    {% elseif animalState.state.type == 'trouvé' %}Animal trouvé
+                    {% elseif animalState.state.type == 'perdu' %}Animal perdu
+                    {% else %}
+                    {% endif %}
+                </a>
+                <a class="btn btn-app">
+                    <i class="fa fa-eye"></i> Voir sur le site
+                </a>
+                {% else %}
+                <a class="btn btn-app">
+                    <span class="badge bg-blue">New</span>
+                    <i class="fa fa-edit"></i>
+                    {% if animalState.state.type == 'adoptable' %}A l'adoption
+                    {% elseif animalState.state.type == 'adopté' %}News des adoptés
+                    {% elseif animalState.state.type == 'trouvé' %}Animal trouvé
+                    {% elseif animalState.state.type == 'perdu' %}Animal perdu
+                    {% else %}
+                    {% endif %} 
+                </a>
+                {% endif %}
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
     
     {# Notes on the animal #}
     <div class="col-md-12">

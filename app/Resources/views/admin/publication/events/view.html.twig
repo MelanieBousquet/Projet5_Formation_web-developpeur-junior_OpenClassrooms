@@ -20,10 +20,8 @@
                {# event pictures #}
                 <div class="col-md-7 col-sm-7 col-xs-12">
                     <div class="product-image">
-                        {% if mainImage %}
-                            <img src="{{ asset(mainImage.webPath) }}" alt="{{ mainImage.alt }}" />
-                        {% elseif event.images[0] is defined %}
-                            <img src="{{ asset(event.images[0].webPath) }}" alt="{{ event.images[0].alt }}" />
+                        {% if event.mainImage is not null %}
+                            <img src="{{ asset(event.mainImage.webPath) }}" alt="{{ event.mainImage.alt }}" />
                         {% else %}
                             <img src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut" />
                         {% endif %}

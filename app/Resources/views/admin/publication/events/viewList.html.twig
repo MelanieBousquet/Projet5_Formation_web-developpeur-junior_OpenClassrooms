@@ -26,16 +26,8 @@
                         <div class="thumbnail">
                             <div class="image view view-first">
                                 <a href="{{ path('admin_event_card', { 'id': event.getId() }) }}">
-                                   <!--
-                                   {#
-                                    {% if event.id in haveMainImage %}
-                                        {% for image in event.images %}
-                                            {% if image.main %}
-                                                <img style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" alt="{{ image.alt }}"/>
-                                            {% endif %}
-                                        {% endfor %} #}  -->
-                                    {% if event.images[0] is defined %}
-                                            <img style="width: 100%; display: block;" src="{{ asset(event.images[0].webPath) }}" alt="{{ event.images[0].alt }}"/>
+                                    {% if event.mainImage is not null %}
+                                            <img style="width: 100%; display: block;" src="{{ asset(event.mainImage.webPath) }}" alt="{{ event.mainImage.alt }}"/>
                                     {% else %}
                                         <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut"/>
                                     {% endif %}

@@ -27,7 +27,11 @@
                                         {% for animal in user.animals %}
                                             <div class="col-md-4 col-sm-8 col-xs-10">
                                                <figure>
-                                                    <img src="{{ asset(animal.images[0].webPath) }}" alt="{{ asset(animal.images[0].alt) }}" width="150" />
+                                                    {% if animal.mainImage  %}
+                                                        <img src="{{ asset(animal.mainImage.webPath) }}" alt="{{ asset(animal.mainImage.alt) }}" width="150" />
+                                                    {% else %}
+                                                        <img src="{{ asset('uploads/img/7.jpeg') }}" alt="Image par défaut" width="150" />
+                                                    {% endif %}
                                                     <figcaption style="position:absolute; top:-5px; left:0;">
                                                         <a href="{{ path('admin_host_families_remove_animal', {'userId': user.id, 'animalId': animal.id }) }}" class="btn btn-danger btn-xs" title="Retirer cet animal de cette famille d'accueil"><i class="fa fa-times-circle"></i></a>
                                                     </figcaption>
@@ -50,7 +54,14 @@
 
                                                     {% for animalAlone in listAnimalsAlone %}
                                                         <div class="product_gallery">
-                                                            <a href="{{ path('admin_host_families_add_animal', {'userId': user.id, 'animalId': animalAlone.id }) }}"><img src="{{ asset(animalAlone.images[0].webPath) }}" alt="{{ asset(animalAlone.images[0].alt) }}" /><p>{{ animalAlone.name }}</p></a>
+                                                            <a href="{{ path('admin_host_families_add_animal', {'userId': user.id, 'animalId': animalAlone.id }) }}">
+                                                                {% if animalAlone.mainImage is not null %}
+                                                                    <img src="{{ asset(animalAlone.mainImage.webPath) }}" alt="{{ asset(animalAlone.mainImage.alt) }}" />
+                                                                {% else %}
+                                                                    <img src="{{ asset('uploads/img/7.jpeg') }}" alt="Image par défaut" />
+                                                                {% endif %}
+                                                                <p>{{ animalAlone.name }}</p>
+                                                            </a>
                                                         </div>
                                                     {% endfor %}
                                                 </div>

@@ -45,7 +45,7 @@ class Publication
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
-    private $UpdatedDate;
+    private $updatedDate;
 
     /**
      * @var string
@@ -63,15 +63,20 @@ class Publication
     private $content;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Animal", inversedBy="publications")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AnimalState", mappedBy="publication")
      *
      */
-    private $animals;
+    private $animalState;
     
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="publication", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Image", mappedBy="publications", cascade={"persist", "remove"})
      */
     private $images;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image", cascade={"persist"})
+     */
+    private $mainImage;
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Event", cascade={"persist"})
@@ -79,6 +84,23 @@ class Publication
      */
     private $event;
     
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="publication", cascade={"persist", "remove"})
+     *
+     */
+    private $notes;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->notes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->images = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->date = new \DateTime();
+        $this->updatedDate = new \DateTime();
+        $this->published = false ;
+    }
 
     /**
      * Get id
@@ -211,45 +233,123 @@ class Publication
     {
         return $this->event;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->animals = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
-     * Add animal
+     * Set updatedDate
      *
-     * @param \AppBundle\Entity\Animal $animal
+     * @param \DateTime $updatedDate
      *
      * @return Publication
      */
-    public function addAnimal(\AppBundle\Entity\Animal $animal)
+    public function setUpdatedDate($updatedDate)
     {
-        $this->animals[] = $animal;
+        $this->updatedDate = $updatedDate;
 
         return $this;
     }
 
     /**
-     * Remove animal
+     * Get updatedDate
      *
-     * @param \AppBundle\Entity\Animal $animal
+     * @return \DateTime
      */
-    public function removeAnimal(\AppBundle\Entity\Animal $animal)
+    public function getUpdatedDate()
     {
-        $this->animals->removeElement($animal);
+        return $this->updatedDate;
     }
 
     /**
-     * Get animal
+     * Add image
+     *
+     * @param \AppBundle\Entity\Image $image
+     *
+     * @return Publication
+     */
+    public function addImage(\AppBundle\Entity\Image $image)
+    {
+        $this->images[] = $image;
+        $image->setPublication($this);
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param \AppBundle\Entity\Image $image
+     */
+    public function removeImage(\AppBundle\Entity\Image $image)
+    {
+        $this->images->removeElement($image);
+        $image->setPublication(null);
+    }
+
+    /**
+     * Get images
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAnimals()
+    public function getImages()
     {
-        return $this->animal;
+        return $this->images;
+    }    
+    
+    /**
+     * Add note
+     *
+     * @param \AppBundle\Entity\Note $note
+     *
+     * @return Publication
+     */
+    public function addNote(\AppBundle\Entity\Note $note)
+    {
+        $this->notes[] = $notes;
+
+        return $this;
+    }
+
+    /**
+     * Remove note
+     *
+     * @param \AppBundle\Entity\Note $note
+     */
+    public function removeNote(\AppBundle\Entity\Note $note)
+    {
+        $this->notes->removeElement($note);
+    }
+
+    /**
+     * Get notes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+    
+
+
+    /**
+     * Set animalState
+     *
+     * @param \AppBundle\Entity\AnimalState $animalState
+     *
+     * @return Publication
+     */
+    public function setAnimalState(\AppBundle\Entity\AnimalState $animalState = null)
+    {
+        $this->animalState = $animalState;
+        $animalState->setPublication($this);
+        return $this;
+    }
+
+    /**
+     * Get animalState
+     *
+     * @return \AppBundle\Entity\AnimalState
+     */
+    public function getAnimalState()
+    {
+        return $this->animalState;
     }
 }

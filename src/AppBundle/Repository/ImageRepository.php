@@ -12,46 +12,5 @@ use Doctrine\ORM\NoResultException;
  */
 class ImageRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findImagesByAnimal($id)
-    {
-        $qb = $this->createQueryBuilder('i');
 
-        $qb
-            ->innerJoin('i.animal','a')
-            ->addSelect('a')
-            ->andWhere('a.id = :id')
-            ->setParameter('id', $id)
-            ->andWhere('i.main != true')
-        ;
-
-        return $qb
-            ->getQuery()
-            ->getResult()
-        ;
-    }    
-    
-    public function findMainImageByObject($object, $id)
-    {
-        try {
-        $qb = $this->createQueryBuilder('i');
-        
-        $join = 'i.' . $object;
-          
-        $qb
-            ->innerJoin($join,'ob')
-            ->addSelect('ob')
-            ->andWhere('ob.id = :id')
-            ->setParameter('id', $id)
-            ->andWhere('i.main = true')
-        ;
-
-        return $qb
-            ->getQuery()
-            ->getSingleResult()
-        ;
-            
-        } catch (NoResultException $e) {
-            return null ;
-        }
-    }
 }

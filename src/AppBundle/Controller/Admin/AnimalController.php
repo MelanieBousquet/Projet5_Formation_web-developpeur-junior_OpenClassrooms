@@ -30,10 +30,10 @@ use Symfony\Component\HttpFoundation\File\File;
 class AnimalController extends Controller
 {
     /**
-    * List of animals
-    *
-    * @Route("/admin/liste/{animalType}/{state}", name="admin_animal")
-    */
+     * List of animals
+     *
+     * @Route("/admin/liste/{animalType}/{state}", name="admin_animal")
+     */
     public function viewListAction($animalType, $state, Request $request)
     {
         $repository = $this
@@ -48,33 +48,21 @@ class AnimalController extends Controller
         } else {
             $listAnimals = $repository->animalsNotToAdoptList($animalType, $state) ;
         }
-        
-        $haveMainImage = array();
-        foreach ($listAnimals as $animal) {
-            $animalId = $animal->getId();
-            foreach($animal->getImages() as $image) {
-                if ($image->getMain()) {                    
-                    array_push($haveMainImage, $animalId);
-                }
-            }
-        }
 
         return $this->render('admin/animal/viewList.html.twig', array(
-            'listAnimals' => $listAnimals,
-            'haveMainImage' => $haveMainImage
+            'listAnimals' => $listAnimals
         ));
     }
     
     /**
-    * View a specific animal and notes
-    *
-    * @Route("/admin/animal/{id}/fiche", name="admin_animal_card", requirements={"id": "\d+"})
-    */
+     * View a specific animal and notes
+     *
+     * @Route("/admin/animal/{id}/fiche", name="admin_animal_card", requirements={"id": "\d+"})
+     */
     public function viewAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $animal = $em->getRepository('AppBundle:Animal')->findOneById($id);
-        $mainImage = $em->getRepository('AppBundle:Image')->findMainImageByObject('animal', $id);
         $listNotes = $em->getRepository('AppBundle:Note')->findNotesByObject('animal', $id);
         
         $note = new Note();
@@ -93,18 +81,17 @@ class AnimalController extends Controller
 
         return $this->render('admin/animal/view.html.twig', array(
             'animal' => $animal,
-            'mainImage' => $mainImage,
             'form' => $form->createView(),
             'listNotes'  => $listNotes
         ));
     }
 
     /**
-    * Add a animal
-    *
-    * @Route("/admin/animaux-ajout", name="admin_animal_add")
-    * @Security("has_role('ROLE_ADMIN')")
-    */
+     * Add a animal
+     *
+     * @Route("/admin/animaux-ajout", name="admin_animal_add")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function addAction(Request $request)
     {
 
@@ -141,11 +128,11 @@ class AnimalController extends Controller
     }
 
     /**
-    * Edit a animal
-    *
-    * @Route("/admin/animaux/{id}/edit", name="admin_animal_edit", requirements={"id": "\d+"})
-    * @Security("has_role('ROLE_ADMIN')")
-    */
+     * Edit a animal
+     *
+     * @Route("/admin/animaux/{id}/edit", name="admin_animal_edit", requirements={"id": "\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -175,16 +162,16 @@ class AnimalController extends Controller
 
         return $this->render('admin/animal/edit.html.twig', array(
             'animal' => $animal,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ));
     }
 
     /**
-    * Delete a Animal
-    *
-    * @Route("/admin/animaux/{id}/supprimer", name="admin_animal_delete", requirements={"id": "\d+"})
-    * @Security("has_role('ROLE_ADMINy')")
-    */
+     * Delete a Animal
+     *
+     * @Route("/admin/animaux/{id}/supprimer", name="admin_animal_delete", requirements={"id": "\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function deleteAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();

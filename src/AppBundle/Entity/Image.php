@@ -30,22 +30,17 @@ class Image
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal", inversedBy="images")
      */
-    private $animal;    
+    private $animal;           
     
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Publication", inversedBy="images")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Publication", inversedBy="images")
      */
-    private $publication;
+    private $publications;
 
     /**
      * @ORM\Column(name="extension", type="string", length=255)
      */
     private $extension;
-    
-    /**
-     * @ORM\Column(name="main", type="boolean")
-     */
-    private $main;
 
     /**
      * @ORM\Column(name="date", type="date")
@@ -67,8 +62,8 @@ class Image
     
     public function __construct() 
     {
-        $this->main = false;
         $this->date = new \Datetime();
+        $this->publications = new ArrayCollection();
     }
     
     public function getFile()
@@ -313,30 +308,6 @@ class Image
     }
 
     /**
-     * Set main
-     *
-     * @param boolean $main
-     *
-     * @return Image
-     */
-    public function setMain($main)
-    {
-        $this->main = $main;
-
-        return $this;
-    }
-
-    /**
-     * Get main
-     *
-     * @return boolean
-     */
-    public function getMain()
-    {
-        return $this->main;
-    }
-
-    /**
      * Set date
      *
      * @param \DateTime $date
@@ -375,27 +346,38 @@ class Image
         return $this;
     }
 
+
     /**
-     * Set publication
+     * Add publication
      *
      * @param \AppBundle\Entity\Publication $publication
      *
      * @return Image
      */
-    public function setPublication(\AppBundle\Entity\Publication$publication = null)
+    public function addPublication(\AppBundle\Entity\Publication $publication)
     {
-        $this->publication = $publication;
+        $this->publications[] = $publication;
 
         return $this;
     }
 
     /**
-     * Get publication
+     * Remove publication
      *
-     * @return \AppBundle\Entity\Publication
+     * @param \AppBundle\Entity\Publication $publication
      */
-    public function getPublication()
+    public function removePublication(\AppBundle\Entity\Publication $publication)
     {
-        return $this->publication;
+        $this->publications->removeElement($publication);
+    }
+
+    /**
+     * Get publications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPublications()
+    {
+        return $this->publications;
     }
 }

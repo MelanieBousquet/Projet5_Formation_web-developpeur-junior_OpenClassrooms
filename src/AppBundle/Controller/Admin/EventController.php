@@ -50,7 +50,6 @@ class EventController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $event = $em->getRepository('AppBundle:Publication')->findOneById($id);
-        $mainImage = $em->getRepository('AppBundle:Image')->findMainImageByObject('publication', $id);
         $listNotes = $em->getRepository('AppBundle:Note')->findNotesbyObject('publication', $id);
         
         $note = new Note();
@@ -69,7 +68,6 @@ class EventController extends Controller
         
         return $this->render('admin/publication/events/view.html.twig', array(
             'event' => $event,
-            'mainImage' => $mainImage,
             'form' => $form->createView(),
             'listNotes' => $listNotes
         ));

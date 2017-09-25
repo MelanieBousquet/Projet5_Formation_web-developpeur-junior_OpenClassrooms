@@ -17,8 +17,6 @@
     </div>
 {% endblock %}
 
-{% block contentSubtitle %}{{app.request.attributes.get("animalType")|capitalize }}s {{app.request.attributes.get("state")}}s{% endblock %}
-
 {% block content %}
 
     <div class="x_content">
@@ -27,16 +25,10 @@
                 <div class="thumbnail">
                     <div class="image view view-first">
                         <a href="{{ path('admin_animal_card', { 'id': animal.getId() }) }}">
-                            {% if animal.id in haveMainImage %}
-                                {% for image in animal.images %}
-                                    {% if image.main %}
-                                        <img style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" alt="{{ image.alt }}"/>
-                                    {% endif %}
-                                {% endfor %}
-                            {% elseif animal.images[0] is defined %}
-                                    <img style="width: 100%; display: block;" src="{{ asset(animal.images[0].webPath) }}" alt="{{ animal.images[0].alt }}"/>
+                            {% if animal.mainImage is not null %}
+                                <img style="width: 100%; display: block;" src="{{ asset(animal.mainImage.webPath) }}" alt="{{ animal.mainImage.alt }}"/>
                             {% else %}
-                                <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpg') }}" alt="image par défaut"/>
+                                <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut"/>
                             {% endif %}
                         </a>
                     </div>

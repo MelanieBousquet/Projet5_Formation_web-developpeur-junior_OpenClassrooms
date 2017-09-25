@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Entity\Publication;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -68,11 +67,17 @@ class Animal
      *
      */
     private $typeIdentification;
-
+    
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", inversedBy="animals", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="animals", cascade={"persist"})
+     *
      */
-    private $tags;
+    private $user;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"persist", "remove"})
+     */
+    private $mainImage;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="animal", cascade={"persist", "remove"})
@@ -91,20 +96,22 @@ class Animal
      */
     private $description;
 
+    
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Publication", mappedBy="animals", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="animal", cascade={"persist", "remove"})
+     *
      */
-    private $publications;
+    private $notes;
 
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->animalStates = new ArrayCollection();
-        $this->publications = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
-
-
+    
 
     /**
      * Get id
@@ -214,40 +221,6 @@ class Animal
         return $this->typeIdentification;
     }
 
-    /**
-     * Add tag
-     *
-     * @param \AppBundle\Entity\Tag $tag
-     *
-     * @return Animal
-     */
-    public function addTag(\AppBundle\Entity\Tag $tag)
-    {
-        $this->tags[] = $tag;
-        $tag->setAnimal($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove tag
-     *
-     * @param \AppBundle\Entity\Tag $tag
-     */
-    public function removeTag(\AppBundle\Entity\Tag $tag)
-    {
-        $this->tags->removeElement($tag);
-    }
-
-    /**
-     * Get tags
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTags()
-    {
-        return $this->tags;
-    }
 
     /**
      * Add image
@@ -321,41 +294,6 @@ class Animal
 
 
     /**
-     * Add publication
-     *
-     * @param \AppBundle\Entity\Publication $publication
-     *
-     * @return Animal
-     */
-    public function addPublication(\AppBundle\Entity\Publication $publication)
-    {
-        $this->publications[] = $publication;
-        $publication->addAnimal($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove publication
-     *
-     * @param \AppBundle\Entity\Publication $publication
-     */
-    public function removePublication(\AppBundle\Entity\Publication $publication)
-    {
-        $this->publications->removeElement($publication);
-    }
-
-    /**
-     * Get publications
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPublications()
-    {
-        return $this->publications;
-    }
-
-    /**
      * Set sex
      *
      * @param \AppBundle\Entity\Sex $sex
@@ -402,6 +340,31 @@ class Animal
     {
         return $this->breed;
     }
+    
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Animal
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
 
     /**
      * Set birthday
@@ -462,5 +425,29 @@ class Animal
         }
         
         
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Animal
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

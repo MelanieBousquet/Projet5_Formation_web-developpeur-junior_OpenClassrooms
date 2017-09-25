@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Entity\Publication;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -76,14 +75,9 @@ class Animal
     private $user;
     
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", inversedBy="animals", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"persist", "remove"})
      */
-    private $tags;    
-    
-    /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Publication", inversedBy="animals", cascade={"persist"})
-     */
-    private $publications;
+    private $mainImage;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="animal", cascade={"persist", "remove"})
@@ -227,40 +221,6 @@ class Animal
         return $this->typeIdentification;
     }
 
-    /**
-     * Add tag
-     *
-     * @param \AppBundle\Entity\Tag $tag
-     *
-     * @return Animal
-     */
-    public function addTag(\AppBundle\Entity\Tag $tag)
-    {
-        $this->tags[] = $tag;
-        $tag->setAnimal($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove tag
-     *
-     * @param \AppBundle\Entity\Tag $tag
-     */
-    public function removeTag(\AppBundle\Entity\Tag $tag)
-    {
-        $this->tags->removeElement($tag);
-    }
-
-    /**
-     * Get tags
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTags()
-    {
-        return $this->tags;
-    }
 
     /**
      * Add image
@@ -489,5 +449,63 @@ class Animal
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set mainImage
+     *
+     * @param \AppBundle\Entity\Image $mainImage
+     *
+     * @return Animal
+     */
+    public function setMainImage(\AppBundle\Entity\Image $mainImage = null)
+    {
+        $this->mainImage = $mainImage;
+
+        return $this;
+    }
+
+    /**
+     * Get mainImage
+     *
+     * @return \AppBundle\Entity\Image
+     */
+    public function getMainImage()
+    {
+        return $this->mainImage;
+    }
+
+    /**
+     * Add note
+     *
+     * @param \AppBundle\Entity\Note $note
+     *
+     * @return Animal
+     */
+    public function addNote(\AppBundle\Entity\Note $note)
+    {
+        $this->notes[] = $note;
+
+        return $this;
+    }
+
+    /**
+     * Remove note
+     *
+     * @param \AppBundle\Entity\Note $note
+     */
+    public function removeNote(\AppBundle\Entity\Note $note)
+    {
+        $this->notes->removeElement($note);
+    }
+
+    /**
+     * Get notes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotes()
+    {
+        return $this->notes;
     }
 }

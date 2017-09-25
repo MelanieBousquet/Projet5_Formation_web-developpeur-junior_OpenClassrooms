@@ -63,15 +63,20 @@ class Publication
     private $content;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Animal", mappedBy="publications")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AnimalState", mappedBy="publication")
      *
      */
-    private $animals;
+    private $animalState;
     
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="publication", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Image", mappedBy="publications", cascade={"persist", "remove"})
      */
     private $images;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image", cascade={"persist"})
+     */
+    private $mainImage;
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Event", cascade={"persist"})
@@ -90,11 +95,11 @@ class Publication
      */
     public function __construct()
     {
-        $this->animals = new \Doctrine\Common\Collections\ArrayCollection();
         $this->notes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->images = new \Doctrine\Common\Collections\ArrayCollection();
         $this->date = new \DateTime();
         $this->updatedDate = new \DateTime();
+        $this->published = false ;
     }
 
     /**
@@ -230,40 +235,6 @@ class Publication
     }
 
     /**
-     * Add animal
-     *
-     * @param \AppBundle\Entity\Animal $animal
-     *
-     * @return Publication
-     */
-    public function addAnimal(\AppBundle\Entity\Animal $animal)
-    {
-        $this->animals[] = $animal;
-
-        return $this;
-    }
-
-    /**
-     * Remove animal
-     *
-     * @param \AppBundle\Entity\Animal $animal
-     */
-    public function removeAnimal(\AppBundle\Entity\Animal $animal)
-    {
-        $this->animals->removeElement($animal);
-    }
-
-    /**
-     * Get animal
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAnimals()
-    {
-        return $this->animal;
-    }
-
-    /**
      * Set updatedDate
      *
      * @param \DateTime $updatedDate
@@ -272,7 +243,7 @@ class Publication
      */
     public function setUpdatedDate($updatedDate)
     {
-        $this->UpdatedDate = $updatedDate;
+        $this->updatedDate = $updatedDate;
 
         return $this;
     }
@@ -284,7 +255,7 @@ class Publication
      */
     public function getUpdatedDate()
     {
-        return $this->UpdatedDate;
+        return $this->updatedDate;
     }
 
     /**
@@ -297,7 +268,7 @@ class Publication
     public function addImage(\AppBundle\Entity\Image $image)
     {
         $this->images[] = $image;
-
+        $image->addPublication($this);
         return $this;
     }
 
@@ -309,6 +280,7 @@ class Publication
     public function removeImage(\AppBundle\Entity\Image $image)
     {
         $this->images->removeElement($image);
+        $image->setPublication(null);
     }
 
     /**
@@ -356,4 +328,56 @@ class Publication
     }
     
 
+
+    /**
+     * Set animalState
+     *
+     * @param \AppBundle\Entity\AnimalState $animalState
+     *
+     * @return Publication
+     */
+    public function setAnimalState(\AppBundle\Entity\AnimalState $animalState = null)
+    {
+        $this->animalState = $animalState;
+        $animalState->setPublication($this);
+        return $this;
+    }
+
+    /**
+     * Get animalState
+     *
+     * @return \AppBundle\Entity\AnimalState
+     */
+    public function getAnimalState()
+    {
+        return $this->animalState;
+    }
+
+    /**
+     * Set mainImage
+     *
+     * @param \AppBundle\Entity\Image $mainImage
+     *
+     * @return Publication
+     */
+    public function setMainImage(\AppBundle\Entity\Image $mainImage = null)
+    {
+        // if there is already a main image, add it to images collection before setting another main image
+        if ($this->mainImage) {
+            $this->addImage($this->mainImage);
+        }
+        $this->mainImage = $mainImage;
+
+        return $this;
+    }
+
+    /**
+     * Get mainImage
+     *
+     * @return \AppBundle\Entity\Image
+     */
+    public function getMainImage()
+    {
+        return $this->mainImage;
+    }
 }

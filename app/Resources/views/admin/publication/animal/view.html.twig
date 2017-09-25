@@ -1,0 +1,227 @@
+{% extends "admin/base.html.twig" %}
+
+{% block CSSfiles %}
+    {{ parent() }}
+    <!-- iCheck - Customizable checkboxes and radio buttons  -->
+    <link href="{{ asset('vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
+    <!-- Select2 - Customizable select box  -->
+    <link href="{{ asset('vendors/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+    <!-- Switchery - IOS7 style switches  for checkboxes -->
+    <link href="{{ asset('vendors/switchery/dist/switchery.min.css') }}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}{{ parent() }} Fiche de la publication de l'animal {{ publication.title }}, statut : {{ publication.animalState.state.type }} {% endblock %}
+
+{% block contentTitle %}Publication, statut : {{ publication.animalState.state.type }} ({{ publication.animalState.date|date("d-m-Y") }})  {% endblock %}
+
+{% block content %}
+        
+    {# animal publication card #}
+    <div class="col-md-12">
+        <div class="x-content">
+            <div class="x_panel">
+               <div class="title-right">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="btn btn-danger btn-xs pull-right" href=""><i class="fa fa-trash"></i> Supprimer</a>
+                            <a class="btn btn-primary btn-xs pull-right" href=""><i class="fa fa-pencil"></i> Editer</a>
+                        {% endif %}
+                    </div>
+                    <div class="title-left">
+                        <h3 class="prod_title">{{ publication.title|upper }} - {{ publication.animalState.animal.age }}</h3>
+                    </div>
+               {# publication pictures #}
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                    
+
+                    <p>{{ publication.content }}</p>
+                </div>
+                {# end publication pictures #}
+        
+                {# publication text presentation #}
+                <div class="col-md-4 col-sm-4 col-xs-12" style="border:0px solid #e5e5e5;">
+
+
+                    <div class="project_detail">
+                        <p class="title">Sexe</p>
+                        <p>{{ publication.animalState.animal.sex.type|capitalize }}</p>
+                    </div>
+                    <div class="project_detail">
+                        <p class="title">Race</p>
+                        <p>{{ publication.animalState.animal.breed.name|capitalize }}</p>
+                    </div>
+                    <div class="project_detail">
+                        <p class="title">Identification</p>
+                        <p>{{ publication.animalState.animal.typeIdentification.name|capitalize }} </p>
+                    </div>
+                        <div class="project_detail">
+                        <p class="title">Stérilisé(e)
+                        {% if publication.animalState.animal.sterilised %}
+                            <i class="fa fa-check-square-o"></i>
+                        {% else %}
+                            <i class="fa fa-times-circle"></i>
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+                {# end publication text presentation #}
+                
+            </div>
+        </div>
+    </div>
+    {# end publication card #}
+    
+    <div class="col-md-12">
+        <div class="x-content">
+            <div class="x_panel">
+                <div class="title-left">
+                  <button class="btn btn-round btn-warning btn-xs pull-right">Brouillon</button> 
+                   <h3 class="prod_title">Gestion des photos - Etat de la publication</h3>
+                   
+                </div>
+                
+                {{ form_start(form, {'attr': {'class': 'form-horizontal form-label-left'}, 'id': 'demo-form2'}) }}
+                {{ form_label(form.publication, "Publier", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                {{ form_widget(form.publication)}}
+                <br/>
+                <div>
+                    {{ form_errors(form) }}
+                </div>
+                <div>
+                    {{ form_label(form.file, "Photo", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                    {{ form_errors(form.file) }}
+                    
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                    {{ form_widget(form.file, {'attr': {'class': 'form-control ', 'style': 'height:100%;'}}) }}
+                    <br/>
+                    {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-primary'}}) }}
+                    </div>
+                </div>
+
+
+                {# Automatic generation of hidden fields, and CSRF field #}
+                {{ form_rest(form) }}
+
+                {{ form_end(form) }}
+
+                <div class="col-md-12 center-block">
+                    <h3>Photo principale de la publication</h3>
+                    <div class="col-md-55">
+                        <div class="thumbnail">
+                            <div class="image view view-first">
+                                {% if publication.mainImage is not null %}
+                                    <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(publication.mainImage.webPath) }}" id="0" alt="{{ publication.mainImage.alt }}" />
+                                {% else %}
+                                    <img class="cursor" style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" id="0" alt="image par défaut" />
+                                {% endif %}
+                            </div>
+                            <div class="caption">
+                                <p>Photo principale</p>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3>Photos de la publication</h3>
+                {% for key,image in publication.images %}
+                    <div class="col-md-55">
+                        <div class="thumbnail">
+                            <div class="image view view-first">
+                                    <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" id="{{ key + 1}}" alt="{{ image.alt }}"/>
+                            </div>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photo principale</a>
+                                <a href="" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                
+                {% endfor %}
+                <div class="col-md-12">
+                <h3>Photos de l'animal</h3>
+                <p>Ajouter les photos de l'animal souhaitées à la publication</p>
+                {% for image in animalImages %}
+                    <div class="col-md-55">
+                        <div class="thumbnail">
+                            <div class="image view view-first">
+                                    <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" id="" alt="{{ image.alt }}"/>
+                            </div>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('admin_animal_publication_add_image', {'publicationId' : publication.id , 'imageId': image.id }) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photos de la publication</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+
+                <div id="myModal" class="modal">
+                    <span class="close cursor">&times;</span>
+                    <div class="modal-content">
+
+                            {% if publication.mainImage is not null %}
+                                <div class="mySlides">
+                                    <div class="numbertext">1 / {{ publication.images | length + 1 }}</div>
+                                    <img class="cursor" src="{{ asset(publication.mainImage.webPath) }}" style="width:100%">
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                    <div class="caption-container">
+                                        <p>Photo principale</p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            {% for key,image in publication.images %}
+                                <div class="mySlides">
+                                    <div class="numbertext">{{ key + 2 }} / {{ publication.images | length + 1 }}</div>
+                                    <img class="cursor" src="{{ asset(image.webPath) }}" style="max-width:100%; display:block; max-height: 600px; margin: 0 auto;">
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <div class="caption-container">
+                                        <p>
+                                            <a href="" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photo principale</a>
+                                            <a href="" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
+                                        </p>
+                                    </div>
+                                {% endif %}
+                                </div>
+                            {% endfor %}
+                            <a class="prev">&#10094;</a>
+                            <a class="next">&#10095;</a>
+
+                    </div>
+                </div>
+   
+              
+{% endblock %}
+
+{% block JSfiles %}
+    {{ parent() }}   
+    <!-- bootstrap-progressbar -->
+    <script src="{{ asset('vendors/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
+    <!-- iCheck - Customizable checkboxes and radio buttons -->
+    <script src="{{ asset('vendors/iCheck/icheck.min.js') }}"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <!-- jQuery Tags Input -->
+    <script src="{{ asset('vendors/jquery.tagsinput/src/jquery.tagsinput.js') }}"></script>
+    <!-- Switchery - IOS7 style switches  for checkboxes -->
+    <script src="{{ asset('vendors/switchery/dist/switchery.min.js') }}"></script>
+    <!-- Select2 - Customizable select box -->
+    <script src="{{ asset('vendors/select2/dist/js/select2.full.min.js') }}"></script>
+    <!-- Autosize - Automatically adjust textarea height to fit text -->
+    <script src="{{ asset('vendors/autosize/dist/autosize.min.js') }}"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#flashbagModal').modal('show');
+        $('#appbundle_image_publication_published').addClass('js-switch');
+        var init = new Switchery($('#appbundle_image_publication_published'));
+
+    });
+    </script>
+{% endblock %}
+
+

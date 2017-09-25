@@ -41,6 +41,12 @@ class AnimalState
      * @ORM\JoinColumn(nullable=false)
      */
     private $state;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Publication", inversedBy="animalState")
+     *
+     */
+    private $publication;
 
     /**
      * Get id
@@ -122,5 +128,30 @@ class AnimalState
     public function getState()
     {
         return $this->state;
+    }
+
+
+    /**
+     * Set publication
+     *
+     * @param \AppBundle\Entity\Publication $publication
+     *
+     * @return AnimalState
+     */
+    public function setPublication(\AppBundle\Entity\Publication $publication = null)
+    {
+        $this->publication = $publication;
+
+        return $this;
+    }
+
+    /**
+     * Get publication
+     *
+     * @return \AppBundle\Entity\Publication
+     */
+    public function getPublication()
+    {
+        return $this->publication;
     }
 }

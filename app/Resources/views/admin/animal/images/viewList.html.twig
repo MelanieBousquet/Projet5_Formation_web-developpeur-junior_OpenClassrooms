@@ -147,26 +147,21 @@ body {
                 <div class="col-md-55">
                     <div class="thumbnail">
                         <div class="image view view-first">
-                            {% if mainImage %}
-                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(mainImage.webPath) }}" id="0" alt="{{ mainImage.alt }}" />
-                            {% elseif listImages %}
-                                <img class="cursor" style="width: 100%; display: block;" src="{{ asset(listImages[0].webPath) }}" id="0" alt="{{ listImages[0].alt }}" />
+                            {% if animal.mainImage is not null %}
+                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(animal.mainImage.webPath) }}" id="0" alt="{{ animal.mainImage.alt }}" />
                             {% else %}
-
+                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" id="0" alt="image par défaut" />
                             {% endif %}
                         </div>
                         <div class="caption">
                             <p>Photo principale</p>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a href="" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
 
             <h3>Photos</h3>
-            {% for key,image in listImages %}
+            {% for key,image in animal.images %}
                 <div class="col-md-55">
                     <div class="thumbnail">
                         <div class="image view view-first">
@@ -174,8 +169,8 @@ body {
                         </div>
                         {% if is_granted('ROLE_ADMIN') %}
                             <div class="caption">    
-                                <a href="{{ path('admin_animal_mainimage', {'animalId': animal.id, 'imageId': image.id }) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photo principale</a>
-                                <a href="{{ path('admin_image_delete', {'animalId': animal.id, 'imageId': image.id }) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
+                                <a href="{{ path('admin_object_mainimage', {'object': 'animal', 'objectId': animal.id, 'imageId': image.id }) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photo principale</a>
+                                <a href="{{ path('admin_image_delete', {'object': 'animal', 'objectId': animal.id, 'imageId': image.id }) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
                             </div>
                         {% endif %}
                     </div>
@@ -185,37 +180,37 @@ body {
             <div id="myModal" class="modal">
                 <span class="close cursor">&times;</span>
                 <div class="modal-content">
-
-                        {% if mainImage %}
-                            <div class="mySlides">
-                                <div class="numbertext">1 / {{ listImages | length + 1 }}</div>
-                                <img class="cursor" src="{{ asset(mainImage.webPath) }}" style="width:100%">
-                                {% if is_granted('ROLE_ADMIN') %}
-                                <div class="caption-container">
-                                    <p>
-                                        <a href="{{ path('admin_animal_mainimage', {'animalId': animal.id, 'imageId': mainImage.id }) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photo principale</a>
-                                        <a href="{{ path('admin_image_delete', {'animalId': animal.id, 'imageId': mainImage.id }) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
-                                    </p>
-                                </div>
-                                {% endif %}
+                        
+                    <div class="mySlides">
+                        <div class="numbertext">1 / {{ animal.images | length + 1 }}</div>
+                        {% if animal.mainImage is not null %}
+                            <img class="cursor" src="{{ asset(animal.mainImage.webPath) }}" style="width:100%">
+                        {% else %}
+                            <img class="cursor" src="{{ asset('uploads/img/7.jpeg') }}" style="width:100%">
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <div class="caption-container">
+                            <p>Photo principale</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                        
+                    {% for key,image in animal.images %}
+                        <div class="mySlides">
+                            <div class="numbertext">{{ key + 2 }} / {{ animal.images | length + 1 }}</div>
+                            <img class="cursor" src="{{ asset(image.webPath) }}" style="max-width:100%; display:block; max-height: 600px; margin: 0 auto;">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="caption-container">
+                                <p>
+                                    <a href="{{ path('admin_object_mainimage', {'object': 'animal', 'objectId': animal.id, 'imageId': image.id }) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photo principale</a>
+                                    <a href="{{ path('admin_image_delete', {'object': 'animal', 'objectId': animal.id, 'imageId': image.id }) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
+                                </p>
                             </div>
                         {% endif %}
-                        {% for key,image in listImages %}
-                            <div class="mySlides">
-                                <div class="numbertext">{{ key + 2 }} / {{ listImages | length + 1 }}</div>
-                                <img class="cursor" src="{{ asset(image.webPath) }}" style="max-width:100%; display:block; max-height: 600px; margin: 0 auto;">
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <div class="caption-container">
-                                    <p>
-                                        <a href="{{ path('admin_animal_mainimage', {'animalId': animal.id, 'imageId': image.id }) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photo principale</a>
-                                        <a href="{{ path('admin_image_delete', {'animalId': animal.id, 'imageId': image.id }) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
-                                    </p>
-                                </div>
-                            {% endif %}
-                            </div>
-                        {% endfor %}
-                        <a class="prev">&#10094;</a>
-                        <a class="next">&#10095;</a>
+                        </div>
+                    {% endfor %}
+                    <a class="prev">&#10094;</a>
+                    <a class="next">&#10095;</a>
 
 
                 </div>
@@ -228,13 +223,7 @@ body {
 
 {% block JSfiles %}
 {{ parent() }}
-<script>
-    $(document).ready(function () {
 
-        $('#flashbagModal').modal('show');
-
-    });
-</script>
 <script>
 
 $( document ).ready(function() {
@@ -245,6 +234,8 @@ $( document ).ready(function() {
     var nextButton = $('.next');
     var mySlides = $('.mySlides');
     var currentIndex = 0;
+    
+     $('#flashbagModal').modal('show');
     
     pictures.click(function() {
         currentIndex = Number($(this).attr('id'));
