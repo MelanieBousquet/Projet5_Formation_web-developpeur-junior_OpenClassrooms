@@ -1,0 +1,133 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}{{ parent() }} Fiche publication: {{ publication.title }} {% endblock %}
+
+{% block contentTitle %}
+    Fiche événement 
+    {% if publication.published %}
+        <button class="btn btn-round btn-info">Publié</button>
+    {% else %}
+        <button class="btn btn-round btn-warning btn-xs">Brouillon</button>
+    {% endif %}{% endblock %}
+
+{% block content %}
+    
+    {# publication card #}
+    <div class="col-md-12">
+        <div class="x-content">
+            <div class="x_panel">
+               
+               {# publication pictures #}
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                    <div class="product-image">
+                        {% if publication.mainImage is not null %}
+                            <img src="{{ asset(publication.mainImage.webPath) }}" alt="{{ publication.mainImage.alt }}" />
+                        {% else %}
+                            <img src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut" />
+                        {% endif %}
+                    </div>
+                    <div class="product_gallery">
+                        {% if publication.images %}
+                            {% for image in publication.images %}
+                            <a style="overflow:hidden;">
+                                <img src="{{ asset(image.webPath) }}" alt="{{ asset(image.alt) }}" />
+                            </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                {# end publication pictures #}
+        
+                {# publication text presentation #}
+                <div class="col-md-5 col-sm-5 col-xs-12" style="border:0px solid #e5e5e5;">
+
+                    <div class="title-right">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="btn btn-danger btn-xs pull-right" href="{{ path('admin_publication_edit', {'id': publication.id })}}"><i class="fa fa-trash"></i> Supprimer</a>
+                            <a class="btn btn-primary btn-xs pull-right" href="{{ path('admin_publication_edit', {'id': publication.id })}}"><i class="fa fa-pencil"></i> Editer</a>
+                        {% endif %}
+                        <a class="btn btn-success btn-xs pull-right" href=""><i class="fa fa-camera-retro"></i> Gestion des photos</a>
+                    </div>
+                    <div class="title-left">
+                        <h3 class="prod_title">{{ publication.title|upper }}</h3>
+                    </div>
+
+                    
+                    <p>{{ publication.content }}</p>
+                    <br />
+                    
+                    
+                </div>
+                {# end publication text presentation #}
+                
+            </div>
+        </div>
+    </div>
+    {# end publication card #}
+    
+    {# Notes on the publication #}
+    <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Notes internes</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <ul class="list-unstyled msg_list">
+                    {% for note in listNotes %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="btn btn-danger btn-xs pull-left" style="position:relative; top:8px;" href="{{ path('admin_note_delete', { 'objectOfTheNote': 'evenement', 'id': publication.id , 'noteId': note.id }) }}"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-primary btn-xs pull-left" style="position:relative; top:8px;" href=""><i class="fa fa-pencil"></i></a>
+                        {% endif %}
+                        <li>
+                            <a>
+                                <span class="image">
+                                    <img src="{{ asset('uploads/img/23.jpeg') }}" alt="img" />
+                                </span>
+                                <span>
+                                    <b>{{ note.user.userPseudo|capitalize }} - {{ note.date|date("d/m/Y") }}</b>
+                                </span>
+                                <span class="message">{{ note.message|nl2br }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div>
+                    <h4>Ajout d'une note</h4>
+                    <span class="message" >
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+                        {{ form_label(form.message) }}
+                        {{ form_errors(form.message) }}
+                        {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-success btn-xs'}}) }}
+
+                        {# Automatic generation of hidden fields, and CSRF field #}
+                        {{ form_rest(form) }}
+
+                        {{ form_end(form) }}
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    
+              
+{% endblock %}
+
+{% block JSfiles %}
+{{ parent() }}
+
+<script>
+    $(document).ready(function () {
+
+        $('#flashbagModal').modal('show');
+
+    });
+    </script>
+{% endblock %}
+
+

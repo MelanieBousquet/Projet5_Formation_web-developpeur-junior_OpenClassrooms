@@ -1,0 +1,51 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}{{ parent() }}Liste des publications de l'association{% endblock %}
+
+{% block contentTitle %}Liste des publications{% endblock %}
+
+{% block contentSubtitle %}Publications{% endblock %}
+
+{% block content %}
+    
+    <div class="row">
+    {% for publication in publications %}
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>{{ publication.title }}</h2>
+                    {% if publication.published %}
+                        <button class="btn btn-round btn-info  pull-right">Publié</button>
+                    {% else %}
+                        <button class="btn btn-round btn-warning btn-xs pull-right">Brouillon</button>
+                    {% endif %}
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="col-md-4 col-sm-6 col-xs-6">
+                        <div class="thumbnail">
+                            <div class="image view view-first">
+                                <a href="{{ path('admin_publication_card', { 'id': publication.getId() }) }}">
+                                    {% if publication.mainImage is not null %}
+                                            <img style="width: 100%; display: block;" src="{{ asset(publication.mainImage.webPath) }}" alt="{{ publication.mainImage.alt }}"/>
+                                    {% else %}
+                                        <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut"/>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="caption">    
+                                <p><a href="{{ path('admin_publication_card', { 'id': publication.getId() }) }}">{{ publication.title }} </a></p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p><b>Description :</b> {{ publication.content }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+    </div>
+{% endblock %}

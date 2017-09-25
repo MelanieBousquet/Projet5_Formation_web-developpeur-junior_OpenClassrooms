@@ -1,0 +1,101 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}{{ parent() }}Ajout d'une publication en base données {% endblock %}
+
+{% block CSSfiles %}
+    {{ parent() }}
+    <!-- iCheck - Customizable checkboxes and radio buttons  -->
+    <link href="{{ asset('vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
+    <!-- Select2 - Customizable select box  -->
+    <link href="{{ asset('vendors/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+    <!-- Switchery - IOS7 style switches  for checkboxes -->
+    <link href="{{ asset('vendors/switchery/dist/switchery.min.css') }}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block contentTitle %}Nouvelle publication{% endblock %}
+
+{% block contentSubtitle %}Ajout d'une publication{% endblock %}
+
+{% block content %}
+   <div class="x-content">
+    
+        {{ form_start(form, {'attr': {'class': 'form-horizontal form-label-left', 'id': 'demo-form2', 'novalidate': null}}) }}
+
+        <div>
+            {{ form_errors(form) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.title, "Titre", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.title) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.title, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.content, "Description", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.content) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.content, {'attr': {'class': 'form-control resizable_textarea col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.images, "Photos", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.images) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.images, {'attr': {'class': 'form-control col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+            </div>
+            <a href="#" id="add_image" class="btn btn-default">Ajouter une photo</a>
+        </div>
+        
+        <div class="form-group">
+            {{ form_label(form.published, "Publier", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.published) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.published, {'attr': {'class': 'js-switch'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+
+        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+            {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+        </div>
+        </div>
+
+        {# Automatic generation of hidden fields, and CSRF field #}
+        {{ form_rest(form) }}
+
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+
+{% block JSfiles %}
+    {{ parent() }}   
+    <!-- bootstrap-progressbar -->
+    <script src="{{ asset('vendors/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
+    <!-- iCheck - Customizable checkboxes and radio buttons -->
+    <script src="{{ asset('vendors/iCheck/icheck.min.js') }}"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <!-- jQuery Tags Input -->
+    <script src="{{ asset('vendors/jquery.tagsinput/src/jquery.tagsinput.js') }}"></script>
+    <!-- Switchery - IOS7 style switches  for checkboxes -->
+    <script src="{{ asset('vendors/switchery/dist/switchery.min.js') }}"></script>
+    <!-- Select2 - Customizable select box -->
+    <script src="{{ asset('vendors/select2/dist/js/select2.full.min.js') }}"></script>
+    <!-- Autosize - Automatically adjust textarea height to fit text -->
+    <script src="{{ asset('vendors/autosize/dist/autosize.min.js') }}"></script>
+    <script src="{{ asset('js/collection-form.js') }}"></script>
+    <script src="{{ asset('js/dynamic-form.js')}}"></script>
+   
+
+{% endblock %}
+
+

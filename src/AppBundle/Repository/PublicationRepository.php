@@ -23,4 +23,21 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
             ->getResult()
         ;
     }
+    
+    public function findDefaultPublications()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->innerJoin('p.animalState', 'pas')
+            ->addSelect('pas')
+            ->andWhere('pas.id IS NULL')
+            ->andWhere('p.event IS NULL')
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
