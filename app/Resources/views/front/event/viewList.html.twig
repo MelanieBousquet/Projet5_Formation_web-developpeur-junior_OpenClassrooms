@@ -1,0 +1,50 @@
+{% extends "front/base.html.twig" %}
+
+{% block content %}
+
+<section id="blog" class="updatable">
+
+	<article>
+		<div class="container">
+
+
+			<div class="row post">
+				<div class="col-md-9">
+
+					{% for event in events %}
+					<div class="eachpost">
+						<div class="title">
+							<div class="centered"><div><h2><a href="{{ path('front_event_card', {'id': event.id}) }}">{{ event.title }}</a></h2></div></div>
+							<div class="clearfix"></div>
+							<p>{{ event.date|date('d/m/Y') }} <i class="icon-dot"></i></p>
+						</div>	
+
+						<div class="post-img"><img src="{{asset('event.mainImage')}}" alt="//"></div>
+
+						<p>{{ event.content }}</p>
+						<a href="{{ path('front_event_card', {'id': event.id}) }}" class="btn btn-default">Lire plus</a>
+					</div>
+					{% endfor %}
+
+					
+					
+
+				</div>
+				<aside class="col-md-3">
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-12">
+							<h3>The Blog</h3>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, aperiam, maxime, vero recusandae laboriosam mollitia maiores quod porro corporis adipisci in fugit doloribus totam suscipit incidunt sequi sed. Aperiam, molestiae!</p>
+						</div>
+					</div>
+
+				</aside>
+			</div>
+
+		</div>
+	</article>
+
+</section>
+
+{% endblock %}

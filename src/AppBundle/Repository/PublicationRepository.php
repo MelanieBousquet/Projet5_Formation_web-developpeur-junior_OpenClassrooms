@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
  * PublicationRepository
  *
@@ -10,34 +12,40 @@ namespace AppBundle\Repository;
  */
 class PublicationRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findEventPublications()
+    public function findEventPublications($page, $nbPerPage = 10)
     {
-        $qb = $this->createQueryBuilder('p');
-
-        $qb
+        $query = $this->createQueryBuilder('p')
             ->andWhere('p.event IS NOT NULL')
         ;
 
-        return $qb
-            ->getQuery()
-            ->getResult()
+        $query
+            // Define the first publication of the list
+            ->setFirstResult(($page-1) * $nbPerPage)
+            // And the max number of publications to show 
+            ->setMaxResults($nbPerPage)
         ;
+
+        // return Paginator object
+        return new Paginator($query, true);
     }
     
-    public function findDefaultPublications()
+    public function findDefaultPublications($page, $nbPerPage = 10)
     {
-        $qb = $this->createQueryBuilder('p');
-
-        $qb
-            ->innerJoin('p.animalState', 'pas')
-            ->addSelect('pas')
+        $query = $this->createQueryBuilder('p')
+            ->leftJoin('p.animalState', 'pas')
             ->andWhere('pas.id IS NULL')
             ->andWhere('p.event IS NULL')
+            
         ;
 
-        return $qb
-            ->getQuery()
-            ->getResult()
+        $query
+            // Define the first publication of the list
+            ->setFirstResult(($page-1) * $nbPerPage)
+            // And the max number of publications to show 
+            ->setMaxResults($nbPerPage)
         ;
+
+        // return Paginator object
+        return new Paginator($query, true);
     }
 }

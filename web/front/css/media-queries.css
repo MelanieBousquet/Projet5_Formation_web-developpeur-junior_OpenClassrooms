@@ -1,0 +1,118 @@
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+/* ---------------------------------------------------------------------- */
+/*	Version 1200px
+/* ---------------------------------------------------------------------- */
+@media handheld, only screen and (max-width: 1200px) {
+  header .navbar .navbar-nav {
+    padding: 0;
+  }
+  header .navbar .navbar-nav li a {
+    padding: 0 0.7em;
+  }
+  header .navbar .navbar-form {
+    margin: 17px 0;
+  }
+  header .navbar .navbar-form .form-group {
+    width: 150px;
+  }
+  .grid ul li {
+    margin: 7px;
+    width: 170px;
+  }
+  .grid ul li a {
+    height: 170px;
+    width: 170px;
+  }
+}
+/* ---------------------------------------------------------------------- */
+/*	Version 992px
+/* ---------------------------------------------------------------------- */
+@media handheld, only screen and (max-width: 992px) {
+  body {
+    padding: 0;
+  }
+  .navbar-fixed-top {
+    position: static;
+  }
+  .nav {
+    text-align: center;
+    width: 100%;
+  }
+  .nav>li {
+    display: inline-block;
+    float: none;
+  }
+  .title .centered {
+    top: -40px;
+  }
+  .title .centered div h2 {
+    height: 80px;
+  }
+  #blog .title .centered,
+  #spuppie .title .centered {
+    top: -20px;
+  }
+  #blog .title .centered div h2,
+  #spuppie .title .centered div h2 {
+    height: 40px;
+  }
+  #spuppie p {
+    margin: 20px 0 0 0;
+  }
+}
+
+
+/* ---------------------------------------------------------------------- */
+/*	Mobile Version 768px
+/* ---------------------------------------------------------------------- */
+@media handheld, only screen and (max-width: 768px) {
+  .featured .vitals {
+    margin: 20px 0 0 0;
+  }
+  .featured .foot span {
+    margin: 20px;
+  }
+  .title {
+    border: none;
+    padding: 0;
+  }
+  .title .centered {
+    left: 0;
+    position: static;
+  }
+  .title .centered div {
+    position: static;
+    left: 0;
+  }
+  .title .centered div h2 {
+    height: auto;
+  }
+  header .navbar .navbar-nav li {
+    width: 100%;
+  }
+  header .navbar .navbar-nav li a {
+    width: 100%;
+  }
+  header .navbar .navbar-nav .dropdown ul li {
+    width: 100%;
+  }
+  header .navbar .navbar-nav .dropdown ul li a {
+    width: 100%;
+  }
+  #blog .title .centered,
+  #spuppie .title .centered {
+    top: -20px;
+  }
+  #blog .title .centered div h2,
+  #spuppie .title .centered div h2 {
+    height: auto;
+  }
+  .pricing-tables, .pricing-tables-helight, .pricing-tables.three, .pricing-tables-helight.middle {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+}
+
+

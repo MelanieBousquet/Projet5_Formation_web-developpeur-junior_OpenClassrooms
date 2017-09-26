@@ -1,0 +1,52 @@
+{% extends "front/base.html.twig" %}
+
+{% block content %}
+
+<!-- Blog -->
+<section id="blog" class="updatable">
+
+	<article>
+		<div class="container">
+
+			<div class="row post">
+				<div class="col-md-9">
+
+					<!-- Post -->
+					<div class="eachpost">
+						<div class="title">
+							<div class="centered"><div><h2>{{ publication.title }}</h2></div></div>
+							<div class="clearfix"></div>
+							<p>{{ publication.date|date('d/m/Y') }}</p>
+						</div>	
+
+						<div class="post-img"><img src="{{ publication.mainImage }}" alt="//"></div>
+                       
+						<p>{{ publication.content }}</p>
+						
+					</div>
+					<!-- end Post -->
+
+				</div>
+				
+				<aside class="col-md-3">
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-12">
+							<h3>The Blog</h3>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, aperiam, maxime, vero recusandae laboriosam mollitia maiores quod porro corporis adipisci in fugit doloribus totam suscipit incidunt sequi sed. Aperiam, molestiae!</p>
+						</div>
+					</div>
+
+					
+
+				</aside>
+			</div>
+
+		</div>
+	</article>
+
+</section>
+<!-- end Blog -->
+
+{% endblock %}
+

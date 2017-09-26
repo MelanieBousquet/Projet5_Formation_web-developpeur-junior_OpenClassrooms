@@ -22,21 +22,33 @@ class DefaultPublicationController extends Controller
     /**
      * List all publications
      *
-     * @Route("/admin/publications", name="admin_publications")
+     * @Route("/admin/publications/{page}", name="admin_publications", defaults={"page": "1"}, requirements={"page": "\d+"})
      * @Security("has_role('ROLE_FA')")
      */
-    public function viewListAction(Request $request)
+    public function viewListAction($page, Request $request)
     {
+        if ($page < 1) {
+          throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        }
+        
         $repository = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository('AppBundle:Publication')
         ;
-        $publications = $repository->findDefaultPublications();
-        var_dump($publications);
+        $publications = $repository->findDefaultPublications($page);
+        
+        // Count the total number of pages
+        $nbPages = ceil(count($publications) / ($nbPerPages = 10));
+        // And return 404 error if the page doesn't exist
+        if ($page > $nbPages) {
+          throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        }
 
         return $this->render('admin/publication/default/viewList.html.twig', array(
-            'publications' => $publications
+            'publications' => $publications,
+            'nbPages' => $nbPages,
+            'page' => $page
         ));
     }    
     

@@ -1,0 +1,90 @@
+{% extends "front/base.html.twig" %}
+
+{% block CSSfiles %}
+{{ parent() }}
+<style>
+    #map {
+        height: 200px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Blog -->
+<section id="blog" class="updatable">
+
+	<article>
+		<div class="container">
+
+			<div class="row post">
+				<div class="col-md-9">
+
+					<!-- Post -->
+					<div class="eachpost">
+						<div class="title">
+							<div class="centered"><div><h2>{{ event.title }}</h2></div></div>
+							<div class="clearfix"></div>
+							<p>{{ event.date|date('d/m/Y') }}</p>
+						</div>	
+
+						<div class="post-img"><img src="{{ event.mainImage }}" alt="//"></div>
+                        <p><strong>Lieu :</strong> {{ event.event.place }}</p>
+                        <p><strong>Date(s) :</strong> {{ event.event.beginningDateEvent|date('d-m-Y') }} - {{ event.event.endingDateEvent|date('d-m-Y') }}</p>
+						<p>{{ event.content }}</p>
+						
+						<div id="map"></div>
+
+					</div>
+					<!-- end Post -->
+
+				</div>
+				
+				<aside class="col-md-3">
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-12">
+							<h3>The Blog</h3>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, aperiam, maxime, vero recusandae laboriosam mollitia maiores quod porro corporis adipisci in fugit doloribus totam suscipit incidunt sequi sed. Aperiam, molestiae!</p>
+						</div>
+					</div>
+
+				
+				</aside>
+			</div>
+
+		</div>
+	</article>
+
+</section>
+<!-- end Blog -->
+
+{% endblock %}
+
+{% block JSfiles %}
+    {{ parent() }}
+
+    <script>
+        var map;
+        function initMap() {
+            var myLatLng = {
+                lat: {{ event.event.lat }}, 
+                lng: {{ event.event.lng }}
+            };
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: myLatLng
+            });
+
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: '{{ event.event.place }}'
+            });
+        }
+        
+    </script>
+    
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDqnF7_sYGUDLj0BkECfFUxwyVqCGn99o&callback=initMap" ></script>
+{% endblock %}

@@ -47,16 +47,16 @@ class Event
     private $place;    
     
     /**
-     * @var int
+     * @var float
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $lat;    
     
     /**
-     * @var int
+     * @var float
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $lng;
     

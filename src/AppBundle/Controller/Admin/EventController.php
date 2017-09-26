@@ -23,20 +23,33 @@ class EventController extends Controller
     /**
      * List all events
      *
-     * @Route("/admin/evenements", name="admin_events")
+     * @Route("/admin/evenements/{page}", name="admin_events", defaults={"page": "1"}, requirements={"page": "\d+"})
      * @Security("has_role('ROLE_FA')")
      */
-    public function viewListAction(Request $request)
+    public function viewListAction($page, Request $request)
     {
+        if ($page < 1) {
+          throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        }
+
         $repository = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository('AppBundle:Publication')
         ;
-        $events = $repository->findEventPublications();
+        $events = $repository->findEventPublications($page);
+        
+        // Count the total number of pages
+        $nbPages = ceil(count($events) / ($nbPerPages = 10));
+        // And return 404 error if the page doesn't exist
+        if ($page > $nbPages) {
+          throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        }
 
         return $this->render('admin/publication/events/viewList.html.twig', array(
-            'events' => $events
+            'events' => $events,
+            'nbPages' => $nbPages,
+            'page' => $page
         ));
     }    
     
@@ -86,12 +99,7 @@ class EventController extends Controller
         $form = $this->get('form.factory')->create(PublicationType::class, $publication);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            if ($publication->getImages()) {
-                foreach($publication->getImages() as $image)
-                {
-                   $image->setPublication($publication);
-                }
-            }
+
             $em->persist($publication);
             $em->flush();
 
