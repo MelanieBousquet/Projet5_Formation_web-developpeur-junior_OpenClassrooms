@@ -13,6 +13,80 @@ use Doctrine\ORM\QueryBuilder;
  */
 class AnimalRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function animalsToAdoptFrontList($animalType, $sex, $breed, $age)
+    {
+        $qb = $this->createQueryBuilder('a');
+        
+        $qb 
+            ->innerJoin('a.animalStates', 'ls')
+            ->addSelect('ls')
+            ->innerJoin('ls.state', 's')
+            ->addSelect('s')
+            ->andWhere('s.type != :type')
+            ->setParameter('type', 'adopté')
+            ->andWhere('s.type = :secondType OR s.type = :thirdType')
+            ->setParameter('secondType', 'adoptable')
+            ->setParameter('thirdType', 'réservé')
+            ->innerJoin('')
+        ;
+
+        $this->whichTypeOfAnimal($qb, $animalType);
+        $this->whichSex($qb, $sex);
+        $this->whichBreed($qb, $breed);
+        $this->whichAge($qb, $age);
+        
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;    
+    }
+    
+    public function whichSex(QueryBuilder $qb, $sex)
+    {
+        if ($sex !== 'all'){
+            $qb
+                ->innerJoin('a.sex', 's')
+                ->addSelect('s')
+                ->andWhere('s.type = :sex')
+                ->setParameter('sex', $sex)
+            ;
+        } 
+    }      
+    
+    public function whichBreed(QueryBuilder $qb, $breed)
+    {
+        if ($breed !== 'all'){
+            $qb
+                ->innerJoin('a.breed', 'b')
+                ->addSelect('b')
+                ->andWhere('b.name = :breed')
+                ->setParameter('breed', $breed)
+            ;
+        } 
+    } 
+    
+    public function whichAge(QueryBuilder $qb, $age)
+    {
+        $date = new \DateTime('- 1 year');
+        
+        switch ($age) {
+            case 'adult' :
+                $qb
+                    ->andWhere('a.birthday <= :date')
+                    ->setParameter('date', $date)
+                ;
+                break;
+            case 'chiot' : 
+            case 'chaton' :
+                $qb
+                    ->andWhere('a.birthday >= :date')
+                    ->setParameter('date', $date)
+                ;
+                break;
+        }  
+        
+    }
+    
     public function whichTypeOfAnimal(QueryBuilder $qb, $animalType)
     {
         $qb

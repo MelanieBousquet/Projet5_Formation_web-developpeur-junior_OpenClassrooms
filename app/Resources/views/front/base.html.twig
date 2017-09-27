@@ -66,10 +66,18 @@
 	<div class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
 			<li ><a href="about.html">L'association</a></li>
-			<li ><a href="dogs.html">A l'adoption</a></li>
+            <li class="dropdown active">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">A l'adoption <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li ><a href="{{ path('front_list_animal_adoption', {'animalType': 'chien', 'sex': 'all', 'breed': 'all', 'age': 'all'}) }}">Chiens</a></li>
+					<li><a href="{{ path('front_list_animal_adoption', {'animalType': 'chat', 'sex': 'all', 'breed': 'all', 'age': 'all'}) }}">Chats</a></li>
+					<li><a href="single-puppie.html">Adoptés</a></li>
+					<li ><a href="single-post.html">News des adoptés</a></li>
+				</ul>
+			</li>
 			<li ><a href="services.html">Perdus / Trouvés</a></li>
 			<li class="dropdown active">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Nous aider<span class="caret"></span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Nous aider <span class="caret"></span></a>
 				<ul class="dropdown-menu">
 					<li ><a href="blog.html">Blog</a></li>
 					<li><a href="without-sidebar.html">Without Sidebar</a></li>
@@ -81,7 +89,7 @@
 			<li ><a href="{{ path('front_events') }}">Evénements</a></li>
 			<li><a href="{{ path('front_publications') }}">Actualités</a></li>
 			<li class="dropdown active">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Conseils<span class="caret"></span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Conseils <span class="caret"></span></a>
 				<ul class="dropdown-menu">
 					<li ><a href="blog.html">Blog</a></li>
 					<li><a href="without-sidebar.html">Without Sidebar</a></li>
@@ -91,7 +99,7 @@
 				</ul>
 			</li>
 			<li class="dropdown active">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Autre<span class="caret"></span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Autre <span class="caret"></span></a>
 				<ul class="dropdown-menu">
 					<li ><a href="blog.html">Blog</a></li>
 					<li><a href="without-sidebar.html">Without Sidebar</a></li>

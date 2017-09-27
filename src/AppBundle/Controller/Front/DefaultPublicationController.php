@@ -20,7 +20,7 @@ class DefaultPublicationController extends Controller
     /**
      * List all publications
      *
-     * @Route("/front/publications/{page}", name="front_publications", defaults={"page": "1"}, requirements={"page": "\d+"})
+     * @Route("/publications/{page}", name="front_publications", defaults={"page": "1"}, requirements={"page": "\d+"})
      */
     public function viewListAction($page, Request $request)
     {
@@ -53,7 +53,7 @@ class DefaultPublicationController extends Controller
     /**
      * View a publication
      *
-     * @Route("/front/publication/{id}/fiche", name="front_publication_card", requirements={"id": "\d+"})
+     * @Route("/publication/{id}/fiche", name="front_publication_card", requirements={"id": "\d+"})
      */
      
     public function viewAction($id, Request $request)

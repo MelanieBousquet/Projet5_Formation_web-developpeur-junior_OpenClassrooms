@@ -6,8 +6,6 @@ use AppBundle\Entity\Publication;
 use AppBundle\Form\PublicationType;
 use AppBundle\Form\PublicationEditType;
 use AppBundle\Entity\Event;
-use AppBundle\Entity\Note;
-use AppBundle\Form\NoteType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +21,7 @@ class EventController extends Controller
     /**
      * List all events
      *
-     * @Route("/front/evenements/{page}", name="front_events", defaults={"page": "1"}, requirements={"page": "\d+"})
+     * @Route("/evenements/{page}", name="front_events", defaults={"page": "1"}, requirements={"page": "\d+"})
      */
     public function viewListAction($page, Request $request)
     {
@@ -56,7 +54,7 @@ class EventController extends Controller
     /**
      * View an event
      *
-     * @Route("/front/evenement/{id}/fiche", name="front_event_card", requirements={"id": "\d+"})
+     * @Route("/evenement/{id}/fiche", name="front_event_card", requirements={"id": "\d+"})
      */
      
     public function viewAction($id, Request $request)

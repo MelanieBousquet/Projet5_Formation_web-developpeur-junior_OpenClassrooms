@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
@@ -48,4 +50,87 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
         // return Paginator object
         return new Paginator($query, true);
     }
+    
+     public function findPublicationsOnAnimalsToAdopt($animalType, $sex, $breed, $age)
+    {
+        $qb = $this->createQueryBuilder('p');
+        
+        $qb 
+            ->andWhere('p.published = :boolean')
+            ->setParameter('boolean', true)
+            ->innerJoin('p.animalState', 'ls')
+            ->addSelect('ls')
+            ->innerJoin('ls.state', 'st')
+            ->addSelect('st')
+            ->andWhere('st.type != :type')
+            ->setParameter('type', 'adopté')
+            ->andWhere('st.type = :secondType OR st.type = :thirdType')
+            ->setParameter('secondType', 'adoptable')
+            ->setParameter('thirdType', 'réservé')
+            ->innerJoin('ls.animal', 'a')
+            ->addSelect('a')
+        ;
+
+        $this->whichSex($qb, $sex);
+        $this->whichBreedandType($qb, $breed, $animalType);
+        $this->whichAge($qb, $age);
+        
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;    
+    }
+    
+    public function whichSex(QueryBuilder $qb, $sex)
+    {
+        if ($sex !== 'all'){
+            $qb
+                ->innerJoin('a.sex', 's')
+                ->addSelect('s')
+                ->andWhere('s.type = :sex')
+                ->setParameter('sex', $sex)
+            ;
+        } 
+    }      
+    
+    public function whichBreedandType(QueryBuilder $qb, $breed, $animalType)
+    {
+        $qb
+            ->innerJoin('a.breed', 'b')
+            ->addSelect('b')
+            ->innerJoin('b.type', 't')
+            ->andWhere('t.name = :name')
+            ->setParameter('name', $animalType)
+        ;
+        
+        if ($breed !== 'all'){
+            $qb
+                ->andWhere('b.name = :breed')
+                ->setParameter('breed', $breed)
+            ;
+        } 
+    } 
+    
+    public function whichAge(QueryBuilder $qb, $age)
+    {
+        $date = new \DateTime('- 1 year');
+        
+        switch ($age) {
+            case 'adult' :
+                $qb
+                    ->andWhere('a.birthday <= :date')
+                    ->setParameter('date', $date)
+                ;
+                break;
+            case 'chiot' : 
+            case 'chaton' :
+                $qb
+                    ->andWhere('a.birthday >= :date')
+                    ->setParameter('date', $date)
+                ;
+                break;
+        }  
+        
+    }
+
 }

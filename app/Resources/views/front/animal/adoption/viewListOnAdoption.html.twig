@@ -1,0 +1,161 @@
+{% extends "front/base.html.twig" %}
+
+{% block CSSfiles %}
+{{ parent() }}
+<style>
+    .container-img{  
+      position: relative; 
+      overflow: hidden;
+
+    }
+    .animal-image {
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      bottom: 0; 
+      margin: auto; 
+      min-width: 50%;
+      min-height: 50%;
+    }
+    .form {
+        border-radius: 5px;
+        background-color: rgba(0,0,0,0.7);
+        padding: 10px;
+    }
+    form label {
+        color: white;
+    }
+    form select {
+        border-radius: 5px;
+        margin-right: 20px;
+        
+    }
+    #form_Chercher {
+        background-color: #c27470;
+        border-radius: 30px;
+        color: white;
+        border: none;
+        padding: 3px 10px;
+    }
+    #form_Chercher:hover {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+    background: #2baea6;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+		<section id="gallery" class="updatable">
+			
+		<!-- begin Our Puppies -->
+		<article class="puppies">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12"><h2>A l'adoption</h2></div>
+			</div>
+			
+
+			<div class="row form">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+				<div class="col-xs-12">
+                    
+                    <div class="col-md-3 col-sm-12">
+                        {{ form_label(form.sex, "Sexe") }}
+                        {{ form_errors(form.sex) }}
+                        {{ form_widget(form.sex) }}
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        {{ form_label(form.breed, "Race") }}
+                        {{ form_errors(form.breed) }}
+                        {{ form_widget(form.breed) }}
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        {{ form_label(form.age, "Age") }}
+                        {{ form_errors(form.age) }}
+                        {{ form_widget(form.age) }}
+                    </div>
+                    <div class="col-md-2 col-sm-12">
+                        {{ form_widget(form.Chercher) }}
+                    </div>
+                    
+				</div>
+				{{ form_end(form) }}
+			</div>
+			<br/>
+			
+			{% if (app.request.attributes.get("sex") != 'all') or (app.request.attributes.get("breed") != 'all') or (app.request.attributes.get("age") != 'all') %}
+			<div class="row">
+			    <div class="col-xs-12">
+			        <p>
+			            <strong>Critères recherchés :</strong> 
+			            {% if (app.request.attributes.get("sex") != 'all') %}
+			                " {{ app.request.attributes.get("sex") }} " 
+			            {% endif %}
+			            {% if (app.request.attributes.get("breed") != 'all') %}
+			                " {{ app.request.attributes.get("breed") }} "  
+			            {% endif %}
+			            {% if (app.request.attributes.get("age") != 'all') %}
+			                " {{ app.request.attributes.get("age") }} "
+			            {% endif %}
+			         </p>
+			    </div>
+			</div>
+			{% endif %}
+			
+			<div class="row">
+				<div class="col-md-12">
+					<div class="grid">
+						<ul>
+                            {% if publicationsOnAnimalsToAdopt is empty %}
+                                {% if (app.request.attributes.get("sex") != 'all') or (app.request.attributes.get("breed") != 'all') or (app.request.attributes.get("age") != 'all') %} 
+                                    <p>Aucun animal ne correspond à votre recherche !</p>
+                                {% else %}
+                                    <p>Pas de {{ app.request.attributes.get("animalType") }} à l'adoption actuellement !</p>
+                                {% endif %}
+                            {% endif %}
+						    {% for publication in publicationsOnAnimalsToAdopt %}
+							<li class="">
+								<a class="container-img" href="{{ path('front_animal_card', {'id': publication.id }) }}">
+									<div class="more">
+										<i class="icon-search pull-right"></i>
+										<span class="sex">{{ publication.animalState.animal.sex.type }}</span>
+										<span class="wks">{{ publication.animalState.animal.age }}</span>
+										<span class="txt">{{ publication.animalState.animal.name }}</span>
+									</div>
+									
+									{% if publication.mainImage is not null %}
+									<img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="photo principale"/>
+									{% elseif publication.images[0] is not null %}
+									<img class="animal-image" src="{{ asset(publication.images[0].webPath) }}" alt="photo publication"/>
+									{% else %}
+									<img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="photo par défaut"/>
+									{% endif %}
+									
+								</a>
+								<span class="name">{{ publication.animalState.animal.name }}</span>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			 </div>
+		</div>     
+		</article>
+		<!-- end Our Puppies -->
+
+		</section>
+    </div>
+
+{% endblock %}
+{% block JSfiles %}
+{{ parent() }}
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "front/base.html.twig" %}
+
+{% block content %}
+<section id="spuppie">
+	
+	<!-- begin Our Puppies -->
+	<article>
+	<div class="container">
+
+		<div class="row">
+			<div class="col-xs-12"><h2 class="header">A l'adoption</h2></div>
+		</div>
+
+		<div class="row">
+			<div class="title">
+				<div class="centered"><div><h2>{{ publication.animalState.animal.name }}</h2></div></div>
+				<p>{{ publication.date|date('d/m/Y') }}</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-9">
+				<div id="carousel-puppie" class="carousel slide" data-ride="carousel" data-interval="false">
+
+					<!-- Wrapper for slides -->
+					<div class="carousel-inner">
+						<div class="item active">
+						    {% if publication.mainImage is not null %}
+							<img style="max-height:500px; width:unset;" src="{{ asset(publication.mainImage.webPath) }}" alt="//">
+							{% elseif publication.images[0] is not null %}
+							<img style="max-height:500px; width:unset;" src="{{ asset(publication.images[0].webPath) }}" alt="//">
+							{% else %}
+							<img style="max-height:500px; width:unset;" src="{{ asset('uploads/img/7.jpeg') }}" alt="//">
+							{% endif %}
+						</div>
+						{% for image in publication.images %}
+						<div class="item">
+							<img class="text-center" style="max-height:500px; width:unset;" src="{{ asset(image.webPath) }}" alt="//">
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+
+				<div id="carousel-thumb-puppie" >
+				<!-- Wrapper for slides -->
+				<div class="carousel-inner">
+					<div class="item active">
+						<ol>
+							<li style="width:120px; border:1px solid #9499af;" data-target="#carousel-puppie" data-slide-to="0" class="active thumb">
+							{% if publication.mainImage is not null %}
+							<img src="{{ asset(publication.mainImage.webPath) }}" alt="//">
+							{% elseif publication.images[0] is not null %}
+							<img src="{{ asset(publication.images[0].webPath) }}" alt="//">
+							{% else %}
+							<img src="{{ asset('uploads/img/7.jpeg') }}" alt="//">
+							{% endif %}
+							</li>
+							{% for key, image in publication.images %}
+                            <li style="width:120px; border:1px solid #9499af;" data-target="#carousel-puppie" data-slide-to="{{ key + 1 }}" class="thumb">
+                                <img style="width:unset; max-height:100px;" src="{{ asset(image.webPath) }}" alt="//">
+                            </li>
+                            {% endfor %}
+
+						</ol>
+                    </div>
+				</div>
+
+				</div>
+
+			</div>
+			<div class="col-md-3">
+				<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-12">
+                <ul class="features">
+					<li><strong>Race :</strong> {{ publication.animalState.animal.breed.name }}</li>
+					<li><strong>Age :</strong> {{ publication.animalState.animal.age }}</li>
+					<li><strong>Sexe :</strong> {{ publication.animalState.animal.sex.type }}</li>
+				</ul>
+				<br/>
+				<p>{{ publication.content }}</p>
+
+				
+				</div>
+
+				</div>
+				
+			</div>
+		 </div>
+	</div>
+	</article>
+
+</section>
+
+{% endblock %}
