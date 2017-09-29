@@ -1,0 +1,57 @@
+{% extends "front/base.html.twig" %}
+  
+{% block CSSfiles %}
+{{ parent() }}
+<style>
+    .container-img{  
+        position: relative; 
+
+    }
+    .animal-image {
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0; 
+        margin: auto; 
+        min-width: 50%;
+        min-height: 50%;
+    }
+    .grid ul {
+        text-align: left;
+    }
+</style>
+{% endblock %}
+   
+{% block content %}
+    <section>
+        <article>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12"><h2>Informations de compte</h2></div>
+                </div>
+                {% for info in app.session.flashbag.get('info') %}
+                    <div class="alert alert-notice">
+                        {{ info }}
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="col-md-12">
+                        
+                        <p><strong>Nom d'utilisateur :</strong> {{ user.userPseudo }}</p>
+                        <p><strong>Adresse e-mail :</strong> {{ user.email }}</p>
+                        
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-default" href="{{ path('change_password') }}">Changer de mot de passe</a>
+                        <a class="btn btn-default" href="{{ path('user_account_edition') }}">Modifier nom / email</a>
+                    </div>
+                </div>
+                
+            </div>
+        </article>
+    </section>
+{% endblock %}

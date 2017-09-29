@@ -27,15 +27,15 @@ security:
             anonymous: true
             provider: main
             form_login:
-                login_path: connexion
+                login_path: login
                 check_path: login_check
                 csrf_token_generator: security.csrf.token_manager
                 failure_path: login
-                default_target_path: home
+                default_target_path: front_home
                 always_use_default_target_path: true
             logout:
                 path: logout
-                target: home
+                target: front_home
             
     
     access_control:

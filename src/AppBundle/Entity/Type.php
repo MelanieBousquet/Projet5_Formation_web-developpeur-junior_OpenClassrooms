@@ -33,6 +33,7 @@ class Type
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Breed", mappedBy="type")
+     * @Assert\Valid()
      */
     private $breeds;
 

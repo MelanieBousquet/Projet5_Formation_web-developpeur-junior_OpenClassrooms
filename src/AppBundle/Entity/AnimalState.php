@@ -33,18 +33,20 @@ class AnimalState
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal", inversedBy="animalStates", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid()
      */
     private $animal;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\State", inversedBy="animalStates", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid()
      */
     private $state;
     
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Publication", inversedBy="animalState")
-     *
+     * @Assert\Valid()
      */
     private $publication;
 

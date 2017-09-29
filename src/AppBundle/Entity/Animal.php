@@ -52,7 +52,7 @@ class Animal
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sex", inversedBy="animals", cascade={"persist"})
-     *
+     * @Assert\Valid()
      */
     private $sex;
 
@@ -64,28 +64,31 @@ class Animal
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TypeIdentification", inversedBy="animals", cascade={"persist"})
-     *
+     * @Assert\Valid()
      */
     private $typeIdentification;
     
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="animals", cascade={"persist"})
-     *
+     * @Assert\Valid()
      */
     private $user;
     
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
     private $mainImage;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="animal", cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
     private $images;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AnimalState", mappedBy="animal",cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
     private $animalStates;
 
@@ -99,7 +102,7 @@ class Animal
     
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="animal", cascade={"persist", "remove"})
-     *
+     * @Assert\Valid()
      */
     private $notes;
 

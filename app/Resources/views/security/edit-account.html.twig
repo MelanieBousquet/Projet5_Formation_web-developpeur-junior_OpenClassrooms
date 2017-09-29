@@ -1,0 +1,58 @@
+{% extends "front/base.html.twig" %}
+  
+{% block CSSfiles %}
+{{ parent() }}
+<style>
+    .container-img{  
+        position: relative; 
+
+    }
+    .animal-image {
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0; 
+        margin: auto; 
+        min-width: 50%;
+        min-height: 50%;
+    }
+    .grid ul {
+        text-align: left;
+    }
+</style>
+{% endblock %}
+   
+{% block content %}
+    <section>
+        <article>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12"><h2>Modifier les informations de compte</h2></div>
+                </div>
+                <br/>
+                {% for error in app.session.flashbag.get('info') %}
+                    <div class="alert alert-notice">
+                        {{ info }}
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="col-md-12">
+                        
+                        {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        {{ form_end(form) }}
+                        
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-default" title="Retour à la page précédente" href="{{ path('user_account') }}"><i class="fa fa-arrow-left"></i></a>
+                    </div>
+                </div>
+                
+            </div>
+        </article>
+    </section>
+{% endblock %}

@@ -40,6 +40,32 @@
                 {{ form_widget(form.updatedDate, {'attr': {'class': 'col-md-7 col-xs-12'}}) }}
             </div>
         </div>
+        
+        {% if (app.request.query.get("state") == 'perdu') or (app.request.query.get("state") == 'trouvé')  %}
+        <div class="form-group">
+            {{ form_label(form.place.address, "Adresse", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            {{ form_errors(form.place.address) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.place.address, {'attr': {'class': 'capitalize', 'style': 'width:100%;'}}) }}
+            </div>
+        </div>        
+           
+        <div class="form-group" style="display:none;">
+            {{ form_label(form.place.lat, "Latitude") }}
+            {{ form_errors(form.place.lat) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.place.lat) }}
+            </div>
+        </div>        
+           
+        <div class="form-group" style="display:none;">
+            {{ form_label(form.place.lng, "Longitude") }}
+            {{ form_errors(form.place.lng) }}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_widget(form.place.lng) }}
+            </div>
+        </div>
+        {% endif %}
 
         <div class="form-group">
 
@@ -77,8 +103,42 @@
     <script src="{{ asset('js/collection-form.js') }}"></script>
     <script src="{{ asset('js/dynamic-form.js')}}"></script>
     <script>
-        $(document).ready(function () { $('#breed-form').hide('fast'); });
+        function initMap() {
+            var input = document.getElementById('appbundle_publication_place_address');
+            var inputLat = document.getElementById('appbundle_publication_place_lat');
+            var inputLng = document.getElementById('appbundle_publication_place_lng');
+            var options = {
+              componentRestrictions: {country: 'fr'}
+            };
+            var autocomplete = new google.maps.places.Autocomplete(input, options);
+            
+            // Avoid form submission when key "enter" pressed
+            input.onkeypress = function(e) {
+              var key = e.charCode || e.keyCode || 0;     
+              if (key == 13) {
+                e.preventDefault();
+              }
+            }
+
+            autocomplete.addListener('address_changed', function() {
+                var place = autocomplete.getPlace();
+                var latitude = place.geometry.location.lat();
+                var longitude = place.geometry.location.lng(); 
+                inputLat.value = latitude ;
+                inputLng.value = longitude ;
+                if (!place.geometry) {
+                    // User entered the name of a Place that was not suggested and
+                    // pressed the Enter key, or the Place Details request failed.
+                    window.alert("Pas d'adresse trouvée pour la recherche : '" + place.name + "'. Veuillez réessayer");
+                    return;
+                }
+            })
+            
+        }
     </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDqnF7_sYGUDLj0BkECfFUxwyVqCGn99o&libraries=places&callback=initMap" async defer></script>
+    
+    
 {% endblock %}
 
 

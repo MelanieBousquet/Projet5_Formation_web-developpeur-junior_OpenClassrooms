@@ -35,6 +35,7 @@ class State
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AnimalState", mappedBy="state")
+     * @Assert\Valid()
      */
     private $animalStates;
 

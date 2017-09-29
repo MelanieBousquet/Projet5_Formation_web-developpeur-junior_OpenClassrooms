@@ -50,8 +50,26 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
         // return Paginator object
         return new Paginator($query, true);
     }
+    public function findPublicationsFoundOrLost($state) 
+    {
+        $qb = $this->createQueryBuilder('p');
+        
+        $qb 
+            ->innerJoin('p.animalState', 'ls')
+            ->addSelect('ls')
+            ->innerJoin('ls.state', 'st')
+            ->addSelect('st')
+            ->andWhere('st.type = :state')
+            ->setParameter('state', $state)        
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;    
+    }
     
-     public function findPublicationsOnAnimalsToAdopt($animalType, $sex, $breed, $age)
+    public function findPublicationsOnAnimalsToAdopt($animalType, $sex, $breed, $age)
     {
         $qb = $this->createQueryBuilder('p');
         
@@ -62,17 +80,15 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
             ->addSelect('ls')
             ->innerJoin('ls.state', 'st')
             ->addSelect('st')
-            ->andWhere('st.type != :type')
-            ->setParameter('type', 'adopté')
             ->andWhere('st.type = :secondType OR st.type = :thirdType')
             ->setParameter('secondType', 'adoptable')
-            ->setParameter('thirdType', 'réservé')
+            ->setParameter('thirdType', 'réservé') 
             ->innerJoin('ls.animal', 'a')
             ->addSelect('a')
         ;
 
         $this->whichSex($qb, $sex);
-        $this->whichBreedandType($qb, $breed, $animalType);
+        $this->whichBreedAndType($qb, $breed, $animalType);
         $this->whichAge($qb, $age);
         
         return $qb
@@ -93,7 +109,7 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
         } 
     }      
     
-    public function whichBreedandType(QueryBuilder $qb, $breed, $animalType)
+    public function whichBreedAndType(QueryBuilder $qb, $breed, $animalType)
     {
         $qb
             ->innerJoin('a.breed', 'b')
@@ -132,5 +148,4 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
         }  
         
     }
-
 }

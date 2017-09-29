@@ -29,11 +29,13 @@ class Image
    
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal", inversedBy="images")
+     * @Assert\Valid()
      */
     private $animal;           
     
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Publication", inversedBy="images")
+     * @Assert\Valid()
      */
     private $publications;
 
@@ -224,7 +226,9 @@ class Image
         
         // Get orientation informations
         $exif = exif_read_data($originalImage);
-        $orientation = $exif['Orientation'];
+        if (array_key_exists('Orientation', $exif)) {
+            $orientation = $exif['Orientation'];
+        }
 
         // Resize dimensions are bigger than original image, move to the folder and stop processing
         if ($width > $width_orig){
@@ -261,21 +265,23 @@ class Image
         // Copy  $gd_image_src (original image) in $gd_image_dest 
         imagecopyresampled($gd_image_dest, $gd_image_src, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
         
-        // Fix orientation
-        switch($orientation)
-        {
-            case 3: // 180 rotate left
-                $gd_image_dest = imagerotate($gd_image_dest, 180, 0);
-                break;
+        if ($orientation) {
+            // Fix orientation
+            switch($orientation)
+            {
+                case 3: // 180 rotate left
+                    $gd_image_dest = imagerotate($gd_image_dest, 180, 0);
+                    break;
 
 
-            case 6: // 90 rotate right
-                $gd_image_dest = imagerotate($gd_image_dest, -90, 0);
-                break;
+                case 6: // 90 rotate right
+                    $gd_image_dest = imagerotate($gd_image_dest, -90, 0);
+                    break;
 
-            case 8:    // 90 rotate left
-                $gd_image_dest = imagerotate($gd_image_dest, 90, 0);
-                break;
+                case 8:    // 90 rotate left
+                    $gd_image_dest = imagerotate($gd_image_dest, 90, 0);
+                    break;
+            }
         }
 
         $filesystem = new Filesystem();

@@ -62,6 +62,11 @@ class EventController extends Controller
         $em = $this->getDoctrine()->getManager();
         $event = $em->getRepository('AppBundle:Publication')->findOneById($id);
         
+        if (null === $event) {
+            throw new NotFoundHttpException("L'événement que vous souhaitez consulter n'existe pas.");
+        }
+
+        
         return $this->render('front/event/view.html.twig', array(
             'event' => $event
         ));

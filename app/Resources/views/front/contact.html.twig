@@ -1,0 +1,23 @@
+<article class="contact">
+	<div id="contact_bg">
+		<div class="container">
+			 
+			<div class="row">
+			<div class="col-sm-12">
+				<div class="title">
+					<div class="centered"><div><h2>Contact</h2></div></div>
+					<div class="col-sm-12">
+					<address>
+					<i class="icon-home"></i> {{ contact.address }}<br>
+					<i class="icon-phone"></i> {{ contact.phonenumber }}<br />
+					{% if contact.email is not null %}<i class="icon-mail"></i> {{ contact.email }}<br />{% endif %}
+					{% if contact.facebook is not null %}<i class="icon-facebook"></i> {{ contact.facebook }}<br />{% endif %}
+					{% if contact.twitter is not null %}<i class="icon-twitter"></i> {{ contact.twitter }}<br />{% endif %}
+					</address>
+				</div> 
+				</div>
+			</div>
+			</div>
+		 </div>
+	</div>
+	</article>

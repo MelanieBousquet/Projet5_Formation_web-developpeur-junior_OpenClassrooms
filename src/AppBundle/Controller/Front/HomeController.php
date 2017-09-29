@@ -19,7 +19,7 @@ class HomeController extends Controller
     /**
     * Index
     *
-    * @Route("/", name="home")
+    * @Route("/", name="front_home")
     */
     public function viewAction()
     {

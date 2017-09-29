@@ -1,0 +1,93 @@
+{% extends "front/base.html.twig" %}
+
+{% block CSSfiles %}
+{{ parent() }}
+<style>
+    .container-img{  
+        position: relative; 
+
+    }
+    .animal-image {
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0; 
+        margin: auto; 
+        min-width: 50%;
+        min-height: 50%;
+    }
+    .pagination>.active>a, .pagination>.active>a:hover {
+        background-color: #c27470;
+        border-color: #c27470;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+		<section id="gallery" class="updatable">
+			
+		<!-- begin Our Puppies -->
+		<article class="puppies">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12"><h2>Animaux {{ app.request.attributes.get("state") }}s</h2></div>
+			</div>
+            <div class="row">
+				<div class="col-xs-12">
+					<ul class="filters">
+						<li data-filter="all" class="active">Tous</li>
+						<li data-filter="chat">Chats</li>
+						<li data-filter="chien">Chiens</li>
+					</ul>
+				</div>
+			</div>
+
+			
+			<div class="row">
+				<div class="col-md-12">
+					<div class="grid">
+						<ul>
+                            {% if publicationsFoundOrLost is empty %}
+                                <p>Pas d'animaux {{ app.request.attributes.get("state") }}s !</p>
+                            {% endif %}
+						    {% for publication in publicationsFoundOrLost %}
+							<li class="{{ publication.animalState.animal.breed.type.name }}">
+								<a class="container-img" href="{{ path('front_animal_found_lost_card', {'state': publication.animalState.state.type, 'id': publication.id }) }}">
+									<div class="more">
+										<i class="icon-search pull-right"></i>
+										<span class="sex">{{ publication.animalState.animal.sex.type }}</span>
+										<span class="wks">{{ publication.animalState.animal.breed.name }}</span>
+										<span class="txt">{{ publication.animalState.animal.name }}</span>
+									</div>
+								
+                                    {% if publication.mainImage is not null %}
+                                    <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="photo principale"/>
+                                    {% elseif publication.images[0] is not null %}
+                                    <img class="animal-image" src="{{ asset(publication.images[0].webPath) }}" alt="photo publication"/>
+                                    {% else %}
+                                    <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="photo par défaut"/>
+                                    {% endif %}
+									
+									
+								</a>
+								<span class="name">{{ publication.animalState.animal.name }}</span>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			 </div>
+		</div>     
+		</article>
+		<!-- end Our Puppies -->
+		
+		</section>
+    </div>
+
+{% endblock %}
+{% block JSfiles %}
+{{ parent() }}
+
+{% endblock %}

@@ -54,10 +54,10 @@ class RequestedPasswordSender
             // ..then persist and flush it
             $this->em->persist($user);
             $this->em->flush();            
-            $this->session->getFlashBag()->add('success', 'Un mail vous a bien été envoyé pour réinitialiser votre mot de passe');
+            $this->session->getFlashBag()->add('info', 'Un mail vous a bien été envoyé pour réinitialiser votre mot de passe');
             
         } else { // Error : an email has been already sent
-            $this->session->getFlashBag()->add('alert' ,'Un email vous a déjà été envoyé avec un lien pour réinitialiser votre mot de passe. Vérifiez vos spams si vous n\'avez pas reçu ce mail.');
+            $this->session->getFlashBag()->add('info' ,'Un email vous a déjà été envoyé avec un lien pour réinitialiser votre mot de passe. Vérifiez vos spams si vous n\'avez pas reçu ce mail.');
         }
         
     }

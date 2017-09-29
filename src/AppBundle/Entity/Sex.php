@@ -33,6 +33,7 @@ class Sex
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Animal", mappedBy="sex")
+     * @Assert\Valid()
      */
     private $animals;
 

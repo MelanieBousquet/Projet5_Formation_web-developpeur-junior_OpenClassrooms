@@ -36,7 +36,7 @@ class AnimalEditType extends AbstractType
             ->add('sterilised', CheckboxType::class)
             ->add('identificationNumber', TextType::class, array('required' => false))
             ->add('sex', EntityType::class, array('class' => 'AppBundle:Sex', 'choice_label' => 'type', 'choice_attr' => function () { return array('class' => 'flat', 'name' => 'iCheck'); } , 'expanded' => 'true'), array('required' => false))
-            ->add('type', EntityType::class, array('class' => 'AppBundle:Type', 'placeholder' => 'Sélectionner un type d\'animal', 'choice_label' => 'name', 'mapped' => false))
+            ->add('type', EntityType::class, array('class' => 'AppBundle:Type', 'placeholder' => 'Sélectionner un type d\'animal', 'choice_label' => 'name', 'mapped' => false, 'required' => false))
             ->add('typeIdentification', EntityType::class, array('class' => 'AppBundle:TypeIdentification', 'choice_label' => 'name',  'choice_attr' => function () { return array('class' => 'flat', 'name' => 'iCheck'); } , 'expanded' => 'true'), array('required' => false))
             ->add('description', TextAreaType::class, array('required' => false))
             ->add('animalStates', CollectionType::class, array(
@@ -56,6 +56,7 @@ class AnimalEditType extends AbstractType
                 'class' => 'AppBundle:Breed',
                 'choice_label' => 'name',
                 'choices' => $breeds,
+                'required' => false
             ));
         };
 

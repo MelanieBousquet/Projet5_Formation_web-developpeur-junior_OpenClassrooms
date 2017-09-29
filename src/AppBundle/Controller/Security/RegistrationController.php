@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class RegistrationController extends Controller
 {
     /**
-     * @Route("/senregistrer", name="user_registration")
+     * @Route("/enregistrement", name="user_registration")
      */
     public function registerAction(Request $request)
     {
@@ -36,9 +36,9 @@ class RegistrationController extends Controller
             $dispatcher->dispatch(AppBundleEvents::USER_REGISTERED, $event);
 
             // Set a "flash" success message for the user
-            $request->getSession()->getFlashBag()->add('Info', 'Compte utilisateur bien créé, un email de confirmation vous a été envoyé');
+            $request->getSession()->getFlashBag()->add('info', 'Compte utilisateur bien créé, un email de confirmation vous a été envoyé');
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('front_home');
         }
 
         return $this->render('security/register.html.twig', array('form' => $form->createView()));

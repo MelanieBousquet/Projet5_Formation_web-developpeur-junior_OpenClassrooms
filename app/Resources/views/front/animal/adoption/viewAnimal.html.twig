@@ -1,5 +1,18 @@
 {% extends "front/base.html.twig" %}
 
+{% block CSSfiles %}
+    {{ parent() }}
+    <style>
+        .btn-adopted {
+            background-color: #722881;
+            color: white;
+            border : 1px solid #722881;
+            border-radius: 3px;
+            cursor: default;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 <section id="spuppie">
 	
@@ -71,6 +84,14 @@
 			<div class="col-md-3">
 				<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-12">
+                {% for animalState in publication.animalState.animal.animalStates %}
+                    {% if animalState.state.type == 'adopté' %}
+                        <button class="btn-adopted">Adopté</button>
+                    {% elseif animalState.state.type == 'réservé' %}
+                        <button class="btn-adopted">Réservé</button>
+                    {% endif %}
+                {% endfor %}
+                
                 <ul class="features">
 					<li><strong>Race :</strong> {{ publication.animalState.animal.breed.name }}</li>
 					<li><strong>Age :</strong> {{ publication.animalState.animal.age }}</li>

@@ -91,6 +91,11 @@ class Publication
     private $notes;
     
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Place", mappedBy="publication", cascade={"persist", "remove"})
+     */
+    private $place;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -268,7 +273,7 @@ class Publication
     public function addImage(\AppBundle\Entity\Image $image)
     {
         $this->images[] = $image;
-        $image->setPublication($this);
+        $image->addPublication($this);
         return $this;
     }
 
@@ -351,5 +356,57 @@ class Publication
     public function getAnimalState()
     {
         return $this->animalState;
+    }
+
+    /**
+     * Set mainImage
+     *
+     * @param \AppBundle\Entity\Image $mainImage
+     *
+     * @return Publication
+     */
+    public function setMainImage(\AppBundle\Entity\Image $mainImage = null)
+    {
+        // if there is already a main image, add it to images collection before setting another main image
+        if ($this->mainImage) {
+            $this->addImage($this->mainImage);
+        }
+        $this->mainImage = $mainImage;
+
+        return $this;
+    }
+
+    /**
+     * Get mainImage
+     *
+     * @return \AppBundle\Entity\Image
+     */
+    public function getMainImage()
+    {
+        return $this->mainImage;
+    }
+
+    /**
+     * Set place
+     *
+     * @param \AppBundle\Entity\Place $place
+     *
+     * @return Publication
+     */
+    public function setPlace(\AppBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \AppBundle\Entity\Place
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }

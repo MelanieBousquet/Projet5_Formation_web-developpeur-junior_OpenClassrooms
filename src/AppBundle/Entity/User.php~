@@ -100,6 +100,60 @@ class User implements AdvancedUserInterface
      *
      * @return int
      */
+    
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"persist", "remove"})
+     */ 
+    private $image ;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Animal", mappedBy="user", cascade={"persist"})
+     */
+    private $animals;
+    
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->animals = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add animal
+     *
+     * @param \AppBundle\Entity\Animal $animal
+     *
+     * @return User
+     */
+    public function addAnimal(\AppBundle\Entity\Animal $animal)
+    {
+        $this->animals[] = $animal;
+        $animal->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove animal
+     *
+     * @param \AppBundle\Entity\Animal $animal
+     */
+    public function removeAnimal(\AppBundle\Entity\Animal $animal)
+    {
+        $this->animals->removeElement($animal);
+    }
+
+    /**
+     * Get animals
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAnimals()
+    {
+        return $this->animals;
+    }
+    
     public function getId()
     {
         return $this->id;
@@ -271,6 +325,7 @@ class User implements AdvancedUserInterface
         $this->setRoles(array('ROLE_USER'));
     }
     
+    
     /**
      * Checks whether the user is enabled
      *
@@ -333,5 +388,53 @@ class User implements AdvancedUserInterface
         return $this->isActive;
     }
     
+
+    /**
+     * Set confirmationToken
+     *
+     * @param string $confirmationToken
+     *
+     * @return User
+     */
+    public function setConfirmationToken($confirmationToken)
+    {
+        $this->confirmationToken = $confirmationToken;
+
+        return $this;
+    }
+
+    /**
+     * Get confirmationToken
+     *
+     * @return string
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * Set isAlreadyRequested
+     *
+     * @param boolean $isAlreadyRequested
+     *
+     * @return User
+     */
+    public function setIsAlreadyRequested($isAlreadyRequested)
+    {
+        $this->isAlreadyRequested = $isAlreadyRequested;
+
+        return $this;
+    }
+
+    /**
+     * Get isAlreadyRequested
+     *
+     * @return boolean
+     */
+    public function getIsAlreadyRequested()
+    {
+        return $this->isAlreadyRequested;
+    }
 
 }

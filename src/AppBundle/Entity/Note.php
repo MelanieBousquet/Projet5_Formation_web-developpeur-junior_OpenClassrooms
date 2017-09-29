@@ -49,6 +49,7 @@ class Note
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal", inversedBy="notes", cascade={"persist"})
+     * @Assert\Valid()
      */
     private $animal;
     

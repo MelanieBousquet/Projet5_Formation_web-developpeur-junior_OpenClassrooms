@@ -33,7 +33,7 @@ class RequestPasswordController extends Controller
             $dispatcher = $this->get('event_dispatcher');
             $dispatcher->dispatch(AppBundleEvents::PASSWORD_REQUESTED, $event);
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('front_home');
             
         }
         

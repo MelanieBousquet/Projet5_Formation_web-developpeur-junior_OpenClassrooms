@@ -64,31 +64,39 @@ class Publication
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\AnimalState", mappedBy="publication")
-     *
+     * @Assert\Valid()
      */
     private $animalState;
     
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Image", mappedBy="publications", cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
     private $images;
     
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image", cascade={"persist"})
+     * @Assert\Valid()
      */
     private $mainImage;
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Event", cascade={"persist"})
-     *
+     * @Assert\Valid()
      */
     private $event;
     
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="publication", cascade={"persist", "remove"})
-     *
+     * @Assert\Valid()
      */
     private $notes;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Place", cascade={"persist", "remove"})
+     * @Assert\Valid()
+     */
+    private $place;
     
     /**
      * Constructor
@@ -379,5 +387,29 @@ class Publication
     public function getMainImage()
     {
         return $this->mainImage;
+    }
+
+    /**
+     * Set place
+     *
+     * @param \AppBundle\Entity\Place $place
+     *
+     * @return Publication
+     */
+    public function setPlace(\AppBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \AppBundle\Entity\Place
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }

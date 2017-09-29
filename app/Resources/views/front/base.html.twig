@@ -23,6 +23,9 @@
     <link rel="stylesheet" href="{{ asset('front/css/fontello.css') }}" >
     <!--[if IE 7]>
     <link rel="stylesheet" href="{{ asset('front/css/fontello-ie7.css') }}" ><![endif]-->
+    
+    <!-- Font Awesome -->
+    <link href="{{ asset('vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('front/plugins/grid/css/component.css') }}" />
 	
@@ -60,53 +63,65 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="Logo" /></a>
+		<a class="navbar-brand" href="{{ path('front_home') }}"><img src="{{ asset('img/logo.png') }}" alt="Logo" style="max-width:50px"/></a>
 	</div>
 	
 	<div class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
-			<li ><a href="about.html">L'association</a></li>
-            <li class="dropdown active">
+			<li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">L'asso <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                   {{ render(controller('AppBundle:Menu:listPages', {'categoryName': 'lasso'})) }}
+                </ul>
+            </li>
+            <li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">A l'adoption <span class="caret"></span></a>
 				<ul class="dropdown-menu">
-					<li ><a href="{{ path('front_list_animal_adoption', {'animalType': 'chien', 'sex': 'all', 'breed': 'all', 'age': 'all'}) }}">Chiens</a></li>
+					<li><a href="{{ path('front_list_animal_adoption', {'animalType': 'chien', 'sex': 'all', 'breed': 'all', 'age': 'all'}) }}">Chiens</a></li>
 					<li><a href="{{ path('front_list_animal_adoption', {'animalType': 'chat', 'sex': 'all', 'breed': 'all', 'age': 'all'}) }}">Chats</a></li>
-					<li><a href="single-puppie.html">Adoptés</a></li>
+					<li><a href="{{ path('front_list_animal_adopted') }}">Adoptés</a></li>
 					<li ><a href="single-post.html">News des adoptés</a></li>
 				</ul>
 			</li>
-			<li ><a href="services.html">Perdus / Trouvés</a></li>
-			<li class="dropdown active">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Perdus / trouvés <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li ><a href="{{ path('front_list_animal_found_lost', {'state': 'perdu'}) }}">Animaux Perdus</a></li>
+					<li><a href="{{ path('front_list_animal_found_lost', {'state': 'trouvé'}) }}">Animaux Trouvés</a></li>
+				</ul>
+			</li>
+			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Nous aider <span class="caret"></span></a>
 				<ul class="dropdown-menu">
-					<li ><a href="blog.html">Blog</a></li>
-					<li><a href="without-sidebar.html">Without Sidebar</a></li>
-					<li ><a href="single-post.html">Single Blog Post</a></li>
-					<li><a href="single-puppie.html">Single Pet</a></li>
-					<li><a href="clients.html">Clients Page</a></li>
+					{{ render(controller('AppBundle:Menu:listPages', {'categoryName': 'nousaider'})) }}
 				</ul>
 			</li>
 			<li ><a href="{{ path('front_events') }}">Evénements</a></li>
-			<li><a href="{{ path('front_publications') }}">Actualités</a></li>
-			<li class="dropdown active">
+			<li><a href="{{ path('front_publications') }}">Actu</a></li>
+			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Conseils <span class="caret"></span></a>
 				<ul class="dropdown-menu">
-					<li ><a href="blog.html">Blog</a></li>
-					<li><a href="without-sidebar.html">Without Sidebar</a></li>
-					<li ><a href="single-post.html">Single Blog Post</a></li>
-					<li><a href="single-puppie.html">Single Pet</a></li>
-					<li><a href="clients.html">Clients Page</a></li>
+					{{ render(controller('AppBundle:Menu:listPages', {'categoryName': 'conseils'})) }}
 				</ul>
 			</li>
-			<li class="dropdown active">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Autre <span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li ><a href="blog.html">Blog</a></li>
-					<li><a href="without-sidebar.html">Without Sidebar</a></li>
-					<li ><a href="single-post.html">Single Blog Post</a></li>
-					<li><a href="single-puppie.html">Single Pet</a></li>
-					<li><a href="clients.html">Clients Page</a></li>
-				</ul>
+			
+			<li class="dropdown">
+			    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i><span class="caret"></span></a>
+			    <ul class="dropdown-menu">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			            <li><a href="{{ path('logout') }}">Déconnexion</a></li>
+			        {% else %}
+                        <li><a href="{{ path('login') }}">Connexion</a></li>
+                        <li><a href="{{ path('user_registration') }}">S'enregistrer</a></li>
+			        {% endif %}
+			        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			        <li><a href="{{ path('user_account') }}">Mon compte</a></li>
+			        {% endif %}
+			        {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_FA')) %}
+			            <li><a href="{{ path('admin_home')}}">Panneau d'admin</a></li>
+			        {% endif %}
+			        
+			    </ul>
 			</li>
 			
 		</ul>
@@ -116,6 +131,30 @@
 </div>
 </nav>
 </header>
+
+{% for message in app.session.flashbag.get('info') %}
+    <div  class="modal fade" id="flashbagModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Info</h4>
+                </div>
+                <div class="modal-body">
+                    {{ message }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+{% endfor %}
+
 {% endblock %}
 
 {% block content %}
@@ -124,56 +163,10 @@
 {% block footer %}
 <footer>
 
-	<article class="contact">
-	<div id="map"></div>
-	<div id="contact_bg">
-		<div class="container">
-			 
-			<div class="row">
-			<div class="col-sm-12">
-				<div class="title">
-					<div class="centered"><div><h2>Contact Us Now!</h2></div></div>
-					<p>Give us a call or send us an email with any questions or concerns that you may have. Or if you're in the vicinity, stop an payus a visit!</p>
-				</div>
-			</div>
-			</div>
-
-			<div class="row">
-				<div class="col-sm-6">
-					<address>
-					<i class="icon-home"></i> 121 King Street, Melbourn Victoria 3000 Australia<br>
-					<i class="icon-phone"></i> Phone:  +61 3 8376 6284<br />
-					<i class="icon-mail"></i> Email:  <a href="mailto:support@company.com">support@company.com</a><br />
-					<i class="icon-facebook"></i> Facebook:  <a href="#">facebook.com/company</a><br />
-					<i class="icon-twitter"></i> Twitter:  <a href="#">twitter.com/company</a><br />
-					</address>
-				</div> 
-
-				<div class="col-sm-6">
-					<form class="form-inline" role="form" id="contact-form" action="contact-form.php" method="post" accept-charset="utf-8">
-						<div class="form-group pull-left">
-							<label class="sr-only" for="name">Name</label>
-							<input type="text" class="form-control" id="name" placeholder="Name" name="name">
-						</div>
-
-						<div class="form-group pull-right">
-							<label class="sr-only" for="email">Email</label>
-							<input type="email" class="form-control" id="email" placeholder="Email" name="email">
-						</div>
-
-						<textarea class="form-control pull-left" rows="8" name="message" >Message</textarea>
-
-						<input type="submit" class="btn btn-default pull-right" value="Contact us">
-					</form>
-				</div>   
-			 </div>
-
-		 </div>
-	</div>
-	</article>
+	{{ render(controller('AppBundle:Contact:view')) }}
 
 	<div class="bottom-foot">
-		<p>© 2015 PetShop. All rights reserved.<br /><a href="#">By mustachethemes</a></p>
+		<p>© {{ "now"|date("Y") }} Association #asso</p>
 	</div>
 
 </footer>  
@@ -219,6 +212,14 @@
 
 		<!-- Custom -->
 		<script src="{{ asset('front/js/script.js') }}"  ></script>
+		
+		<script>
+            $(document).ready(function () {
+
+                $('#flashbagModal').modal('show');
+
+            });
+        </script>
 
 	<!-- ======================= End JQuery libs ======================= -->
 {% endblock %}

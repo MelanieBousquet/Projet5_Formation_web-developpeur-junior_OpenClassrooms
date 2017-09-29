@@ -27,7 +27,8 @@ class AnimalRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('s.type = :secondType OR s.type = :thirdType')
             ->setParameter('secondType', 'adoptable')
             ->setParameter('thirdType', 'réservé')
-            ->innerJoin('')
+            ->innerJoin('
+            ')
         ;
 
         $this->whichTypeOfAnimal($qb, $animalType);
@@ -185,5 +186,71 @@ class AnimalRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+    
+     public function getAdoptedAnimalsByYear($year) 
+    {
+        $qb = $this->createQueryBuilder('a');
+        
+        $qb
+            ->innerJoin('a.animalStates', 'ls')
+            ->addSelect('ls')
+            ->innerJoin('ls.state', 'st')
+            ->addSelect('st')
+            ->andWhere('st.type = :type')
+            ->setParameter('type', 'adopté')
+            ->andWhere('SUBSTRING(ls.date, 1, 4) = :year')
+            ->setParameter('year', $year)
+            ->orderBy('ls.date', 'DESC')
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;   
+    }
+    
+    public function getTheYearOfTheFirstAdoption()
+    {
+        $qb = $this->createQueryBuilder('a');
+        
+        $qb 
+            ->innerJoin('a.animalStates', 'ls')
+            ->addSelect('ls')
+            ->innerJoin('ls.state', 'st')
+            ->addSelect('st')
+            ->andWhere('st.type = :type')
+            ->setParameter('type', 'adopté')
+            ->orderBy('ls.date', 'ASC')
+            ->select('SUBSTRING(ls.date, 1, 4)')
+            ->setMaxResults(1)
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;  
+    }
+    
+    public function getTheYearOfTheLastAdoption()
+    {
+        $qb = $this->createQueryBuilder('a');
+        
+        $qb
+            ->innerJoin('a.animalStates', 'ls')
+            ->addSelect('ls')
+            ->innerJoin('ls.state', 'st')
+            ->addSelect('st')
+            ->andWhere('st.type = :type')
+            ->setParameter('type', 'adopté')
+            ->orderBy('ls.date', 'DESC')
+            ->select('SUBSTRING(ls.date, 1, 4)')
+            ->setMaxResults(1)
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;  
     }
 }

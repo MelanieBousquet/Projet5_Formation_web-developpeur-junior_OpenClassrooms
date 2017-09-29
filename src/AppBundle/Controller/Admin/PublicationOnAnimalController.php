@@ -8,6 +8,7 @@ use AppBundle\Entity\State;
 use AppBundle\Entity\AnimalState;
 use AppBundle\Entity\Image;
 use AppBundle\Form\PublicationOnAnimalType;
+use AppBundle\Form\PublicationOnAnimalWithPlaceType;
 use AppBundle\Form\AnimalPublicationImageType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,7 +95,12 @@ class PublicationOnAnimalController extends Controller
         $animal = $publication->getAnimalState()->getAnimal();
         $title = $animal->getName();
         $publication->setTitle($title);
-        $form = $this->get('form.factory')->create(PublicationOnAnimalType::class, $publication);
+        
+        if ($state == 'perdu' || $state == 'trouvé') {
+            $form = $this->get('form.factory')->create(PublicationOnAnimalWithPlaceType::class, $publication);
+        } else {
+            $form = $this->get('form.factory')->create(PublicationOnAnimalType::class, $publication);
+        }
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
                 foreach($animal->getImages() as $image) {

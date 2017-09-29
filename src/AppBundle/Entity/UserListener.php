@@ -27,15 +27,5 @@ class UserListener
         $user->setPassword($encodedPassword);
         
     }
-    
-    public function preUpdate(User $user, LifecycleEventArgs $event)
-    {
-        // getNewValue() = get a new value of an entity field IF there is a new value
-        // So, if there is a new plainpassword submitted, encode it 
-        if ($event->hasChangedField('plainPassword')) {
-            $encodedPassword = $this->encoderFactory->getEncoder($user)->encodePassword($event->getNewValue('plainPassword'));
-            $user->setNewValue('password', $encodedPassword);
-        }
-        
-    }
+
 }

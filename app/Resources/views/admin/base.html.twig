@@ -30,7 +30,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                    <a href="{{ path('home') }}" class="site_title"><i class="fa fa-paw"></i> <span>Asso Test !</span></a>
+                    <a href="{{ path('admin_home') }}" class="site_title"><i class="fa fa-paw"></i> <span>Asso Test !</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -38,9 +38,7 @@
                     <!-- menu profile quick info -->
                     {% block menuprofile %}
                         <div class="profile clearfix">
-                            <div class="profile_pic">
-                                <img src="{{ asset('uploads/img/23.jpeg') }}" alt="photo de profil" class="img-circle profile_img">
-                            </div>
+                            
                             <div class="profile_info">
                                 <span>Bienvenue,</span>
                                 <h2>{{ app.user.userPseudo|capitalize }}</h2>
@@ -144,7 +142,6 @@
                                         <li><a href="#">Liste des annonces</a></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-pencil-square-o"></i> Brouillons</a></li>
                             </ul>
                             <br/>
                             {% if is_granted('ROLE_ADMIN') %}
@@ -159,10 +156,12 @@
                             <ul class="nav side-menu">
                                 <li><a href="#"><i class="fa fa-pencil"></i> Pages <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Page</a>
-                                        <li><a href="#">Page</a></li>
+                                        <li><a href="{{ path('admin_pages', {'categoryId': '1'}) }}">Catégorie "L'asso"</a>
+                                        <li><a href="{{ path('admin_pages', {'categoryId': '2'}) }}">Catégorie "Nous aider"</a></li>
+                                        <li><a href="{{ path('admin_pages', {'categoryId': '3'}) }}">Catégorie "Conseils"</a></li>
                                     </ul>
                                 </li>
+                                <li><a href="{{ path('admin_contact_edit') }}"><i class="fa fa-envelope"></i> Contact</a></li>
                             </ul>
                             {% endif %}
                         </div>
@@ -181,7 +180,7 @@
 
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="{{ path('logout') }}"><i class="fa fa-sign-out"></i> Déconnexion</a></li>
-                            <li><a><i class="fa fa-eye"></i> Voir le site</a></li>
+                            <li><a href="{{ path('front_home') }}"><i class="fa fa-eye"></i> Voir le site</a></li>
                         </ul>
                     </nav>
                 </div>

@@ -35,6 +35,7 @@ class TypeIdentification
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Animal", mappedBy="typeIdentification")
+     * @Assert\Valid()
      */
     private $animals;
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Front;
 
 use AppBundle\Entity\Publication;
+use AppBundle\Entity\Animal;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\Breed;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -16,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Validator\Constraints\Date;
 
 class AdoptionAnimalController extends Controller
 {
@@ -63,7 +65,7 @@ class AdoptionAnimalController extends Controller
     /**
      * View an animal waiting for adoption, or already adopted
      *
-     * @Route("/adoption/animal/{id}/fiche", name="front_animal_card", requirements={"id": "\d+"})
+     * @Route("/adoption/animal/{id}/fiche", name="front_adoption_animal_card", requirements={"id": "\d+"})
      */
      
     public function viewAnimalAction($id, Request $request)
@@ -73,6 +75,33 @@ class AdoptionAnimalController extends Controller
         
         return $this->render('front/animal/adoption/viewAnimal.html.twig', array(
             'publication' => $publication
+        ));
+    }
+    
+    /**
+     * View the list of the adopted animals of a specific year 
+     *
+     * @Route("/adoption/animaux/liste-des-adoptes/{year}", name="front_list_animal_adopted", defaults={"year": "derniere-annee"}, requirements={"year": "derniere-annee|\d+"})
+     */
+    public function viewListAdoptedAction($year, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repoAnimal = $em->getRepository('AppBundle:Animal');
+        
+        // In order to generate the links of the differents pages of adopted animals depending on the years of the first and last adoption
+        $yearOfTheFirstAdoption = $repoAnimal->getTheYearOfTheFirstAdoption();
+        $yearOfTheLastAdoption = $repoAnimal->getTheYearOfTheLastAdoption();
+        
+        // By default, show the last animals adopted
+        if ($year == 'derniere-annee') { $year = $yearOfTheLastAdoption[1]; } 
+        
+        $listAdoptedAnimals = $repoAnimal->getAdoptedAnimalsByYear($year);
+        
+        return $this->render('front/animal/adoption/viewListAdopted.html.twig', array(
+            'year' => $year,
+            'listAdoptedAnimals' => $listAdoptedAnimals,
+            'yearOfTheFirstAdoption' => $yearOfTheFirstAdoption,
+            'yearOfTheLastAdoption' => $yearOfTheLastAdoption
         ));
     }
 }

@@ -1,0 +1,5 @@
+{% for page in pages %}
+<li>
+    <a href="{{ path('front_page_card', {'categoryName': categoryName,'id': page.id}) }}">{{ page.nameInMenu }}</a>
+</li>
+{% endfor %}

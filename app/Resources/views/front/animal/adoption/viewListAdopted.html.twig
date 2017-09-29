@@ -1,0 +1,106 @@
+{% extends "front/base.html.twig" %}
+
+{% block CSSfiles %}
+{{ parent() }}
+<style>
+    .container-img{  
+        position: relative; 
+
+    }
+    .animal-image {
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0; 
+        margin: auto; 
+        min-width: 50%;
+        min-height: 50%;
+    }
+    .pagination>.active>a, .pagination>.active>a:hover {
+        background-color: #c27470;
+        border-color: #c27470;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+		<section id="gallery" class="updatable">
+			
+		<!-- begin Our Puppies -->
+		<article class="puppies">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12"><h2>Animaux adoptés</h2></div>
+			</div>
+            <div class="row">
+				<div class="col-xs-12">
+					<ul class="filters">
+						<li data-filter="all" class="active">Tous</li>
+						<li data-filter="chat">Chats</li>
+						<li data-filter="chien">Chiens</li>
+					</ul>
+				</div>
+			</div>
+
+			
+			<div class="row">
+				<div class="col-md-12">
+					<div class="grid">
+						<ul>
+                            {% if listAdoptedAnimals is empty %}
+                                <p>{{ app.request.attributes.get("year") }} : Pas d'animaux adoptés !</p>
+                            {% endif %}
+						    {% for animal in listAdoptedAnimals %}
+							<li class="{{ animal.breed.type.name }}">
+								<a class="container-img" href="#">
+									<div class="more">
+										<i class="icon-search pull-right"></i>
+										<span class="sex">{{ animal.sex.type }}</span>
+										<span class="wks">{{ animal.breed.name }}</span>
+										<span class="txt">{{ animal.name }}</span>
+									</div>
+									
+								
+                                    {% if animal.mainImage is not null %}
+                                    <img class="animal-image" src="{{ asset(animal.mainImage.webPath) }}" alt="photo principale"/>
+                                    {% elseif animal.images[0] is not null %}
+                                    <img class="animal-image" src="{{ asset(animal.publication.images[0].webPath) }}" alt="photo publication"/>
+                                    {% else %}
+                                    <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="photo par défaut"/>
+                                    {% endif %}
+									
+									
+								</a>
+								<span class="name">{{ animal.name }}</span>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			 </div>
+		</div>     
+		</article>
+		<!-- end Our Puppies -->
+		{% if yearOfTheLastAdoption != yearOfTheFirstAdoption%}
+		<div class="col-md-12 text-center">
+            <ul class="pagination text-center" >
+              {# use of function range(a, b) to create values array between a and b #}
+              {% for y in range(yearOfTheLastAdoption[1], yearOfTheFirstAdoption[1]) %}
+               
+                <li{% if y == year %} class="active"{% endif %}>
+                  <a href="{{ path('front_list_animal_adopted', {'year': y}) }}">{{ y }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+		</section>
+    </div>
+
+{% endblock %}
+{% block JSfiles %}
+{{ parent() }}
+
+{% endblock %}

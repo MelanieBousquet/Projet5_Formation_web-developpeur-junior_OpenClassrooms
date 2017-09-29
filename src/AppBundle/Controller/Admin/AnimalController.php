@@ -187,7 +187,7 @@ class AnimalController extends Controller
 
         $request->getSession()->getFlashBag()->add('info', "L'animal a bien été supprimé !");
 
-        return $this->redirectToRoute('adminhome');
+        return $this->redirectToRoute('admin_home');
 
     }
 

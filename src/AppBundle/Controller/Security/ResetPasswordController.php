@@ -11,13 +11,14 @@ use AppBundle\Entity\User;
 use AppBundle\Event\UserEvent;
 use AppBundle\Event\AppBundleEvents;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 
 class ResetPasswordController extends Controller
 {
     /**
      * @Route("/reinitialisation-motdepasse", name="reset_password")
      */
-    public function resetPasswordAction(Request $request)
+    public function resetPasswordAction(Request $request, EncoderFactory $encoderFactory)
     {
         $em = $this->getDoctrine()->getManager();
         $token = $request->query->get('token');
@@ -29,16 +30,18 @@ class ResetPasswordController extends Controller
             if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
                 $user->setIsAlreadyRequested(false);
                 $user->setConfirmationToken(null);
+                $encodedPassword = $encoderFactory->getEncoder($user)->encodePassword($form->getData()->getPlainPassword(), $user->getSalt());
+                $user->setPassword($encodedPassword);
                 $em->persist($user);
                 $em->flush();
 
-                $request->getSession()->getFlashBag()->add('Success', 'Votre nouveau mot de passe a bien été enregistré !. Reconnectez-vous avec vos nouveaux identifiants.');
+                $request->getSession()->getFlashBag()->add('info', 'Votre nouveau mot de passe a bien été enregistré ! Reconnectez-vous avec vos nouveaux identifiants.');
 
                 return $this->redirectToRoute('login');
             }
             
         } else {
-            $request->getSession()->getFlashBag()->add('Error', 'Lien de réinitialisation de mot de passe incorrect, veuillez vérifier le lien envoyé par mail.');
+            $request->getSession()->getFlashBag()->add('info', 'Lien de réinitialisation de mot de passe incorrect, veuillez vérifier le lien envoyé par mail.');
             return $this->redirectToRoute('login');
         }
         

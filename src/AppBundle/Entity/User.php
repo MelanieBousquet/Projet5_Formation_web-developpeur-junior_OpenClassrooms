@@ -36,12 +36,11 @@ class User implements AdvancedUserInterface
     private $userPseudo;
     
     /**
-     * @Assert\NotBlank()
      * @Assert\Length(
      *      max=4096,
-     *      min=6,
+     *       min=6,
      *      maxMessage = "Le mot de passe ne doit pas contenir plus de 4096 caractères",
-     *      minMessage = "Le mot de passe doit contenir plus de 6 caractères" 
+     *      minMessage = "Le mot de passe doit contenir plus de 6 caractères"
      *      )
      */
     private $plainPassword;
@@ -96,13 +95,8 @@ class User implements AdvancedUserInterface
     private $roles = array();
     
     /**
-     * Get id
-     *
-     * @return int
-     */
-    
-    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Animal", mappedBy="user", cascade={"persist"})
+     * @Assert\Valid()
      */
     private $animals;
     
@@ -148,7 +142,12 @@ class User implements AdvancedUserInterface
     {
         return $this->animals;
     }
-    
+        
+    /**
+     * Get id
+     *
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
@@ -431,5 +430,4 @@ class User implements AdvancedUserInterface
     {
         return $this->isAlreadyRequested;
     }
-
 }

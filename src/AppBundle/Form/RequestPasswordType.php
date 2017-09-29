@@ -14,7 +14,7 @@ class RequestPasswordType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {     
-        $builder->add('identifier', TextType::class, array('label' => 'Email ou Pseudo'));
+        $builder->add('identifier', TextType::class, array('label' => 'Email ou Pseudo', 'label_attr' => array('class'=> 'col-md-2')));
 
     }
     public function configureOptions(OptionsResolver $resolver)

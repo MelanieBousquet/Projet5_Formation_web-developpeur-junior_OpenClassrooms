@@ -1,0 +1,79 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}{{ parent() }}Liste des pages {% endblock %}
+
+{% block CSSfiles %}
+    {{ parent() }}
+    <!-- iCheck - Customizable checkboxes and radio buttons  -->
+    <link href="{{ asset('vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
+    <!-- Select2 - Customizable select box  -->
+    <link href="{{ asset('vendors/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+    <!-- Switchery - IOS7 style switches  for checkboxes -->
+    <link href="{{ asset('vendors/switchery/dist/switchery.min.css') }}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block contentTitle %}Liste des pages de la catégorie : "{{ category.name|capitalize }}"{% endblock %}
+
+{% block content %}
+  
+    <div class="x_content">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x-content">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Catégorie</th>
+                                <th>Nom dans le menu</th>
+                                <th>Titre</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>                 
+                            {% for page in listPages %}
+                                <tr>
+                                    <td>{{ category.name|capitalize }}</td>
+                                    <td>{{ page.nameInMenu|capitalize }}</td>
+                                    <td>{{ page.title|capitalize}}</td>
+                                    <td>
+                                        <a class="btn btn-primary btn-xs" title="Modifier cette page" href="{{ path('admin_page_card', {'categoryId': category.id, 'id': page.id })}}"><i class="fa fa-pencil"></i> Editer</a>
+                                        <a class="btn btn-success btn-xs" title="Voir sur le site" href=""><i class="fa fa-eye"></i> Voir sur le site</a>
+                                        <a class="btn btn-danger btn-xs" title="Supprimer cette page" href="{{ path('admin_page_delete', {'categoryId': category.id, 'id': page.id}) }}"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="{{ path('admin_page_add', {'categoryId': category.id}) }}" class="btn btn-default btn-lg"><i class="fa fa-pencil"></i> Ajouter une page</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block JSfiles %}
+    {{ parent() }}   
+    <!-- bootstrap-progressbar -->
+    <script src="{{ asset('vendors/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
+    <!-- iCheck - Customizable checkboxes and radio buttons -->
+    <script src="{{ asset('vendors/iCheck/icheck.min.js') }}"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <!-- jQuery Tags Input -->
+    <script src="{{ asset('vendors/jquery.tagsinput/src/jquery.tagsinput.js') }}"></script>
+    <!-- Switchery - IOS7 style switches  for checkboxes -->
+    <script src="{{ asset('vendors/switchery/dist/switchery.min.js') }}"></script>
+    <!-- Select2 - Customizable select box -->
+    <script src="{{ asset('vendors/select2/dist/js/select2.full.min.js') }}"></script>
+    <!-- Autosize - Automatically adjust textarea height to fit text -->
+    <script src="{{ asset('vendors/autosize/dist/autosize.min.js') }}"></script>
+    <script src="{{ asset('js/collection-form.js') }}"></script>
+    <script src="{{ asset('js/dynamic-form.js')}}"></script>
+
+{% endblock %}
+
+
