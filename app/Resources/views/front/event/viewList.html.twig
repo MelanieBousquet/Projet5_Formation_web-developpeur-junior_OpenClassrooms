@@ -29,9 +29,9 @@
 							<div class="clearfix"></div>
 							<p>Publié le : {{ event.date|date('d/m/Y') }}</i></p>
 						</div>	
-
-						<div class="post-img"><img src="{{asset('event.mainImage')}}" alt="//"></div>
-
+                        {% if event.mainImage is not null%}
+						    <div class="post-img"><img src="{{asset('event.mainImage')}}" alt="//"></div>
+                        {% endif %}
 						<p> Date(s) : {{ event.event.beginningDateEvent|date('d/m/Y') }}
 						{% if event.event.beginningDateEvent != event.event.endingDateEvent %}
 						     - {{ event.event.endingDateEvent|date('d/m/Y') }}</p>

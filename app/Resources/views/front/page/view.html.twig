@@ -14,8 +14,9 @@
         <br/>
 		<div class="row">
 			<div class="col-md-12" style="text-align:center;">
-				<img src="{{ asset(page.image.webPath) }}" alt="photo {{ page.title }}" style="width:unset; heigth:400px;"/>
-
+			    {% if page.image is not null%}
+				    <img src="{{ asset(page.image.webPath) }}" alt="photo {{ page.title }}" style="width:unset; heigth:400px;"/>
+                {% endif %}
 			</div>
            <br/>
             <div class="row">

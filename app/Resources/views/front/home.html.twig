@@ -137,8 +137,6 @@
 									</div>
 									{% if publication.mainImage is not null %}
                                         <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="animal à l'adoption" class="img-rounded thumb">
-                                    {% elseif publication.images[0] is not null %}
-                                        <img class="animal-image" src="{{ asset(publication.images[0].webPath) }}" alt="animal à l'adoption" class="img-rounded thumb">
                                     {% else %}
                                         <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
                                     {% endif %}
@@ -171,8 +169,7 @@
 									</div>
 									{% if publication.mainImage is not null %}
                                         <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="animal perdu" class="img-rounded thumb">
-                                    {% elseif publication.images[0] is not null %}
-                                        <img class="animal-image" src="{{ asset(publication.images[0].webPath) }}" alt="animal perdu" class="img-rounded thumb">
+                                    
                                     {% else %}
                                         <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
                                     {% endif %}
@@ -206,8 +203,6 @@
 									</div>
 									{% if publication.mainImage is not null %}
                                         <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="animal trouvé" class="img-rounded thumb">
-                                    {% elseif publication.images[0] is not null %}
-                                        <img class="animal-image" src="{{ asset(publication.images[0].webPath) }}" alt="animal trouvé" class="img-rounded thumb">
                                     {% else %}
                                         <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
                                     {% endif %}
@@ -243,8 +238,6 @@
 					<div class="col-md-5">
 						{% if lastPublications[0].mainImage is not null %}
                             <img  src="{{ asset(lastPublications[0].mainImage.webPath) }}" alt="actualité" class="img-rounded thumb" >
-                        {% elseif lastPublications[0].images[0] is not null %}
-                            <img  src="{{ asset(lastPublications[0].images[0].webPath) }}" alt="actualité" class="img-rounded thumb">
                         {% else %}
                             <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="actualité">
                         {% endif %}
@@ -258,9 +251,7 @@
 					<div class="col-md-5">
                     {% if lastPublications[1].mainImage is not null %}
                             <img  src="{{ asset(lastPublications[1].mainImage.webPath) }}" alt="actualité" class="img-rounded thumb">
-                        {% elseif lastPublications[1].images[0] is not null %}
-                            <img  src="{{ asset(lastPublications[1].images[0].webPath) }}" alt="actualité" class="img-rounded thumb">
-                        {% else %}
+                       {% else %}
                             <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="actualité">
                         {% endif %}
                     </div>
@@ -297,7 +288,7 @@
 					<div class="col-sm-4">
 						 {% if lastEvent.mainImage is not null %}
                             <img  src="{{ asset(lastPublications[1].mainImage.webPath) }}" alt="actualité" class="img-rounded thumb">
-                        {% elseif lastEvent.images[0] is not null %}
+                        {% elseif lastEvent.images is not null %}
                             <img  src="{{ asset(lastPublications[1].images[0].webPath) }}" alt="actualité" class="img-rounded thumb">
                         {% else %}
                             <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="actualité">

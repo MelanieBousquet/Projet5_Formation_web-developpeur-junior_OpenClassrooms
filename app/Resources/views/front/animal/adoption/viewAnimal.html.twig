@@ -40,8 +40,6 @@
 						<div class="item active">
 						    {% if publication.mainImage is not null %}
 							<img style="max-height:500px; width:unset;" src="{{ asset(publication.mainImage.webPath) }}" alt="//">
-							{% elseif publication.images[0] is not null %}
-							<img style="max-height:500px; width:unset;" src="{{ asset(publication.images[0].webPath) }}" alt="//">
 							{% else %}
 							<img style="max-height:500px; width:unset;" src="{{ asset('uploads/img/7.jpeg') }}" alt="//">
 							{% endif %}

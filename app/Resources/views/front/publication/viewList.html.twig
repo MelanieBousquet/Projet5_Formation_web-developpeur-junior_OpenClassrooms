@@ -29,9 +29,10 @@
 							<div class="clearfix"></div>
 							<p>{{ publication.date|date('d/m/Y') }} <i class="icon-dot"></i></p>
 						</div>	
-
-						<div class="post-img"><img src="{{asset('publication.mainImage')}}" alt="//"></div>
-
+                        {% if publication.mainImage is not null %}
+						    <div class="post-img"><img src="{{asset('publication.mainImage')}}" alt="//"></div>
+                        
+                        {% endif %}
 						<p>{{ publication.content|raw }}</p>
 						<a href="{{ path('front_publication_card', {'id': publication.id}) }}" class="btn btn-default">Lire plus</a>
 					</div>
