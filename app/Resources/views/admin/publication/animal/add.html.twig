@@ -8,12 +8,6 @@
         display: none;
     }
 </style>
-{% endblock %}
-
-{% block title %}{{ parent() }}Ajout d'une publication sur un animal {% endblock %}
-
-{% block CSSfiles %}
-    {{ parent() }}
     <!-- iCheck - Customizable checkboxes and radio buttons  -->
     <link href="{{ asset('vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
     <!-- Select2 - Customizable select box  -->
@@ -23,6 +17,9 @@
     <!-- bootstrap-daterangepicker -->
     <link href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
 {% endblock %}
+
+{% block title %}{{ parent() }}Ajout d'une publication sur un animal {% endblock %}
+
 
 {% block contentTitle %}Nouvelle publication{% endblock %}
 
@@ -52,7 +49,7 @@
                 <div>{{ form_errors(form.updatedDate) }}</div>
             </div>
         </div>
-        
+        {% if app.request.query.get("state") == 'perdu' or app.request.query.get("state") == 'trouvé' %}
         <div class="form-group">
             {{ form_label(form.place, " ", {'label_attr': {'class': 'control-label col-md-2 col-sm-3 col-xs-12'}}) }}
             
@@ -61,7 +58,7 @@
                 <div>{{ form_errors(form.place) }}</div>
             </div>
         </div>        
-           
+        {% endif %}
 
         <div class="form-group">
 
