@@ -32,7 +32,7 @@
                         <p><strong>Lieu :</strong> {{ event.event.place }}</p>
                         <p><strong>Date(s) :</strong> {{ event.event.beginningDateEvent|date('d/m/Y') }}
                         {% if event.event.endingDateEvent != event.event.beginningDateEvent %} - {{ event.event.endingDateEvent|date('d/m/Y') }}{% endif %}</p>
-						<p>{{ event.content }}</p>
+						<p>{{ event.content|raw }}</p>
 						
 						<div id="map"></div>
 

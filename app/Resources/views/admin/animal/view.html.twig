@@ -123,7 +123,7 @@
                             <i class="fa fa-edit"></i> 
 
                         {% else %}
-                            {% if (animalState.state.type != 'réservé') and (animalState.state.type != 'retrouvé') and (animalState.state.type != 'propriétaire-retrouvé') and (animalState.state.type != 'adopté')  %}
+                            {% if (animalState.state.type != 'réservé') and (animalState.state.type != 'retrouvé') and (animalState.state.type != 'propriétaireretrouvé') and (animalState.state.type != 'adopté')  %}
                                 <a class="btn btn-app" href="{{ path('admin_animal_publication_add', {'state': animalState.state.type, 'animalStateId': animalState.id })}}">
                                 <span class="badge bg-blue" >Créer</span>
                                 <i class="fa fa-edit"></i>
@@ -132,7 +132,8 @@
                         {% if animalState.state.type == 'adoptable' %}A l'adoption
                         {% elseif animalState.state.type == 'trouvé' %}Animal trouvé
                         {% elseif animalState.state.type == 'perdu' %}Animal perdu
-                        {% else %}
+                        {% elseif animalState.state.type == 'retrouvé' %}Animal retrouvé
+                        {% elseif animalState.state.type == 'propriétaireretrouvé' %}Propriétaire retrouvé
                         {% endif %} 
                         </a>
                     {% endif %}

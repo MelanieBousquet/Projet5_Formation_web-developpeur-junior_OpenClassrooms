@@ -9,5 +9,4 @@ parameters:
     mailer_host: gmail
     mailer_user: bousquet.melanie@gmail.com
     mailer_password: trzmnrhoknnabhwk
-    # ajvwyqsnjmgmfqci
     secret: ThisTokenIsNotSoSecretChangeIt

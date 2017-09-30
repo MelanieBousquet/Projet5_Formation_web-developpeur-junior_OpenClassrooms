@@ -30,4 +30,19 @@ class NoteRepository extends \Doctrine\ORM\EntityRepository
         ;
         
     }
+    
+     public function findLastNotes()
+    {
+        $qb = $this->createQueryBuilder('n');
+        
+        $qb 
+            ->orderBy('n.date', 'DESC')
+            ->setMaxResults(20);
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;    
+    }
 }

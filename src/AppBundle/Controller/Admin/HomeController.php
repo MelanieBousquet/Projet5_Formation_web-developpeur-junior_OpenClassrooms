@@ -18,9 +18,13 @@ class HomeController extends Controller
     *
     * @Route("/admin/", name="admin_home")
     */
-    public function viewAction()
+    public function viewAction(Request $request)
     {
-        return $this->render('admin/home.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:Note');
+        $lastNotes =  $repository->findLastNotes();
+        
+        return $this->render('admin/home.html.twig', array('lastNotes' => $lastNotes));
     }
 
 }

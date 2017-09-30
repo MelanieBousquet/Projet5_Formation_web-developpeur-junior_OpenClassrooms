@@ -1,5 +1,24 @@
 {% extends "front/base.html.twig" %}
 
+{% block CSSfiles %}
+{{ parent() }}
+<style>
+    .container-img{  
+        position: relative; 
+
+    }
+    .animal-image {
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0; 
+        margin: auto; 
+        min-width: 50%;
+        min-height: 50%;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 
@@ -69,24 +88,23 @@
 				<div class="row">
 					<div class="col-md-9">
 					    {% if animalsOnAdoption[0].mainImage is not null %}
-						    <img src="{{ asset('animalsOnAdoption[0].mainImage.webPath ') }}" alt="animal à l'adoption" class="img-rounded thumb">
-						{% else animalsOnAdoption[0].image[0] is not null %}
-						    <img src="{{ asset('animalsOnAdoption[0].mage[0].webPath ') }}" alt="animal à l'adoption" class="img-rounded thumb">
+						    <img src="{{ asset(animalsOnAdoption[0].mainImage.webPath) }}" alt="animal à l'adoption" class="img-rounded thumb">
+						{% elseif animalsOnAdoption[0].images[0] is not null %}
+						    <img src="{{ asset(animalsOnAdoption[0].images[0].webPath) }}" alt="animal à l'adoption" class="img-rounded thumb">
 				        {% else %}
 				        <img src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
 				        {% endif %}
 						<h3>Dernier animal à l'adoption</h3>
-						<p>{{ animalsOnAdoption[0].content|truncate(55) }}</p>
-						<div class="foot">Posted 17 Jul 2013 <i class="icon-dot"></i> By Chris Patterson <span class="label label-default">Featured</span> </div>
+						<p>{{ animalsOnAdoption[0].content|truncate(80)|raw }}</p>
+						<div class="foot">Posté le {{ animalsOnAdoption[0].date|date("d/m/Y") }} <i class="icon-dot"></i> 
+						{% if animalsOnAdoption[0].updatedDate is not null %}Mis à jour le {{ animalsOnAdoption[0].updatedDate|date("d/m/Y") }} {% endif %} </div>
 					</div>
 					<div class="col-md-3 vitals">
-						<h4>Puppy Vitals <i class="icon-heart"></i></h4>
+						<h4>Caractéristiques<i class="icon-heart"></i></h4>
 						<p>
-							<strong>Name:</strong> Lassie<br />
-							<strong>Age:</strong> 16 months, 9 days<br />
-							<strong>Gender:</strong> Famale<br />
-							<strong>Breed:</strong> Yorkshire Terrier<br />
-							<strong>Price:</strong> Call of prices<br />
+							<strong>Âge :</strong> {{ animalsOnAdoption[0].animalState.animal.age }}<br />
+							<strong>Race :</strong> {{ animalsOnAdoption[0].animalState.animal.breed.name }}<br />
+							<strong>Sexe :</strong> {{ animalsOnAdoption[0].animalState.animal.sex.type }}<br />
 						</p>
 					</div>
 				 </div>
@@ -101,140 +119,107 @@
 		<div class="container">
 
 			<div class="row">
-				<div class="col-xs-12"><h2>Our Puppies</h2></div>
+				<div class="col-xs-12"><h2>Derniers animaux à l'adoption</h2></div>
 			</div>
 
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="grid">
 						<ul>
-							<li class="male top">
-								<a href="dogs.html">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">$2100</span>
-										<span class="wks">9 Wks F</span>
-										<span class="txt">Maltese</span>
-									</div>
-									<img src="img/puppies/puppie01.jpg" alt="//"/>
-									<span class="name">Maltese</span>
-								</a>
-							</li>
-							<li class="famale top">
-								<a href="dogs.html">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">$2100</span>
-										<span class="wks">9 Wks F</span>
-										<span class="txt">Beagle</span>
-									</div>
-									<span class="tag sale"><span>sale</span></span>
-									<img src="img/puppies/puppie02.jpg" alt="//"/>
-									<span class="name">Beagle</span>
-								</a>
-							</li>
-							<li class="male feature">
-								<a href="dogs.html">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">$2100</span>
-										<span class="wks">9 Wks F</span>
-										<span class="txt">Maltese</span>
-									</div>
-									<img src="img/puppies/puppie03.jpg" alt="//"/>
-									<span class="name">Retriever</span>
-								</a>
-							</li>
-							<li class="male">
-								<a href="dogs.html">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">$2100</span>
-										<span class="wks">9 Wks F</span>
-										<span class="txt">Maltese</span>
-									</div>
-									<img src="img/puppies/puppie04.jpg" alt="//"/>
-									<span class="name">Pinscher</span>
-								</a>
-							</li>
-							<li class="male">
-								<a href="dogs.html">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">$2100</span>
-										<span class="wks">9 Wks F</span>
-										<span class="txt">Maltese</span>
-									</div>
-									<img src="img/puppies/puppie05.jpg" alt="//"/>
-									<span class="name">Collie</span>
-								</a>
-							</li>
+						    {% for publication in animalsOnAdoption %}
 							<li>
-								<a href="dogs.html">
+								<a class="container-img" href="{{ path('front_adoption_animal_card', {'id': publication.id }) }}">
 									<div class="more">
 										<i class="icon-search pull-right"></i>
-										<span class="price">$2100</span>
-										<span class="wks">9 Wks F</span>
-										<span class="txt">Maltese</span>
+										<span class="price">{{ publication.animalState.animal.sex.type }}</span>
+										<span class="wks">{{ publication.animalState.animal.age }}</span>
+										<span class="txt">{{ publication.animalState.animal.name }}</span>
 									</div>
-									<img src="img/puppies/puppie06.jpg" alt="//"/>
-									<span class="name">Maltese</span>
+									{% if publication.mainImage is not null %}
+                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="animal à l'adoption" class="img-rounded thumb">
+                                    {% elseif publication.images[0] is not null %}
+                                        <img class="animal-image" src="{{ asset(publication.images[0].webPath) }}" alt="animal à l'adoption" class="img-rounded thumb">
+                                    {% else %}
+                                        <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
+                                    {% endif %}
 								</a>
 							</li>
-							<li class="male top">
-								<a href="dogs.html">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">$2100</span>
-										<span class="wks">9 Wks F</span>
-										<span class="txt">Maltese</span>
-									</div>
-									<img src="img/puppies/puppie07.jpg" alt="//"/>
-									<span class="name">Beagle</span>
-								</a>
-							</li>
-							<li class="famale top">
-								<a href="dogs.html">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">$2100</span>
-										<span class="wks">9 Wks F</span>
-										<span class="txt">Maltese</span>
-									</div>
-									<img src="img/puppies/puppie08.jpg" alt="//"/>
-									<span class="name">Retriever</span>
-								</a>
-							</li>
-							<li class="famale feature">
-								<a href="dogs.html">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">$2100</span>
-										<span class="wks">9 Wks F</span>
-										<span class="txt">Maltese</span>
-									</div>
-									<span class="tag sold"><span>sold</span></span>
-									<img src="img/puppies/puppie09.jpg" alt="//"/>
-									<span class="name">Pinscher</span>
-								</a>
-							</li>
-							<li class="famale">
-								<a href="dogs.html">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">$2100</span>
-										<span class="wks">9 Wks F</span>
-										<span class="txt">Maltese</span>
-									</div>
-									<img src="img/puppies/puppie10.jpg" alt="//"/>
-									<span class="name">Collie</span>
-								</a>
-							</li>
+							{% endfor %}
 							
 						</ul>
 					</div>
 				</div>
 			 </div>
+			 
+			 <div class="row">
+				<div class="col-xs-12"><h2>Derniers animaux perdus</h2></div>
+			</div>
+			
+			{% if animalsLost|length != 0 %}
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="grid">
+						<ul>
+						    {% for publication in animalsLost %}
+							<li>
+								<a class="container-img" href="{{ path('front_animal_found_lost_card', {'state': 'perdu', 'id': publication.id }) }}">
+									<div class="more">
+										<i class="icon-search pull-right"></i>
+										<span class="price">{{ publication.animalState.animal.sex.type }}</span>
+										<span class="wks">{{ publication.animalState.animal.age }}</span>
+										<span class="txt">{{ publication.animalState.animal.name }}</span>
+									</div>
+									{% if publication.mainImage is not null %}
+                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="animal perdu" class="img-rounded thumb">
+                                    {% elseif publication.images[0] is not null %}
+                                        <img class="animal-image" src="{{ asset(publication.images[0].webPath) }}" alt="animal perdu" class="img-rounded thumb">
+                                    {% else %}
+                                        <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
+                                    {% endif %}
+								</a>
+							</li>
+							{% endfor %}
+							
+						</ul>
+					</div>
+				</div>
+			 </div>
+			 {% endif %}
+			 
+			 {% if animalsFound|length != 0 %}
+			  <div class="row">
+				<div class="col-xs-12"><h2>Derniers animaux trouvés</h2></div>
+			</div>
+			
+            <div class="row">
+				<div class="col-xs-12">
+					<div class="grid">
+						<ul>
+						    {% for publication in animalsFound %}
+							<li>
+								<a class="container-img" href="{{ path('front_animal_found_lost_card', {'state': 'trouvé', 'id': publication.id }) }}">
+									<div class="more">
+										<i class="icon-search pull-right"></i>
+										<span class="price">{{ publication.animalState.animal.sex.type }}</span>
+										<span class="wks">{{ publication.animalState.animal.age }}</span>
+										<span class="txt">{{ publication.animalState.animal.name }}</span>
+									</div>
+									{% if publication.mainImage is not null %}
+                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="animal trouvé" class="img-rounded thumb">
+                                    {% elseif publication.images[0] is not null %}
+                                        <img class="animal-image" src="{{ asset(publication.images[0].webPath) }}" alt="animal trouvé" class="img-rounded thumb">
+                                    {% else %}
+                                        <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
+                                    {% endif %}
+								</a>
+							</li>
+							{% endfor %}
+							
+						</ul>
+					</div>
+				</div>
+			 </div>
+			 {% endif %}
 
 		</div>     
 		</article>
@@ -245,30 +230,47 @@
 			<div class="container">
 			
 				<div class="row">
-					<div class="col-xs-12"><h2 class="header">Our Services</h2></div>
+					<div class="col-xs-12"><h2 class="header">Actualités</h2></div>
 				</div>
 				
-
+               
 				<div class="row service first">
 					<div class="col-md-7">
-						<h2>Bath &amp; Grooming</h2>
-						<p>From a standard bath to a full-service groom, we offer a variety of dog <strong>grooming services</strong> that are just right for your puppy or dog.</p>
-						<p>Firt choose, a Dog Bath or Dog Groom Package, then personalize the rest to fit your needs!</p>
+						<h2>{{ lastPublications[0].title }}</h2>
+						<a class="btn btn-default" href="{{ path('front_publication_card', {'id': lastPublications[0].id }) }}">Lire plus</a>
+						<p>{{ lastPublications[0].content|truncate(200)|raw}}</p>
 					</div>
 					<div class="col-md-5">
-						<img src="img/services/services01.jpg" alt="Our Services">
+						{% if lastPublications[0].mainImage is not null %}
+                            <img  src="{{ asset(lastPublications[0].mainImage.webPath) }}" alt="actualité" class="img-rounded thumb" >
+                        {% elseif lastPublications[0].images[0] is not null %}
+                            <img  src="{{ asset(lastPublications[0].images[0].webPath) }}" alt="actualité" class="img-rounded thumb">
+                        {% else %}
+                            <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="actualité">
+                        {% endif %}
 					</div>
 				</div>
 				<div class="row service">
 					<div class="col-md-12 visible-xs visible-sm">
-						<h2>Kennel &amp; Boarding</h2>
+						<h2>{{ lastPublications[1].title }}</h2>
+						<a class="btn btn-default" href="{{ path('front_publication_card', {'id': lastPublications[1].id }) }}">Lire plus</a>
 					</div>
-					<div class="col-md-5"><img src="img/services/services02.jpg" alt="Our Services"></div>
+					<div class="col-md-5">
+                    {% if lastPublications[1].mainImage is not null %}
+                            <img  src="{{ asset(lastPublications[1].mainImage.webPath) }}" alt="actualité" class="img-rounded thumb">
+                        {% elseif lastPublications[1].images[0] is not null %}
+                            <img  src="{{ asset(lastPublications[1].images[0].webPath) }}" alt="actualité" class="img-rounded thumb">
+                        {% else %}
+                            <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="actualité">
+                        {% endif %}
+                    </div>
 					<div class="col-md-7">
-						<h2 class="visible-md visible-lg">Kennel &amp; Boarding</h2>
-						<p>Our high-end luxury <strong>Doggie Suites</strong> are all equipped with flat screen for your pet's enjoyment. Our facility was designed to offer you pet the most exclusive and unique experience, a perfect alternative to a caged boarding kennel.</p>
+						<h2>{{ lastPublications[1].title }}</h2>
+						<a class="btn btn-default" href="{{ path('front_publication_card', {'id': lastPublications[1].id }) }}">Lire plus</a>
+						<p>{{ lastPublications[1].content|truncate(200)|raw}}</p>
 					</div>
 				</div>
+				
 
 			</div>
 		</article>
@@ -276,33 +278,49 @@
 
 
 		<!-- Coupons -->
+		{% if lastEvent is not null %}
 		<article class="coupons">
 			<div class="container">
-				<header><h2>Coupons</h2></header>
+				<header><h2>Evénement</h2></header>
 				
 				<div class="row">
 					<div class="title">
-						<div class="centered"><div><h2>In-Store Printable Coupons</h2></div></div>
-						<p>We offer all of our customers in-store printable coupons that you can only find online on our website. Check back daily for news deals!</p>
+						<div class="centered"><div><h2>{{ lastEvent.title }}</h2></div></div>
+						{% if lastEvent.event.place is not null %}
+						<p>Lieu : {{ lastEvent.event.place }}</p>
+				        {% endif %}
 						<hr>
 					</div>
 				</div>
 		
 				<div class="row coupon">
 					<div class="col-sm-4">
-						<img src="img/coupons/coupon01.jpg" alt="pet image">
+						 {% if lastEvent.mainImage is not null %}
+                            <img  src="{{ asset(lastPublications[1].mainImage.webPath) }}" alt="actualité" class="img-rounded thumb">
+                        {% elseif lastEvent.images[0] is not null %}
+                            <img  src="{{ asset(lastPublications[1].images[0].webPath) }}" alt="actualité" class="img-rounded thumb">
+                        {% else %}
+                            <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="actualité">
+                        {% endif %}
 					</div>
 					<div class="col-sm-7">
-						<span class="expires">expires: 4/11/2014</span>
-						<h3>Hand Scissor Haircut</h3>
-						<span class="newnumber">Free</span>
-						<p>Cats and dogs ejoyment. Our facility was designed to offer your pet the most exclusive and unique experience, a perfect alternative to a caged</p>
-						<a href="#" class="btn btn-default">Print Code</a>
+						<span class="expires">
+						{% if lastEvent.event.beginningDateEvent is not null %}
+						    {{ lastEvent.event.beginningDateEvent|date("d/m/Y")}}
+				        {% endif %}
+				        {% if lastEvent.event.endingDateEvent is not null %}
+				            {{ lastEvent.event.endingDateEvent|date("d/m/Y")}}
+				        {% endif %}
+						</span>
+						
+						<p>{{ lastEvent.content|truncate(80)|raw }}</p>
+						<a href="{{ path('front_event_card', {'id': lastEvent.id })}}" class="btn btn-default">Lire plus</a>
 					</div>
 				</div>
 
 			</div>     
 		</article>
+		{% endif %}
 		<!-- end Coupons -->
 
 	</section>

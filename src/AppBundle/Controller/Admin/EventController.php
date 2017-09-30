@@ -65,11 +65,15 @@ class EventController extends Controller
         $event = $em->getRepository('AppBundle:Publication')->findOneById($id);
         $listNotes = $em->getRepository('AppBundle:Note')->findNotesbyObject('publication', $id);
         
+        if ($event === null) {
+          throw $this->createNotFoundException("La page que vous demandez n'existe pas.");
+        }
+        
         $note = new Note();
         $form = $this->get('form.factory')->create(NoteType::class, $note);
         $user = $this->get('security.token_storage')->getToken()->getUser();
-            $note->setUser($user);
-            $note->setPublication($event);
+        $note->setUser($user);
+        $note->setPublication($event);
         
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em->persist($note);

@@ -125,6 +125,16 @@
                                                 </li>
                                             </ul>
                                         </li>
+                                        <li><a>Retrouvés<span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chat', 'state': 'retrouvé'}) }}">Chats</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chien', 'state': 'retrouvé'}) }}">Chiens</a>
+                                                </li>
+                                            </ul>
+                                        </li>
                                         <li><a>Trouvés<span class="fa fa-chevron-down"></span></a>
                                             <ul class="nav child_menu">
                                                 <li class="sub_menu">
@@ -132,6 +142,16 @@
                                                 </li>
                                                 <li>
                                                     <a href="{{ path('admin_animal', {'animalType': 'chien', 'state': 'trouvé'}) }}">Chiens</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a>Propriétaire retrouvés<span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chat', 'state': 'propriétaireretrouvé'}) }}">Chats</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ path('admin_animal', {'animalType': 'chien', 'state': 'propriétaireretrouvé'}) }}">Chiens</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -276,6 +296,15 @@
 
             });
         </script>
+         <!-- TinyMCE -->
+    <script src='//cloud.tinymce.com/stable/tinymce.min.js?apiKey=sv4s346i3ca9cy8wl9ftfpicl8n054bnmmxbkuek5c2xg71d'></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            language: 'fr_FR',
+            language_url: 'http://melanie-bousquet.fr/tinymce/langs/fr_FR.js'
+        });
+    </script>
     {% endblock %}
     
 </body>

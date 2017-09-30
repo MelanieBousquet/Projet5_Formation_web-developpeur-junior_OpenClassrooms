@@ -1,0 +1,27 @@
+{% extends "front/base.html.twig" %}
+
+{% block content %}
+<section id="spuppie">
+	
+	<!-- begin Our Puppies -->
+	<article>
+	<div class="container">
+
+		<div class="row">
+			<div class="col-xs-12"><h2 class="header">Erreur !</h2></div>
+		</div>
+        <div>
+            <h1>Oups! Une erreur est survenue</h1>
+            <h2>La page que vous demandez n'existe pas.</h2>
+
+            <div>
+              Désolés pour le dérangement occasionné.
+            </div>
+            <a class="btn btn-default" href="{{ path('front_home')}}">Retour à la page d'accueil</a>
+        </div>
+    </div>
+    </article>
+</section>
+
+
+{% endblock %}

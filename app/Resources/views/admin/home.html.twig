@@ -2,9 +2,8 @@
 
 {% block title %}{{ parent() }} Accueil {% endblock %}
 
-{% block contentTitle %}Panneau d'administration {% endblock %}
+{% block contentTitle %}Bienvenue ! {% endblock %}
 
-{% block contentSubtitle %}Accueil{% endblock %}
 
 {% block content %}
     
@@ -30,9 +29,88 @@
         </div>
         
     {% endfor %}
+    {% if is_granted('ROLE_ADMIN') %}
+         <div class="x_content">
+                <div class="col-md-12">
+                    <div class="x_panel">
+                        <div class="x_content">
 
-    
+                      <div class="row top_tiles">
+                      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="tile-stats">
+                          <div class="icon"><i class="fa fa-pencil"></i></div>
+                          <div class="count">Animal</div>
+                            <h3><a href="{{ path('admin_animal_add') }}">Créer un nouveau</a></h3>
+                        </div>
+                      </div>
+                      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="tile-stats">
+                          <div class="icon"><i class="fa fa-pencil"></i></div>
+                          <div class="count">Annonce</div>
+                            <h3><a href="{{ path('admin_publication_add') }}">Créer une nouvelle</a></h3>
+                        </div>
+                      </div>
+                      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="tile-stats">
+                          <div class="icon"><i class="fa fa-pencil"></i></div>
+                          <div class="count">Evénement</div>
+                            <h3><a href="{{ path('admin_event_add') }}">Créer un nouveau</a></h3>
+                        </div>
+                      </div>
 
+                    </div>
+                        </div>
+                    </div>
+             </div>
+        </div>
+    {% endif %}
+
+    <div class="x_content">
+            <div class="col-md-12">
+                <div class="x_panel">
+                   <div class="x_title">
+                        <h2>Dernières  notes internes</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Utilisateur</th>
+                                    <th>Note</th>
+                                    <th>Sujet de la note</th>
+                                </tr>
+                            </thead>
+                            <tbody>                 
+                                {% for note in lastNotes %}
+                                    <tr>
+                                        <td>{{ note.user.userPseudo()|capitalize }}</td>
+                                        <td>{{ note.message|truncate(80) }}</td>
+                                        <td>
+                                            {% if note.animal is not null %}
+                                               <a class="btn btn-default" href="{{ path('admin_animal_card', { 'id': note.animal.id} )}}">Voir</a>
+                                                {{ note.animal.name }}
+                                                
+                                            {% elseif note.publication.event is not null %}
+                                               <a class="btn btn-default" href="{{ path('admin_event_card', {'id': note.publication.id })}}">Voir</a>
+                                                {{ note.publication.title }}
+                                                
+                                            {% else %}
+                                              <a class="btn btn-default" href="{{ path('admin_publication_card', {'id': note.publication.id })}}">Voir</a>
+                                               {{ note.publication.title }}
+                                                
+                                            {% endif %}
+                                        </td>
+
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+        </div>
+    </div>
 
               
 {% endblock %}

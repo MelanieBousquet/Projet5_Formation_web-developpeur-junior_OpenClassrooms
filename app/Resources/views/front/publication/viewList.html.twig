@@ -32,7 +32,7 @@
 
 						<div class="post-img"><img src="{{asset('publication.mainImage')}}" alt="//"></div>
 
-						<p>{{ publication.content }}</p>
+						<p>{{ publication.content|raw }}</p>
 						<a href="{{ path('front_publication_card', {'id': publication.id}) }}" class="btn btn-default">Lire plus</a>
 					</div>
 					{% endfor %}
