@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 30 Septembre 2017 à 21:43
+-- Généré le :  Sam 30 Septembre 2017 à 22:01
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.0.10
 
@@ -35,7 +35,7 @@ CREATE TABLE `animal` (
   `birthday` date DEFAULT NULL,
   `sterilised` tinyint(1) DEFAULT NULL,
   `identificationNumber` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` tinytext COLLATE utf8_unicode_ci,
   `user_id` int(11) DEFAULT NULL,
   `main_image_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -55,7 +55,8 @@ INSERT INTO `animal` (`id`, `sex_id`, `breed_id`, `type_identification_id`, `nam
 (30, 2, 1, 1, 'Titi', '2015-11-12', 1, NULL, '<p>Calme mais apeur&eacute;e</p>', NULL, 60),
 (31, 1, 1, 1, 'Riri', '2017-04-19', 1, NULL, '<p>Chaton joueur et vif</p>', NULL, 63),
 (32, 1, 1, 1, 'Loulou', '2016-09-01', 1, NULL, '<p>Chaton joueur et tr&egrave;s sociable</p>', NULL, 64),
-(33, 1, 1, 4, 'Caramel', '2017-05-12', 0, NULL, '<p>Chaton tr&egrave;s sociable</p>', NULL, 68);
+(33, 1, 1, 4, 'Caramel', '2017-05-12', 0, NULL, '<p>Chaton tr&egrave;s sociable</p>', NULL, 68),
+(34, 2, 1, 3, 'nehngoiqG', '2017-10-15', 1, NULL, '<p>VEDVEK?B</p>\r\n<p>FBFWSBN KSWLD</p>\r\n<p>DNDXND</p>\r\n<p>ND</p>\r\n<p>NWD</p>\r\n<p>N</p>\r\n<p>WDN</p>\r\n<p>DWN</p>\r\n<p>DW</p>\r\n<p>NGD</p>\r\n<p>N</p>', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -90,7 +91,8 @@ INSERT INTO `animal_state` (`id`, `animal_id`, `state_id`, `date`, `publication_
 (32, 32, 4, '2017-09-01', NULL, 0),
 (33, 32, 6, '2017-09-09', NULL, 1),
 (34, 33, 5, '2017-09-01', NULL, 0),
-(35, 33, 7, '2017-09-07', NULL, 1);
+(35, 33, 7, '2017-09-07', NULL, 1),
+(36, 34, 1, '2017-10-19', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -716,12 +718,12 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `animal`
 --
 ALTER TABLE `animal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT pour la table `animal_state`
 --
 ALTER TABLE `animal_state`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT pour la table `breed`
 --
