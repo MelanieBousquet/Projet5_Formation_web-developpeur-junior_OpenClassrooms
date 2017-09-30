@@ -43,10 +43,10 @@
 
                     <div class="title-right">
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a class="btn btn-danger btn-xs pull-right" href="{{ path('admin_event_edit', {'id': event.id })}}"><i class="fa fa-trash"></i> Supprimer</a>
+                            <a class="btn btn-danger btn-xs pull-right" href="{{ path('admin_event_delete', {'id': event.id })}}"><i class="fa fa-trash"></i> Supprimer</a>
                             <a class="btn btn-primary btn-xs pull-right" href="{{ path('admin_event_edit', {'id': event.id })}}"><i class="fa fa-pencil"></i> Editer</a>
                         {% endif %}
-                        <a class="btn btn-success btn-xs pull-right" href=""><i class="fa fa-camera-retro"></i> Gestion des photos</a>
+                        <a class="btn btn-success btn-xs pull-right" href="{{ path('admin_event_images', {'id': event.id }) }}"><i class="fa fa-camera-retro"></i> Gestion des photos</a>
                     </div>
                     <div class="title-left">
                         <h3 class="prod_title">{{ event.title|upper }}</h3>
@@ -86,13 +86,9 @@
                     {% for note in listNotes %}
                         {% if is_granted('ROLE_ADMIN') %}
                             <a class="btn btn-danger btn-xs pull-left" style="position:relative; top:8px;" href="{{ path('admin_note_delete', { 'objectOfTheNote': 'evenement', 'id': event.id , 'noteId': note.id }) }}"><i class="fa fa-trash"></i></a>
-                            <a class="btn btn-primary btn-xs pull-left" style="position:relative; top:8px;" href=""><i class="fa fa-pencil"></i></a>
                         {% endif %}
                         <li>
                             <a>
-                                <span class="image">
-                                    <img src="{{ asset('uploads/img/23.jpeg') }}" alt="img" />
-                                </span>
                                 <span>
                                     <b>{{ note.user.userPseudo|capitalize }} - {{ note.date|date("d/m/Y") }}</b>
                                 </span>
@@ -125,18 +121,6 @@
     <div class="clearfix"></div>
     
               
-{% endblock %}
-
-{% block JSfiles %}
-{{ parent() }}
-
-<script>
-    $(document).ready(function () {
-
-        $('#flashbagModal').modal('show');
-
-    });
-    </script>
 {% endblock %}
 
 

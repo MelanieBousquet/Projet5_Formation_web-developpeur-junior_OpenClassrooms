@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * AnimalState
  *
@@ -27,6 +28,9 @@ class AnimalState
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="date")
+     * @Assert\DateTime( 
+     * message="Date non valide"     
+     * )
      */
     private $date;
 
@@ -45,11 +49,16 @@ class AnimalState
     private $state;
     
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Publication", inversedBy="animalState")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Publication", inversedBy="animalState", cascade={"persist", "remove"})
      * @Assert\Valid()
      */
     private $publication;
-
+    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $currentState;
+    
     /**
      * Get id
      *
@@ -155,5 +164,29 @@ class AnimalState
     public function getPublication()
     {
         return $this->publication;
+    }
+
+    /**
+     * Set currentState
+     *
+     * @param boolean $currentState
+     *
+     * @return AnimalState
+     */
+    public function setCurrentState($currentState)
+    {
+        $this->currentState = $currentState;
+
+        return $this;
+    }
+
+    /**
+     * Get currentState
+     *
+     * @return boolean
+     */
+    public function getCurrentState()
+    {
+        return $this->currentState;
     }
 }

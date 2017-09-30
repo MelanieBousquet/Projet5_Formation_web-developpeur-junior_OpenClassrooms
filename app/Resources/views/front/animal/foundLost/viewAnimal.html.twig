@@ -17,7 +17,7 @@
 	<div class="container">
 
 		<div class="row">
-			<div class="col-xs-12"><h2 class="header">A l'adoption</h2></div>
+			<div class="col-xs-12"><h2 class="header">{{ app.request.attributes.get("state")|capitalize }}</h2></div>
 		</div>
 
 		<div class="row">

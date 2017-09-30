@@ -24,7 +24,7 @@ class HostFamiliesController extends Controller
         $listFamilies = $em->getRepository('AppBundle:User')->getUsersWithSpecificRole('ROLE_FA');
         $listAnimalsAlone = $em->getRepository('AppBundle:Animal')->getAnimalsAlone();
         
-        return $this->render('admin/users/host-families.html.twig', array(
+        return $this->render('admin/users/hostFamilies.html.twig', array(
             'listFamilies' => $listFamilies,
             'listAnimalsAlone' => $listAnimalsAlone
         ));

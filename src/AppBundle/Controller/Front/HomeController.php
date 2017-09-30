@@ -1,6 +1,6 @@
 <?php
 
-/* */
+/* Home Page */
 
 namespace AppBundle\Controller\Front;
 
@@ -12,8 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-
-
 class HomeController extends Controller
 {
     /**
@@ -21,9 +19,23 @@ class HomeController extends Controller
     *
     * @Route("/", name="front_home")
     */
-    public function viewAction()
+    public function viewAction(Request $request)
     {
-        return $this->render('front/home.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:Publication');
+        $animalsOnAdoption = $repository->findAnimalsOnAdoptionForHomePage();
+        $animalsLost = $repository->findAnimalsLostForHomePage();
+        $animalsFound = $repository->findAnimalsFoundForHomePage();
+        $lastEvent = $repository->findLastEventForHomePage();
+        $lastPublications = $repository->findLastPublicationsForHomePage();
+        
+        return $this->render('front/home.html.twig', array(
+            'animalsOnAdoption' => $animalsOnAdoption,
+            'animalsLost' => $animalsLost,
+            'animalsFound' => $animalsFound,
+            'lastEvent' => $lastEvent,
+            'lastPublications' => $lastPublications
+        ));
     }
 
 }

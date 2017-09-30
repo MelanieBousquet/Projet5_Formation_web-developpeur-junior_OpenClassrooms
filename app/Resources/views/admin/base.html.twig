@@ -24,6 +24,30 @@
     
 </head>
 
+{% for message in app.session.flashbag.get('info') %}
+    <div  class="modal fade" id="flashbagModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Info</h4>
+                </div>
+                <div class="modal-body">
+                    {{ message }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+{% endfor %}
+		
+
 <body class="nav-md">
     <div class="container body">
         <div class="main_container">
@@ -58,7 +82,7 @@
                             <h3>Listes en base de données</h3>
                             <ul class="nav side-menu">
                             
-                                <li><a><i class="fa fa-paw"></i> Animaux <span class="fa fa-chevron-down"></span></a>
+                                <li title="Animaux triés par leur dernier statut"><a><i class="fa fa-paw"></i> Animaux <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         {% if is_granted('ROLE_ADMIN') %}<li><a href="{{ path('admin_animal_add') }}">Ajout d'un animal</a>{% endif %}
                                         <li><a>A adopter<span class="fa fa-chevron-down"></span></a>
@@ -137,9 +161,9 @@
                                 <li><a><i class="fa fa-exclamation-circle"></i> Annonces <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         {% if is_granted('ROLE_ADMIN') %}
-                                            <li><a href="#">Publier une nouvelle</a>
+                                            <li><a href="{{ path('admin_publication_add') }}">Publier une nouvelle</a>
                                         {% endif %}
-                                        <li><a href="#">Liste des annonces</a></li>
+                                        <li><a href="{{ path('admin_publications') }}">Liste des annonces</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -245,6 +269,13 @@
         <script src="{{ asset('vendors/nprogress/nprogress.js') }}"></script>
         <!-- Custom Theme Scripts -->
         <script src="{{ asset('build/js/custom.min.js') }}"></script>
+        <script>
+            $(document).ready(function () {
+
+                $('#flashbagModal').modal('show');
+
+            });
+        </script>
     {% endblock %}
     
 </body>

@@ -27,7 +27,9 @@ class Type
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     * message = "Ce champ ne doit pas être vide"
+     * )
      */
     private $name;
 

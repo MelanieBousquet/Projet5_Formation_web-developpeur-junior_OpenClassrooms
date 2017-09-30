@@ -36,7 +36,7 @@ class DefaultPublicationController extends Controller
             ->getManager()
             ->getRepository('AppBundle:Publication')
         ;
-        $publications = $repository->findDefaultPublications($page);
+        $publications = $repository->findDefaultPublications($page, 'all');
         
         // Count the total number of pages
         $nbPages = ceil(count($publications) / ($nbPerPages = 10));
@@ -131,7 +131,7 @@ class DefaultPublicationController extends Controller
         $form = $this->get('form.factory')->create(DefaultPublicationEditType::class, $publication);
 
         if (null === $publication) {
-            throw new NotFoundHttpException("L'événement d'id ".id. " n'existe pas.");
+            throw new NotFoundHttpException("L'événement d'id ".$id. " n'existe pas.");
         }
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
@@ -164,7 +164,7 @@ class DefaultPublicationController extends Controller
         $publication = $em->getRepository('AppBundle:Publication')->find($id);
 
         if (null === $publication) {
-            throw new NotFoundHttpException("L'événement d'id ".id. " n'existe pas.");
+            throw new NotFoundHttpException("L'événement d'id ".$id. " n'existe pas.");
         }
 
         $em->remove($publication);

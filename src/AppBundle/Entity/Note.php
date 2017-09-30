@@ -27,23 +27,19 @@ class Note
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
-     * @Assert\DateTime()
+     * @Assert\DateTime( 
+     * message="Date non valide"     
+     * )
      */
     private $date;    
     
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
-     */
-    private $updatedDate;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="message", type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     * message = "Ce champ ne doit pas être vide"
+     * )
      */
     private $message;
 
@@ -69,7 +65,6 @@ class Note
     public function __construct()
     {
         $this->date = new \DateTime();
-        $this->updatedDate = new \DateTime();
     }
 
     /**

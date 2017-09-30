@@ -20,15 +20,19 @@ use Symfony\Component\HttpFoundation\File\File;
 class ImagesController extends Controller
 {
     /**
-    * List of images of a specific animal
-    *
-    * @Route("/admin/animal/{id}/photos", name="admin_animal_images", requirements={"id": "\d+"})
-    * @Security("has_role('ROLE_FA')")
-    */
-    public function viewListAction($id, Request $request)
+     * List of images of a specific animal
+     *
+     * @Route("/admin/animal/{id}/photos", name="admin_animal_images", requirements={"id": "\d+"})
+     * @Security("has_role('ROLE_FA')")
+     */
+    public function viewListForAnimalAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();        
         $animal = $em->getRepository('AppBundle:Animal')->findOneBy(array('id' => $id));
+        
+        if (null === $animal) {
+            throw new NotFoundHttpException("L'animal' d'id ".$id. " n'existe pas.");
+        }
         
         $image = new Image();
         $form = $this->get('form.factory')->create(ObjectImageType::class, $image);
@@ -48,57 +52,129 @@ class ImagesController extends Controller
             'animal' => $animal, 
             'form' => $form->createView()
         ));
+    }    
+    
+    /**
+     * List of images of a specific publication
+     *
+     * @Route("/admin/publication/{id}/photos", name="admin_publication_images", requirements={"id": "\d+"})
+     * @Security("has_role('ROLE_FA')")
+     */
+    public function viewListForPublicationAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();        
+        $publication = $em->getRepository('AppBundle:Publication')->findOneBy(array('id' => $id));
+        
+        if (null === $publication) {
+            throw new NotFoundHttpException("La publication d'id ".$id. " n'existe pas.");
+        }
+        
+        $image = new Image();
+        $form = $this->get('form.factory')->create(ObjectImageType::class, $image);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $image->addPublication($publication);
+            $em->persist($image);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('info', 'Image bien enregistrée ! ');
+
+            return $this->redirectToRoute('admin_publication_images', array('id' => $publication->getId()));
+        }
+
+        return $this->render('admin/publication/default/images/viewList.html.twig', array(
+            'publication' => $publication, 
+            'form' => $form->createView()
+        ));
+    }    
+    
+    /**
+     * List of images of a specific event
+     *
+     * @Route("/admin/evenement/{id}/photos", name="admin_event_images", requirements={"id": "\d+"})
+     * @Security("has_role('ROLE_FA')")
+     */
+    public function viewListForEvenementAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();        
+        $event = $em->getRepository('AppBundle:Publication')->findOneBy(array('id' => $id));
+        
+        if (null === $event) {
+            throw new NotFoundHttpException("L'evenement' d'id ".$id. " n'existe pas.");
+        }
+        
+        $image = new Image();
+        $form = $this->get('form.factory')->create(ObjectImageType::class, $image);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $image->addPublication($event);
+            $em->persist($image);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('info', 'Image bien enregistrée ! ');
+
+            return $this->redirectToRoute('admin_event_images', array('id' => $event->getId()));
+        }
+
+        return $this->render('admin/publication/events/images/viewList.html.twig', array(
+            'event' => $event, 
+            'form' => $form->createView()
+        ));
     }
     
     
     /**
      * Define the main image of a specific animal
      *
-     * @Route("/admin/{object}/{objectId}/photo-principale/{imageId}", name="admin_object_mainimage", requirements={"object": "animal|publication|evenement", "objectId": "\d+", "imageId": "\d+"})
+     * @Route("/admin/{object}/{objectId}/photo-principale/{imageId}", name="admin_object_mainimage", requirements={"object": "animal|publication|event", "objectId": "\d+", "imageId": "\d+"})
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function changeMainImageAction($object, $objectId, $imageId, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $objectNameRepo = 'AppBundle:' . ucfirst($object);
+        if ($object == 'event' || $object == 'publication') {
+            $objectNameRepo = 'AppBundle:Publication';
+        } else {
+            $objectNameRepo = 'AppBundle:Animal' ;
+        }
+        
         $objectById = $em->getRepository($objectNameRepo)->find($objectId);
         $imageToDefineAsMain = $em->getRepository('AppBundle:Image')->find($imageId);
 
         if (null === $imageToDefineAsMain) {
-            throw new NotFoundHttpException("L'image d'id ".id. " n'existe pas.");
+            throw new NotFoundHttpException("L'image d'id ".$id. " n'existe pas.");
         }
             
         $objectById->setMainImage($imageToDefineAsMain);
         $em->persist($objectById);
         $em->flush();
-
-        $request->getSession()->getFlashBag()->add('info', "L'image principale a bien été modifiée !");
         
         switch($object) {
             case 'animal' :
                 $route = 'admin_animal_images';
-                $attr = array('id' => $objectId);
                 break;
             case 'publication' :
-                $route = 'admin_animal_publication_card';
-                $attr = array('state' => $objectById->getAnimalState()->getState()->getType(), 'animalStateId' => $objectById->getAnimalState()->getId(), 'publicationId' => $objectId );
+                $route = 'admin_publication_images';
                 break;
-            case 'evenement' :
-                $route = 'admin_event_card';
-                $attr = array('id' => $objectId);
+            case 'event' :
+                $route = 'admin_event_images';
                 break;
         }
-            
-        return $this->redirectToRoute($route, $attr);
+
+        $request->getSession()->getFlashBag()->add('info', "L'image principale a bien été modifiée !");
+                    
+        return $this->redirectToRoute($route, array('id' => $objectId));
     }
     
     
     /**
-    * Delete an Image 
-    *
-    * @Route("/admin/{object}/{objectId}/image/{imageId}/supprimer", name="admin_image_delete", requirements={"object": "animal|publication|evenement", "objectId": "\d+", "imageId": "\d+"})
-    * @Security("has_role('ROLE_ADMIN')")
-    */
+     * Delete an Image 
+     *
+     * @Route("/admin/{object}/{objectId}/image/{imageId}/supprimer", name="admin_image_delete", requirements={"object":  "animal|publication|event", "objectId": "\d+", "imageId": "\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function deleteAction($object, $objectId, $imageId, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -106,33 +182,31 @@ class ImagesController extends Controller
         
 
         if (null === $image) {
-            throw new NotFoundHttpException("L'image d'id ".id. " n'existe pas.");
+            throw new NotFoundHttpException("L'image d'id ".$imageId. " que vous souhaitez supprimer n'existe pas.");
         }
         
         switch($object) {
             case 'animal' :
-                $route = 'admin_animal_images';
-                $attr = array('id' => $objectId);
                 $em->remove($image);
+                $route = 'admin_animal_images';
                 break;
             case 'publication' :
                 $publication = $em->getRepository('AppBundle:Publication')->findOneById($objectId);
-                $route = 'admin_animal_publication_card';
-                $attr = array('state' => $publication->getAnimalState()->getState()->getType(), 'animalStateId' => $publication->getAnimalState()->getId(), 'publicationId' => $objectId );
                 $publication->removeImage($image);
                 $em->persist($publication);
+                $route = 'admin_publication_images';
                 break;
-            case 'evenement' :
-                $route = 'admin_event_card';
-                $attr = array('id' => $objectId);
+            case 'event' :
                 $em->remove($image);
+                $route = 'admin_event_images';
                 break;
         }
         
         $em->flush();
 
         $request->getSession()->getFlashBag()->add('info', "L'image a bien été supprimée.");
-        return $this->redirectToRoute($route, $attr);
+        
+        return $this->redirectToRoute($route, array('id' => $objectId));
 
     }
 

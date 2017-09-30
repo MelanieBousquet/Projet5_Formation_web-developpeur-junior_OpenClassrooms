@@ -48,6 +48,9 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
+        options:
+            # PDO::MYSQL_ATTR_INIT_COMMAND    Fix issue 'orderby' with paginator    
+            1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.project_dir%/var/data/data.sqlite"
@@ -60,6 +63,7 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
+        
 # Swiftmailer Configuration
 swiftmailer:
     transport: '%mailer_transport%'
@@ -67,3 +71,9 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+services:
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }

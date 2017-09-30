@@ -26,34 +26,38 @@
         </div>
 
         <div class="form-group">
-            {{ form_label(form.title, "Titre", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-            {{ form_errors(form.title) }}
+            {{ form_label(form.title, "Titre *", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_widget(form.title, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
+                <div>{{ form_errors(form.title) }}</div>
             </div>
         </div>
 
         <div class="form-group">
-            {{ form_label(form.event.beginningDateEvent, "Date de début", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-            {{ form_errors(form.event.beginningDateEvent) }}
+            {{ form_label(form.event.beginningDateEvent, "Date de début *", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_widget(form.event.beginningDateEvent, {'attr': {'class': 'col-md-7 col-xs-12'}}) }}
+                <div>{{ form_errors(form.event.beginningDateEvent) }}</div>
             </div>
         </div>        
            
         <div class="form-group">
-            {{ form_label(form.event.endingDateEvent, "Date de fin", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-            {{ form_errors(form.event.endingDateEvent) }}
+            {{ form_label(form.event.endingDateEvent, "Date de fin *", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_widget(form.event.endingDateEvent, {'attr': {'class': 'col-md-7 col-xs-12'}}) }}
+                <div>{{ form_errors(form.event.endingDateEvent) }}</div>
             </div>
         </div>
 
         <div class="form-group">
             {{ form_label(form.event.place, "Adresse", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-            {{ form_errors(form.event.place) }}
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_widget(form.event.place, {'attr': {'class': 'capitalize', 'style': 'width:100%;'}}) }}
+                <div>{{ form_errors(form.event.place) }}</div>
             </div>
         </div>        
            
@@ -67,31 +71,35 @@
            
         <div class="form-group" style="display:none;">
             {{ form_label(form.event.lng, "Longitude") }}
-            {{ form_errors(form.event.lng) }}
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_widget(form.event.lng) }}
+                <div>{{ form_errors(form.event.lng) }}</div>
             </div>
         </div>
 
         <div class="form-group">
             {{ form_label(form.content, "Description", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-            {{ form_errors(form.content) }}
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_widget(form.content, {'attr': {'class': 'form-control resizable_textarea col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+                <div>{{ form_errors(form.content) }}</div>
             </div>
         </div>
 
         <div class="form-group">
             {{ form_label(form.published, "Publier", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-            {{ form_errors(form.published) }}
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_widget(form.published, {'attr': {'class': 'js-switch'}}) }}
+                <div>{{ form_errors(form.published) }}</div>
             </div>
         </div>
 
         <div class="form-group">
 
         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+           <p>* : Champs obligatoires</p>
             {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
         </div>
         </div>

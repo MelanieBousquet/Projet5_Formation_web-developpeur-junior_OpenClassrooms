@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} Fiche publication: {{ publication.title }} {% endblock %}
 
 {% block contentTitle %}
-    Fiche événement 
+    Fiche publication 
     {% if publication.published %}
         <button class="btn btn-round btn-info">Publié</button>
     {% else %}
@@ -43,10 +43,10 @@
 
                     <div class="title-right">
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a class="btn btn-danger btn-xs pull-right" href="{{ path('admin_publication_edit', {'id': publication.id })}}"><i class="fa fa-trash"></i> Supprimer</a>
+                            <a class="btn btn-danger btn-xs pull-right" href="{{ path('admin_publication_delete', {'id': publication.id })}}"><i class="fa fa-trash"></i> Supprimer</a>
                             <a class="btn btn-primary btn-xs pull-right" href="{{ path('admin_publication_edit', {'id': publication.id })}}"><i class="fa fa-pencil"></i> Editer</a>
                         {% endif %}
-                        <a class="btn btn-success btn-xs pull-right" href=""><i class="fa fa-camera-retro"></i> Gestion des photos</a>
+                        <a class="btn btn-success btn-xs pull-right" href="{{ path('admin_publication_images', {'id': publication.id }) }}"><i class="fa fa-camera-retro"></i> Gestion des photos</a>
                     </div>
                     <div class="title-left">
                         <h3 class="prod_title">{{ publication.title|upper }}</h3>
@@ -117,17 +117,4 @@
     
               
 {% endblock %}
-
-{% block JSfiles %}
-{{ parent() }}
-
-<script>
-    $(document).ready(function () {
-
-        $('#flashbagModal').modal('show');
-
-    });
-    </script>
-{% endblock %}
-
 

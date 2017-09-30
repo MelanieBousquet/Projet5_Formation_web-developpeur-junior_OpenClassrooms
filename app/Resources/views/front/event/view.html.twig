@@ -25,12 +25,13 @@
 						<div class="title">
 							<div class="centered"><div><h2>{{ event.title }}</h2></div></div>
 							<div class="clearfix"></div>
-							<p>{{ event.date|date('d/m/Y') }}</p>
+							<p>Publié le : {{ event.date|date('d/m/Y') }}</p>
 						</div>	
 
 						<div class="post-img"><img src="{{ event.mainImage }}" alt="//"></div>
                         <p><strong>Lieu :</strong> {{ event.event.place }}</p>
-                        <p><strong>Date(s) :</strong> {{ event.event.beginningDateEvent|date('d-m-Y') }} - {{ event.event.endingDateEvent|date('d-m-Y') }}</p>
+                        <p><strong>Date(s) :</strong> {{ event.event.beginningDateEvent|date('d/m/Y') }}
+                        {% if event.event.endingDateEvent != event.event.beginningDateEvent %} - {{ event.event.endingDateEvent|date('d/m/Y') }}{% endif %}</p>
 						<p>{{ event.content }}</p>
 						
 						<div id="map"></div>

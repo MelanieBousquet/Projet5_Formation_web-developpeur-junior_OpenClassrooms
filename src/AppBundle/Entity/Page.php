@@ -27,7 +27,6 @@ class Page
      * @var bool
      *
      * @ORM\Column(name="published", type="boolean")
-     * @Assert\NotNull()
      */
     private $published;
 
@@ -42,6 +41,9 @@ class Page
      * @var string
      *
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(
+     * message = "Ce champ ne doit pas être vide"
+     * )
      */
     private $nameInMenu;
 
@@ -63,6 +65,10 @@ class Page
      */
     private $category;
     
+    public function __construct()
+    {
+        $this->published = false ;
+    }
     
     /**
      * Get id

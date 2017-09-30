@@ -27,7 +27,9 @@ class Comment
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
-     * @Assert\DateTime()
+     * @Assert\DateTime( 
+     * message="Date non valide"     
+     * )
      */
     private $date;
 
@@ -35,17 +37,25 @@ class Comment
      * @var string
      *
      * @ORM\Column(name="message", type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     * message = "Ce champ ne doit pas être vide"
+     * )
      */
     private $message;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Publication")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotNull()
      */
     private $publication;
-
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     /**
      * Get id

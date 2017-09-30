@@ -5,6 +5,8 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class PlaceType extends AbstractType
 {
@@ -13,7 +15,16 @@ class PlaceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('address')->add('lat')->add('lng');
+        $builder
+            ->add('address', TextType::class, array('label'=> 'Adresse', 'label_attr'=> array('class'=> 'control-label col-md-3 col-sm-3 col-xs-12')))
+            ->add('lat', NumberType::class, array(
+                'required' => false,
+                'label' => false
+            ))
+            ->add('lng', NumberType::class, array(
+                'required' => false,
+                'label' => false
+            ));
     }
     
     /**

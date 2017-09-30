@@ -14,11 +14,17 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class PublicationRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findEventPublications($page, $nbPerPage = 10)
+    public function findEventPublications($page, $published, $nbPerPage = 10)
     {
         $query = $this->createQueryBuilder('p')
             ->andWhere('p.event IS NOT NULL')
+            ->orderBy('p.updatedDate', 'DESC')
         ;
+        
+        if ($published == 'published')  {
+            $query
+                ->andWhere('p.published = true');
+        }
 
         $query
             // Define the first publication of the list
@@ -31,14 +37,52 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
         return new Paginator($query, true);
     }
     
-    public function findDefaultPublications($page, $nbPerPage = 10)
+    public function findLastEventForHomePage() 
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.event IS NOT NULL')
+            ->orderBy('p.updatedDate', 'DESC')
+            ->andWhere('p.published = true')
+            ->setMaxResults(1)
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getSingleResult()
+        ;   
+        
+    }
+    
+    public function findLastPublicationsForHomePage()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.animalState', 'pas')
+            ->andWhere('pas.id IS NULL')
+            ->andWhere('p.event IS NULL')
+            ->orderBy('p.updatedDate', 'DESC')
+            ->setMaxResults(2)
+        ;
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;  
+        
+    }
+    
+    public function findDefaultPublications($page, $published, $nbPerPage = 10)
     {
         $query = $this->createQueryBuilder('p')
             ->leftJoin('p.animalState', 'pas')
             ->andWhere('pas.id IS NULL')
             ->andWhere('p.event IS NULL')
-            
+            ->orderBy('p.updatedDate', 'DESC')
         ;
+        
+        if ($published = 'published') {
+            $query
+                ->andWhere('p.published = true')
+            ;
+        }
 
         $query
             // Define the first publication of the list
@@ -50,6 +94,65 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
         // return Paginator object
         return new Paginator($query, true);
     }
+    
+    // Query few animals
+    public function findAnimalsOnAdoptionForHomePage() 
+    {
+        $qb = $this->createQueryBuilder('p');
+        
+        $this->publicationsOnAnimalsToAdopt($qb);
+        
+        $qb->setMaxResults(10);
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;   
+    }
+    
+    public function findAnimalsFoundForHomePage()
+    {
+        $qb = $this->createQueryBuilder('p');
+        
+        $qb 
+            ->innerJoin('p.animalState', 'ls')
+            ->addSelect('ls')
+            ->innerJoin('ls.state', 'st')
+            ->addSelect('st')
+            ->andWhere('st.type = :state')
+            ->setParameter('state', 'trouvé') 
+            ->orderBy('p.updatedDate', 'DESC')
+            ->setMaxResults(5);
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;    
+    }
+    
+    public function findAnimalsLostForHomePage()
+    {
+        $qb = $this->createQueryBuilder('p');
+        
+        $qb 
+            ->innerJoin('p.animalState', 'ls')
+            ->addSelect('ls')
+            ->innerJoin('ls.state', 'st')
+            ->addSelect('st')
+            ->andWhere('st.type = :state')
+            ->setParameter('state', 'perdu') 
+            ->orderBy('p.updatedDate', 'DESC')
+            ->setMaxResults(5);
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;    
+    }
+    
+    
     public function findPublicationsFoundOrLost($state) 
     {
         $qb = $this->createQueryBuilder('p');
@@ -60,7 +163,8 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin('ls.state', 'st')
             ->addSelect('st')
             ->andWhere('st.type = :state')
-            ->setParameter('state', $state)        
+            ->setParameter('state', $state) 
+            ->orderBy('p.updatedDate', 'DESC')
         ;
         
         return $qb
@@ -69,24 +173,31 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
         ;    
     }
     
-    public function findPublicationsOnAnimalsToAdopt($animalType, $sex, $breed, $age)
+    public function publicationsOnAnimalsToAdopt(QueryBuilder $qb)
     {
-        $qb = $this->createQueryBuilder('p');
-        
-        $qb 
+         $qb 
             ->andWhere('p.published = :boolean')
             ->setParameter('boolean', true)
             ->innerJoin('p.animalState', 'ls')
             ->addSelect('ls')
             ->innerJoin('ls.state', 'st')
             ->addSelect('st')
-            ->andWhere('st.type = :secondType OR st.type = :thirdType')
+            ->andWhere('ls.currentState = true AND st.type = :secondType OR st.type = :thirdType' )
             ->setParameter('secondType', 'adoptable')
             ->setParameter('thirdType', 'réservé') 
             ->innerJoin('ls.animal', 'a')
             ->addSelect('a')
+            ->orderBy('p.updatedDate', 'DESC')
         ;
 
+    }
+    
+    public function findPublicationsOnAnimalsToAdopt($animalType, $sex, $breed, $age)
+    {
+        $qb = $this->createQueryBuilder('p');
+        
+        $this->publicationsOnAnimalsToAdopt($qb);
+        
         $this->whichSex($qb, $sex);
         $this->whichBreedAndType($qb, $breed, $animalType);
         $this->whichAge($qb, $age);

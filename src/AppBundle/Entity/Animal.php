@@ -46,7 +46,7 @@ class Animal
     /**
      * @var string
      *
-     * @ORM\Column(name="identificationNumber", type="string", length=255, nullable=true, unique=true)
+     * @ORM\Column(name="identificationNumber", type="string", length=255, nullable=true, unique=true, nullable=true)
      */
     private $identificationNumber;
 
@@ -83,6 +83,7 @@ class Animal
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="animal", cascade={"persist", "remove"})
      * @Assert\Valid()
+     * @ORM\JoinColumn(nullable=true)
      */
     private $images;
 

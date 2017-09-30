@@ -4,7 +4,7 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,10 +26,10 @@ class EventType extends AbstractType
             ->add('place', TextType::class, array(
                 'required' => false
             ))
-            ->add('lat', IntegerType::class, array(
+            ->add('lat', NumberType::class, array(
                 'required' => false
             ))
-            ->add('lng', IntegerType::class, array(
+            ->add('lng', NumberType::class, array(
                 'required' => false
             ))
         ;

@@ -27,7 +27,9 @@ class Event
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
+     * @Assert\DateTime( 
+     * message="Date non valide"     
+     * )
      */
     private $beginningDateEvent = null;    
     
@@ -35,7 +37,9 @@ class Event
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
+     * @Assert\DateTime( 
+     * message="Date non valide"     
+     * )
      */
     private $endingDateEvent ;
 
@@ -60,14 +64,6 @@ class Event
      */
     private $lng;
     
-    /**
-     * Constructor
-     */
-    public function __construct() 
-    {
-        $this->endingDateEvent= null;
-    }
-
 
     /**
      * Get id

@@ -52,7 +52,9 @@ services:
         arguments:
             - "@security.encoder_factory"
         tags:
-            - { name: doctrine.orm.entity_listener }
+            - { name: doctrine.orm.entity_listener }    
+            
+ 
     
     app_bundle.requested_password_sender:
         class: AppBundle\Services\Email\Security\RequestedPasswordSender

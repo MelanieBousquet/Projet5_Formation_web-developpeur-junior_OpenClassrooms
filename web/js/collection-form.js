@@ -22,7 +22,7 @@ $(document).ready(function() {
             // Add new form on click on the addform button  
             addLinkClickAction($button, $container);
 
-            // If no existing form, add a new one 
+            // If existing form, add a delete link 
             handleCheckingExistingForms(index, $container);
 
             // Add a new form
@@ -57,11 +57,9 @@ $(document).ready(function() {
                 });
             }
 
-            // If no existing form, add a new one 
+            
             function handleCheckingExistingForms(index, $container) {
-                if (index == 0) {
-                  addNewForm($container);
-                } else {
+                if (index !== 0) {
                   // For existing forms, add a remove link
                   $container.children('div').each(function() {
                     addDeleteLink($(this));

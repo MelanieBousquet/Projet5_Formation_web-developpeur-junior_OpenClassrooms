@@ -1,0 +1,278 @@
+{% extends "admin/base.html.twig" %}
+
+{% block CSSfiles %}
+{{ parent() }}
+<style>
+body {
+  font-family: Verdana, sans-serif;
+  margin: 0;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100000000;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: rgba(0,0,0,0.8);
+  margin: auto;
+  padding: 0;
+  width: 90%;
+  max-width: 800px;
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mySlides {
+  display: none;
+}
+
+.cursor {
+  cursor: pointer
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+.caption-container {
+  text-align: center;
+  background-color: black;
+  padding: 2px 16px;
+  color: white;
+}
+
+</style>
+{% endblock %}
+
+{% block title %}{{ parent() }}Liste des images {% endblock %}
+
+{% block contentTitle %}
+    Liste des Photos 
+{% endblock %}
+
+{% block contentSubtitle %}
+    <a href="{{ path('admin_publication_card', {'id': publication.id }) }}" class="btn btn-success btn-xs "><i class="fa fa-arrow-left"></i> Retour à la fiche</a>
+    Photos de l'événement: {{ publication.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="x_panel">
+        <div class="x-content">
+
+            {{ form_start(form, {'attr': {'class': 'form-horizontal form-label-left'}, 'id': 'demo-form2'}) }}
+
+            <div>
+               <h3>Ajouter une photo</h3>
+                {{ form_errors(form) }}
+            </div>
+               <div>
+                {{ form_label(form.file, "Photo", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
+                {{ form_errors(form.file) }}
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                {{ form_widget(form.file, {'attr': {'class': 'form-control ', 'style': 'height:100%;'}}) }}
+                {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-primary'}}) }}
+                </div>
+            </div>
+
+
+            {# Automatic generation of hidden fields, and CSRF field #}
+            {{ form_rest(form) }}
+
+            {{ form_end(form) }}
+
+            <div class="col-md-12 center-block">
+                <h3>Photo principale</h3>
+                <div class="col-md-55">
+                    <div class="thumbnail">
+                        <div class="image view view-first">
+                            {% if publication.mainImage is not null %}
+                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(publication.mainImage.webPath) }}" id="0" alt="{{ publication.mainImage.alt }}" />
+                            {% else %}
+                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" id="0" alt="image par défaut" />
+                            {% endif %}
+                        </div>
+                        <div class="caption">
+                            <p>Photo principale</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Photos</h3>
+            {% for key,image in publication.images %}
+                <div class="col-md-55">
+                    <div class="thumbnail">
+                        <div class="image view view-first">
+                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" id="{{ key + 1}}" alt="{{ image.alt }}"/>
+                        </div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="caption">    
+                                <a href="{{ path('admin_object_mainimage', {'object': 'publication', 'objectId': publication.id, 'imageId': image.id }) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photo principale</a>
+                                <a href="{{ path('admin_image_delete', {'object': 'publication', 'objectId': publication.id, 'imageId': image.id }) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div id="myModal" class="modal">
+                <span class="close cursor">&times;</span>
+                <div class="modal-content">
+                        
+                    <div class="mySlides">
+                        <div class="numbertext">1 / {{ publication.images | length + 1 }}</div>
+                        {% if publication.mainImage is not null %}
+                            <img class="cursor" src="{{ asset(publication.mainImage.webPath) }}" style="width:100%">
+                        {% else %}
+                            <img class="cursor" src="{{ asset('uploads/img/7.jpeg') }}" style="width:100%">
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <div class="caption-container">
+                            <p>Photo principale</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                        
+                    {% for key,image in publication.images %}
+                        <div class="mySlides">
+                            <div class="numbertext">{{ key + 2 }} / {{ publication.images | length + 1 }}</div>
+                            <img class="cursor" src="{{ asset(image.webPath) }}" style="max-width:100%; display:block; max-height: 600px; margin: 0 auto;">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="caption-container">
+                                <p>
+                                    <a href="{{ path('admin_object_mainimage', {'object': 'publication', 'objectId': publication.id, 'imageId': image.id }) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photo principale</a>
+                                    <a href="{{ path('admin_image_delete', {'object': 'publication', 'objectId': publication.id, 'imageId': image.id }) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Supprimer</a>
+                                </p>
+                            </div>
+                        {% endif %}
+                        </div>
+                    {% endfor %}
+                    <a class="prev">&#10094;</a>
+                    <a class="next">&#10095;</a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+              
+{% endblock %}
+
+{% block JSfiles %}
+{{ parent() }}
+
+<script>
+
+$( document ).ready(function() {
+    var pictures = $('.gallery');
+    var myModal = $('#myModal');
+    var closeButton = $('.close');
+    var prevButton = $('.prev');
+    var nextButton = $('.next');
+    var mySlides = $('.mySlides');
+    var currentIndex = 0;
+    
+     $('#flashbagModal').modal('show');
+    
+    pictures.click(function() {
+        currentIndex = Number($(this).attr('id'));
+        myModal.show();
+        slidesShow(currentIndex);
+    });
+    
+    function slidesShow(id) {
+        mySlides.attr("style", "display:none");
+        mySlides.eq(id).show();
+    }
+    
+    prevButton.click(function() {
+        if (currentIndex < 0) {
+            currentIndex = (Number(pictures.length) - 2)
+        } else {
+            currentIndex = currentIndex - 1 ;
+            slidesShow(currentIndex);
+        }
+    })    
+    
+    nextButton.click(function() {
+        if (currentIndex >= (Number(pictures.length) - 1 )) {
+            currentIndex = 0 ;
+        } else {
+            currentIndex = currentIndex + 1 ;
+        }
+        slidesShow(currentIndex);
+    })
+    
+    closeButton.click(function() {
+        myModal.hide();
+    })
+
+});
+    
+
+</script>
+
+{% endblock %}

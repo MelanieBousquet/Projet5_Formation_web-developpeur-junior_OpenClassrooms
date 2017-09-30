@@ -34,7 +34,7 @@ class EventController extends Controller
             ->getManager()
             ->getRepository('AppBundle:Publication')
         ;
-        $events = $repository->findEventPublications($page);
+        $events = $repository->findEventPublications($page, 'published');
         
         // Count the total number of pages
         $nbPages = ceil(count($events) / ($nbPerPages = 10));

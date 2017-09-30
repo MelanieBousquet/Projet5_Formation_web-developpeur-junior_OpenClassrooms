@@ -24,7 +24,7 @@ class AdoptionAnimalController extends Controller
     /**
      * List of animals waiting for adoption, by default or depending on user request
      *
-     * @Route("/adoption/{animalType}/sexe-{sex}/race-{breed}/age-{age}", name="front_list_animal_adoption", defaults={"sex": "all", "breed": "all", "age": "all"})
+     * @Route("/adoption/{animalType}/sexe-{sex}/race-{breed}/age-{age}", name="front_list_animal_adoption", defaults={"sex": "all", "breed": "all", "age": "all"}, requirements={"animalType": "chien|chat", "sex": "femelle|mâle|all", "age":"chiot/chaton/adulte"})
      */
     public function viewListOnAdoptionAction($animalType, $sex, $breed, $age, Request $request)
     {

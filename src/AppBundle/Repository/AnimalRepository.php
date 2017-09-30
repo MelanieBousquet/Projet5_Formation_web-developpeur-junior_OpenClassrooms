@@ -12,82 +12,8 @@ use Doctrine\ORM\QueryBuilder;
  * repository methods below.
  */
 class AnimalRepository extends \Doctrine\ORM\EntityRepository
-{
-    public function animalsToAdoptFrontList($animalType, $sex, $breed, $age)
-    {
-        $qb = $this->createQueryBuilder('a');
-        
-        $qb 
-            ->innerJoin('a.animalStates', 'ls')
-            ->addSelect('ls')
-            ->innerJoin('ls.state', 's')
-            ->addSelect('s')
-            ->andWhere('s.type != :type')
-            ->setParameter('type', 'adopté')
-            ->andWhere('s.type = :secondType OR s.type = :thirdType')
-            ->setParameter('secondType', 'adoptable')
-            ->setParameter('thirdType', 'réservé')
-            ->innerJoin('
-            ')
-        ;
-
-        $this->whichTypeOfAnimal($qb, $animalType);
-        $this->whichSex($qb, $sex);
-        $this->whichBreed($qb, $breed);
-        $this->whichAge($qb, $age);
-        
-        return $qb
-            ->getQuery()
-            ->getResult()
-        ;    
-    }
-    
-    public function whichSex(QueryBuilder $qb, $sex)
-    {
-        if ($sex !== 'all'){
-            $qb
-                ->innerJoin('a.sex', 's')
-                ->addSelect('s')
-                ->andWhere('s.type = :sex')
-                ->setParameter('sex', $sex)
-            ;
-        } 
-    }      
-    
-    public function whichBreed(QueryBuilder $qb, $breed)
-    {
-        if ($breed !== 'all'){
-            $qb
-                ->innerJoin('a.breed', 'b')
-                ->addSelect('b')
-                ->andWhere('b.name = :breed')
-                ->setParameter('breed', $breed)
-            ;
-        } 
-    } 
-    
-    public function whichAge(QueryBuilder $qb, $age)
-    {
-        $date = new \DateTime('- 1 year');
-        
-        switch ($age) {
-            case 'adult' :
-                $qb
-                    ->andWhere('a.birthday <= :date')
-                    ->setParameter('date', $date)
-                ;
-                break;
-            case 'chiot' : 
-            case 'chaton' :
-                $qb
-                    ->andWhere('a.birthday >= :date')
-                    ->setParameter('date', $date)
-                ;
-                break;
-        }  
-        
-    }
-    
+{    
+    // Search cats or dogs
     public function whichTypeOfAnimal(QueryBuilder $qb, $animalType)
     {
         $qb
@@ -96,6 +22,28 @@ class AnimalRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin('b.type', 't')
             ->andWhere('t.name = :name')
             ->setParameter('name', $animalType)
+        ;
+    }
+    
+    // To manage animals list in admin, dependind on the last state (state with currentState = true)
+    public function animalsListDependingOnLastState($animalType, $state)
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb
+            ->innerJoin('a.animalStates','ls')
+            ->addSelect('ls')
+            ->innerJoin('ls.state', 's')
+            ->addSelect('s')
+            ->andWhere('s.type = :type AND ls.currentState = true')
+            ->setParameter('type', $state)
+        ;
+
+        $this->whichTypeOfAnimal($qb, $animalType);
+
+        return $qb
+            ->getQuery()
+            ->getResult()
         ;
     }
 
@@ -145,6 +93,7 @@ class AnimalRepository extends \Doctrine\ORM\EntityRepository
         ;
     }
 
+    
     public function animalsNotToAdoptList($animalType, $state)
     {
         $qb = $this->createQueryBuilder('a');
@@ -166,6 +115,7 @@ class AnimalRepository extends \Doctrine\ORM\EntityRepository
         ;
     }
     
+    // To manage host families, search animals without host family
     public function getAnimalsAlone() 
     {
         $qb = $this->createQueryBuilder('a');
@@ -174,12 +124,13 @@ class AnimalRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('a.user is NULL')
             ->innerJoin('a.animalStates', 'ls')
             ->addSelect('ls')
+            ->andWhere('ls.currentState = true')
             ->innerJoin('ls.state', 's')
             ->addSelect('s')
-            ->andWhere('s.type != :type')
-            ->setParameter('type', 'adopté')
-            ->andWhere('s.type != :otherType')
-            ->setParameter('otherType', 'perdu')
+            ->andWhere('s.type = :type OR s.type = :secondType OR s.type= :thirdType')
+            ->setParameter('type', 'adoptable')
+            ->setParameter('secondType', 'réservé')
+            ->setParameter('thirdType', 'trouvé')
         ;
         
         return $qb
@@ -188,7 +139,8 @@ class AnimalRepository extends \Doctrine\ORM\EntityRepository
         ;
     }
     
-     public function getAdoptedAnimalsByYear($year) 
+    // In order to paginate all the animals adopted by year
+    public function getAdoptedAnimalsByYear($year) 
     {
         $qb = $this->createQueryBuilder('a');
         
@@ -210,6 +162,7 @@ class AnimalRepository extends \Doctrine\ORM\EntityRepository
         ;   
     }
     
+    // In order to paginate all the animals adopted by year
     public function getTheYearOfTheFirstAdoption()
     {
         $qb = $this->createQueryBuilder('a');
@@ -232,6 +185,7 @@ class AnimalRepository extends \Doctrine\ORM\EntityRepository
         ;  
     }
     
+    // In order to paginate all the animals adopted by year
     public function getTheYearOfTheLastAdoption()
     {
         $qb = $this->createQueryBuilder('a');

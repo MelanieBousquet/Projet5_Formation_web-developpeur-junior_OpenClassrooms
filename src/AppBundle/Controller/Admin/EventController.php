@@ -37,7 +37,7 @@ class EventController extends Controller
             ->getManager()
             ->getRepository('AppBundle:Publication')
         ;
-        $events = $repository->findEventPublications($page);
+        $events = $repository->findEventPublications($page, 'all');
         
         // Count the total number of pages
         $nbPages = ceil(count($events) / ($nbPerPages = 10));
@@ -96,6 +96,10 @@ class EventController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $publication = new Publication();
+        
+        $publication->setEvent(new Event());
+        $publication->getEvent()->setBeginningDateEvent(new \Datetime('now'))->setEndingDateEvent(new \Datetime('now'));
+        
         $form = $this->get('form.factory')->create(PublicationType::class, $publication);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {

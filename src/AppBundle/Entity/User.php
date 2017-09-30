@@ -31,7 +31,9 @@ class User implements AdvancedUserInterface
     
     /**
      * @ORM\Column(type="string", length=25, unique=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     * message = "Ce champ ne doit pas être vide"
+     * )
      */
     private $userPseudo;
     
@@ -56,8 +58,12 @@ class User implements AdvancedUserInterface
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Email()
+     * @Assert\NotBlank(
+     * message = "Ce champ ne doit pas être vide"
+     * )
+     * @Assert\Email(
+     * message = "Adresse email non valide"
+     * )
      */
     private $email;
 

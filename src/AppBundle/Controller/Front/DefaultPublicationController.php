@@ -33,7 +33,7 @@ class DefaultPublicationController extends Controller
             ->getManager()
             ->getRepository('AppBundle:Publication')
         ;
-        $publications = $repository->findDefaultPublications($page);
+        $publications = $repository->findDefaultPublications($page, 'published');
         
         // Count the total number of pages
         $nbPages = ceil(count($publications) / ($nbPerPages = 10));

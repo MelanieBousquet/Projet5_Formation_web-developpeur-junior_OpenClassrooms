@@ -27,15 +27,16 @@ class Publication
      * @var bool
      *
      * @ORM\Column(name="published", type="boolean")
-     * @Assert\NotNull()
      */
-    private $published;
+    private $published ;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
-     * @Assert\DateTime()
+     * @Assert\DateTime( 
+     * message="Date non valide"     
+     * )
      */
     private $date;
     
@@ -43,7 +44,9 @@ class Publication
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
+     * @Assert\DateTime( 
+     * message="Date non valide"     
+     * )
      */
     private $updatedDate;
 
@@ -51,7 +54,9 @@ class Publication
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     * message = "Ce champ ne doit pas être vide"
+     * )
      */
     private $title;
 
@@ -69,7 +74,7 @@ class Publication
     private $animalState;
     
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Image", mappedBy="publications", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Image", mappedBy="publications", cascade={"persist"})
      * @Assert\Valid()
      */
     private $images;
@@ -81,7 +86,7 @@ class Publication
     private $mainImage;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Event", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Event", cascade={"persist", "remove"})
      * @Assert\Valid()
      */
     private $event;
@@ -288,7 +293,7 @@ class Publication
     public function removeImage(\AppBundle\Entity\Image $image)
     {
         $this->images->removeElement($image);
-        $image->setPublication(null);
+        $image->removePublication($this);
     }
 
     /**
@@ -370,10 +375,6 @@ class Publication
      */
     public function setMainImage(\AppBundle\Entity\Image $mainImage = null)
     {
-        // if there is already a main image, add it to images collection before setting another main image
-        if ($this->mainImage) {
-            $this->addImage($this->mainImage);
-        }
         $this->mainImage = $mainImage;
 
         return $this;

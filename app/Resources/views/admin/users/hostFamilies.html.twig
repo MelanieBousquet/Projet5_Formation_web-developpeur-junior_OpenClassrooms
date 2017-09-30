@@ -1,0 +1,89 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}{{ parent() }}Liste des familles d'accueil{% endblock %}
+
+{% block contentTitle %}Liste des familles d'accueil{% endblock %}
+
+{% block content %}
+    <div class="x_content">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                            <th>Pseudo</th>
+                            <th>Email</th>
+                            <th>Animaux</th>
+                            <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>                 
+                            {% for user in listFamilies %}
+                                <tr>
+                                    <td>{{ user.getUserPseudo()|capitalize }}</td>
+                                    <td>{{ user.getEmail()|capitalize }}</td>
+                                    <td>
+                                        {% for animal in user.animals %}
+                                            <div class="col-md-4 col-sm-8 col-xs-10">
+                                               <figure>
+                                                    {% if animal.mainImage  %}
+                                                        <img src="{{ asset(animal.mainImage.webPath) }}" alt="{{ asset(animal.mainImage.alt) }}" width="150" />
+                                                    {% else %}
+                                                        <img src="{{ asset('uploads/img/7.jpeg') }}" alt="Image par défaut" width="150" />
+                                                    {% endif %}
+                                                    <figcaption style="position:absolute; top:-5px; left:0;">
+                                                        <a href="{{ path('admin_host_families_remove_animal', {'userId': user.id, 'animalId': animal.id }) }}" class="btn btn-danger btn-xs" title="Retirer cet animal de cette famille d'accueil"><i class="fa fa-times-circle"></i></a>
+                                                    </figcaption>
+                                                </figure>
+
+                                            </div>
+                                        {% endfor %}
+                                    </td>
+                                    <td><button class="btn btn-primary btn-xs" title=" Ajouter un animal pris en charge par cette famille d'accueil" data-toggle="modal" data-target="#userDialog{{ user.id }}"><i class="fa fa-plus-circle"></i> Animal</button></td>
+                                </tr>
+
+                                    <div class="modal fade" id="userDialog{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Cliquer sur un animal pour l'ajouter à cette famille d'accueil</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {% if listAnimalsAlone is empty %}
+                                                        <p>Pas d'animal en attente de famille d'accueil</p>
+                                                    {% else %}
+                                                        {% for animalAlone in listAnimalsAlone %}
+                                                            <div class="product_gallery">
+                                                                <a href="{{ path('admin_host_families_add_animal', {'userId': user.id, 'animalId': animalAlone.id }) }}">
+                                                                    {% if animalAlone.mainImage is not null %}
+                                                                        <img src="{{ asset(animalAlone.mainImage.webPath) }}" alt="{{ asset(animalAlone.mainImage.alt) }}" />
+                                                                    {% else %}
+                                                                        <img src="{{ asset('uploads/img/7.jpeg') }}" alt="Image par défaut" />
+                                                                    {% endif %}
+                                                                    <p>{{ animalAlone.name }}</p>
+                                                                </a>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button> 
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+              
+{% endblock %}
+               

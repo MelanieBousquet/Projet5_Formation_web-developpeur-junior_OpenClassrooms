@@ -1,5 +1,16 @@
 {% extends "front/base.html.twig" %}
 
+{% block CSSfiles %}
+   {{ parent() }}
+    <style>
+        
+        .pagination>.active>a, .pagination>.active>a:hover {
+            background-color: #c27470;
+            border-color: #c27470;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 
 <section id="blog" class="updatable">
@@ -25,6 +36,18 @@
 						<a href="{{ path('front_publication_card', {'id': publication.id}) }}" class="btn btn-default">Lire plus</a>
 					</div>
 					{% endfor %}
+					
+				    <div class="col-md-12 text-center">
+                        <ul class="pagination text-center" >
+                          {# use of function range(a, b) to create values array between a and b #}
+                          {% for p in range(1, nbPages) %}
+
+                            <li{% if p == page %} class="active"{% endif %}>
+                              <a href="{{ path('front_publications', {'page': p}) }}">{{ p }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                    </div>
 
 					
 					

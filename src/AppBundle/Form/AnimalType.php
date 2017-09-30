@@ -30,9 +30,10 @@ class AnimalType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('birthday', DateType::class, array(
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'required' => false
             ))
-            ->add('sterilised', CheckboxType::class)
+            ->add('sterilised', CheckboxType::class, array('required' => false))
             ->add('identificationNumber', TextType::class, array('required' => false))
             ->add('sex', EntityType::class, array('class' => 'AppBundle:Sex', 'choice_label' => 'type', 'choice_attr' => function () { return array('class' => 'flat', 'name' => 'iCheck'); } , 'expanded' => 'true'), array('required' => false))
             ->add('type', EntityType::class, array('class' => 'AppBundle:Type', 'placeholder' => 'Sélectionner un type d\'animal', 'choice_label' => 'name', 'mapped' => false))
@@ -51,7 +52,6 @@ class AnimalType extends AbstractType
             ))
             ->add('Enregistrer', SubmitType::class)
 
-        /*  ->add('tags', array('required' => false)) */
         ;
 
         $formModifier = function (FormInterface $form, Type $type = null) {

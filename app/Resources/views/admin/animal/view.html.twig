@@ -8,29 +8,6 @@
 
 {% block content %}
     
-    {# modal informations on page load after submitting a new animal form #}
-    {% for message in app.session.flashbag.get('info') %}
-        <div class="modal fade" id="flashbagModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{{ message }}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <a href="" class="btn btn-primary">Définir la photo principale à mettre en avant</a>
-                        <a href="" class="btn btn-primary">Publier une annonce concernant cet animal</a>
-                        <a href="{{ path('admin_animal_add') }}" class="btn btn-primary">Ajouter un autre animal avant publication</a><br/>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                    </div>
-
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        
-    {% endfor %}
     
     {# animal card #}
     <div class="col-md-12">
@@ -100,11 +77,8 @@
                     <div class="project_detail">
                         <p class="title">Famille d'accueil :</p>
                         <p>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a class="btn btn-primary btn-xs" title="Changer de famille d'accueil" href=""><i class="fa fa-pencil-square-o"></i></a>
-                            {% endif %}
                             {% if animal.user is not null %}
-                            {{ animal.user.userPseudo|capitalize  }}
+                                {{ animal.user.userPseudo|capitalize  }}
                             {% endif %}
                         </p>
                     </div>
@@ -120,44 +94,50 @@
     <div class="col-md-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Publications sur le site</h2>
+                <h2>
+                    Statuts de l'animal et publications liées 
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin_animal_state_add', {'animalId': animal.id}) }}" class="btn btn-primary btn-xs">Ajouter un statut</a>
+                    {% endif %}
+                </h2>
                 <div class="clearfix"></div>
             </div>
-            <div class="x_content">
+            <div class="x_content" style=" background-color:#f7f7f7;">
+               
                 {% for animalState in animal.AnimalStates %}
-                <div class="col-md-3" style="text-align:center; background-color:#f7f7f7;">
-                    <h4 style="text-align:center;">Statut : "{{ animalState.state.type }}"</h4>
-                <p>{{ animalState.date|date('d/m/Y')}}</p>
                 
-                {% if animalState.publication is not null %}
-                    <a class="btn btn-app" href="{{ path('admin_animal_publication_card', {'state': animalState.state.type, 'animalStateId': animalState.id , 'publicationId': animalState.publication.id })}}">
-                   
-                    <span class="badge bg-green">Modifier</span>                    
-                    <i class="fa fa-edit"></i> 
-                    {% if animalState.state.type == 'adoptable' %}A l'adoption
-                    {% elseif animalState.state.type == 'adopté' %}News des adoptés
-                    {% elseif animalState.state.type == 'trouvé' %}Animal trouvé
-                    {% elseif animalState.state.type == 'perdu' %}Animal perdu
-                    {% else %}
-                    {% endif %}
-                    </a>
-                    <a class="btn btn-app" >
-                        <i class="fa fa-eye"></i> Voir sur le site
-                    </a>
-                {% else %}
-                    {% if (animalState.state.type != 'réservé') and (animalState.state.type != 'retrouvé') and (animalState.state.type != 'propriétaire-retrouvé')   %}
-                        <a class="btn btn-app" href="{{ path('admin_animal_publication_add', {'state': animalState.state.type, 'animalStateId': animalState.id })}}">
-                        <span class="badge bg-blue" >New</span>
-                        <i class="fa fa-edit"></i>
+                <div class="col-md-3" style="text-align:center;">
+                    <h4 style="text-align:center;">
+                        {% if(animal.AnimalStates|length > 1) %}
+                            <a class="btn btn-danger btn-xs" href="{{ path('admin_animal_state_delete', {'animalId': animal.id, 'animalStateId': animalState.id})}}"><i class="fa fa-trash"></i></a>
+                        {% endif %}
+                        Statut : "{{ animalState.state.type }}"
+                    </h4>
+                    <p>{{ animalState.date|date('d/m/Y')}}</p>
+                    
+                    {% if is_granted('ROLE_ADMIN') %}
+                        {% if animalState.publication is not null %}
+                            <a class="btn btn-app" href="{{ path('admin_animal_publication_card', {'state': animalState.state.type, 'animalStateId': animalState.id , 'publicationId': animalState.publication.id })}}">
+
+                            <span class="badge bg-green">Modifier</span>                    
+                            <i class="fa fa-edit"></i> 
+
+                        {% else %}
+                            {% if (animalState.state.type != 'réservé') and (animalState.state.type != 'retrouvé') and (animalState.state.type != 'propriétaire-retrouvé') and (animalState.state.type != 'adopté')  %}
+                                <a class="btn btn-app" href="{{ path('admin_animal_publication_add', {'state': animalState.state.type, 'animalStateId': animalState.id })}}">
+                                <span class="badge bg-blue" >Créer</span>
+                                <i class="fa fa-edit"></i>
+                            {% endif %}
+                        {% endif %}
                         {% if animalState.state.type == 'adoptable' %}A l'adoption
-                        {% elseif animalState.state.type == 'adopté' %}News des adoptés
                         {% elseif animalState.state.type == 'trouvé' %}Animal trouvé
                         {% elseif animalState.state.type == 'perdu' %}Animal perdu
                         {% else %}
                         {% endif %} 
                         </a>
                     {% endif %}
-                {% endif %}
+                    
+                
                 </div>
 
                 {% endfor %}
@@ -177,13 +157,10 @@
                     {% for note in listNotes %}
                         {% if is_granted('ROLE_ADMIN') %}
                             <a class="btn btn-danger btn-xs pull-left" style="position:relative; top:8px;" href="{{ path('admin_note_delete', { 'objectOfTheNote': 'animal', 'id': animal.id , 'noteId': note.id }) }}"><i class="fa fa-trash"></i></a>
-                            <a class="btn btn-primary btn-xs pull-left" style="position:relative; top:8px;" href=""><i class="fa fa-pencil"></i></a>
                         {% endif %}
                         <li>
                             <a>
-                                <span class="image">
-                                    <img src="{{ asset('uploads/img/23.jpeg') }}" alt="img" />
-                                </span>
+                               
                                 <span>
                                     <b>{{ note.user.userPseudo|capitalize }} - {{ note.date|date("d/m/Y") }}</b>
                                 </span>
@@ -215,19 +192,7 @@
     </div>
     <div class="clearfix"></div>
     
-              
 {% endblock %}
 
-{% block JSfiles %}
-{{ parent() }}
-
-<script>
-    $(document).ready(function () {
-
-        $('#flashbagModal').modal('show');
-
-    });
-    </script>
-{% endblock %}
 
 

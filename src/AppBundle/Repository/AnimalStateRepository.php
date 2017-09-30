@@ -10,4 +10,22 @@ namespace AppBundle\Repository;
  */
 class AnimalStateRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findLastState($animalId) 
+    {
+        $qb = $this->createQueryBuilder('a');
+        
+        $qb 
+            ->innerJoin('a.animal', 'l')
+            ->addSelect('l')
+            ->andWhere('l.id = :id')
+            ->setParameter('id', $animalId)
+            ->orderBy('a.date', 'DESC')
+            ->setMaxResults(1)
+        ;
+        
+        return $qb
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
 }

@@ -27,27 +27,37 @@ class AnimalState
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="date")
+     * @Assert\DateTime( 
+     * message="Date non valide"     
+     * )
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal", inversedBy="animalStates", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid()
      */
     private $animal;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\State", inversedBy="animalStates", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid()
      */
     private $state;
     
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Publication", inversedBy="animalState")
-     *
+     * @Assert\Valid()
      */
     private $publication;
-
+    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $currentState;
+    
     /**
      * Get id
      *
@@ -130,4 +140,28 @@ class AnimalState
         return $this->state;
     }
 
+
+    /**
+     * Set publication
+     *
+     * @param \AppBundle\Entity\Publication $publication
+     *
+     * @return AnimalState
+     */
+    public function setPublication(\AppBundle\Entity\Publication $publication = null)
+    {
+        $this->publication = $publication;
+
+        return $this;
+    }
+
+    /**
+     * Get publication
+     *
+     * @return \AppBundle\Entity\Publication
+     */
+    public function getPublication()
+    {
+        return $this->publication;
+    }
 }

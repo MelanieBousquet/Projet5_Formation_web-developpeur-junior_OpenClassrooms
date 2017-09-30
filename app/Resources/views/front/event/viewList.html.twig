@@ -1,5 +1,16 @@
 {% extends "front/base.html.twig" %}
 
+{% block CSSfiles %}
+   {{ parent() }}
+    <style>
+        
+        .pagination>.active>a, .pagination>.active>a:hover {
+            background-color: #c27470;
+            border-color: #c27470;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 
 <section id="blog" class="updatable">
@@ -16,17 +27,33 @@
 						<div class="title">
 							<div class="centered"><div><h2><a href="{{ path('front_event_card', {'id': event.id}) }}">{{ event.title }}</a></h2></div></div>
 							<div class="clearfix"></div>
-							<p>{{ event.date|date('d/m/Y') }} <i class="icon-dot"></i></p>
+							<p>Publié le : {{ event.date|date('d/m/Y') }}</i></p>
 						</div>	
 
 						<div class="post-img"><img src="{{asset('event.mainImage')}}" alt="//"></div>
 
-						<p>{{ event.content }}</p>
+						<p> Date(s) : {{ event.event.beginningDateEvent|date('d/m/Y') }}
+						{% if event.event.beginningDateEvent != event.event.endingDateEvent %}
+						     - {{ event.event.endingDateEvent|date('d/m/Y') }}</p>
+				        {% endif %}
+				        <p>Lieu : {% if event.event.place is not null %}{{ event.event.place }}{% else %}Non précisé{% endif %}</p>
 						<a href="{{ path('front_event_card', {'id': event.id}) }}" class="btn btn-default">Lire plus</a>
 					</div>
 					{% endfor %}
 
-					
+							
+                    <div class="col-md-12 text-center">
+                        <ul class="pagination text-center" >
+                          {# use of function range(a, b) to create values array between a and b #}
+                          {% for p in range(1, nbPages) %}
+
+                            <li{% if p == page %} class="active"{% endif %}>
+                              <a href="{{ path('front_events', {'page': p}) }}">{{ p }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                    </div>
+       
 					
 
 				</div>
