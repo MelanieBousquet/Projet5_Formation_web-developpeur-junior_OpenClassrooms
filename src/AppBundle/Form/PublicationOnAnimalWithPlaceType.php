@@ -24,8 +24,8 @@ class PublicationOnAnimalWithPlaceType extends AbstractType
                 'widget' => 'single_text',
                 'label' => false
             ))
-            ->add('place', PlaceType::class, array('label'=> false))
-            ->add('content', TextAreaType::class, array('required' => true))
+            ->add('place', PlaceType::class, array('label'=> false, 'required' => false))
+            ->add('content', TextAreaType::class, array('required' => false))
             ->add('Enregistrer', SubmitType::class)
         ;
     }
