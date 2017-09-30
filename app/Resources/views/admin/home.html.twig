@@ -85,7 +85,7 @@
                                 {% for note in lastNotes %}
                                     <tr>
                                         <td>{{ note.user.userPseudo()|capitalize }}</td>
-                                        <td>{{ note.message|truncate(80) }}</td>
+                                        <td>{{ note.message|truncate(80)|raw }}</td>
                                         <td>
                                             {% if note.animal is not null %}
                                                <a class="btn btn-default" href="{{ path('admin_animal_card', { 'id': note.animal.id} )}}">Voir</a>
