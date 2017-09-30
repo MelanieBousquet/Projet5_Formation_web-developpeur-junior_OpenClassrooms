@@ -287,9 +287,7 @@
 				<div class="row coupon">
 					<div class="col-sm-4">
 						 {% if lastEvent.mainImage is not null %}
-                            <img  src="{{ asset(lastPublications[1].mainImage.webPath) }}" alt="actualité" class="img-rounded thumb">
-                        {% elseif lastEvent.images is not null %}
-                            <img  src="{{ asset(lastPublications[1].images[0].webPath) }}" alt="actualité" class="img-rounded thumb">
+                            <img  src="{{ asset(lastEvent.mainImage.webPath) }}" alt="actualité" class="img-rounded thumb">
                         {% else %}
                             <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="actualité">
                         {% endif %}
