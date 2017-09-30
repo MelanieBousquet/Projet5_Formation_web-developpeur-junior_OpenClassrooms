@@ -77,13 +77,9 @@
                     {% for note in listNotes %}
                         {% if is_granted('ROLE_ADMIN') %}
                             <a class="btn btn-danger btn-xs pull-left" style="position:relative; top:8px;" href="{{ path('admin_note_delete', { 'objectOfTheNote': 'evenement', 'id': publication.id , 'noteId': note.id }) }}"><i class="fa fa-trash"></i></a>
-                            <a class="btn btn-primary btn-xs pull-left" style="position:relative; top:8px;" href=""><i class="fa fa-pencil"></i></a>
                         {% endif %}
                         <li>
                             <a>
-                                <span class="image">
-                                    <img src="{{ asset('uploads/img/23.jpeg') }}" alt="img" />
-                                </span>
                                 <span>
                                     <b>{{ note.user.userPseudo|capitalize }} - {{ note.date|date("d/m/Y") }}</b>
                                 </span>
