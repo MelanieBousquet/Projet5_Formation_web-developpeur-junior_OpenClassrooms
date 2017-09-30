@@ -51,6 +51,7 @@
             </div>
         </div>
         
+        {% if app.request.query.get("state") == 'perdu' or app.request.query.get("state") == 'trouvé' %}
         <div class="form-group">
             {{ form_label(form.place, " ", {'label_attr': {'class': 'control-label col-md-2 col-sm-3 col-xs-12'}}) }}
             
@@ -58,7 +59,8 @@
                 {{ form_widget(form.place) }}
                 <div>{{ form_errors(form.place) }}</div>
             </div>
-        </div>        
+        </div>   
+          {% endif %}     
            
 
         <div class="form-group">

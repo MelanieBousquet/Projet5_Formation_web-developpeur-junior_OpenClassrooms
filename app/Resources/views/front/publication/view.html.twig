@@ -19,7 +19,7 @@
 							<p>{{ publication.date|date('d/m/Y') }}</p>
 						</div>	
 
-						<div class="post-img"><img src="{{ publication.mainImage.webPath }}" alt="photo publication"></div>
+						<div class="post-img"><img src="{{ asset(publication.mainImage.webPath) }}" alt="photo publication"></div>
                        
 						<p>{{ publication.content|raw }}</p>
 						

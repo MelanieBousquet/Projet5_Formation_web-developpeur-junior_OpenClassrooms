@@ -27,10 +27,10 @@
 						<div class="title">
 							<div class="centered"><div><h2><a href="{{ path('front_event_card', {'id': event.id}) }}">{{ event.title }}</a></h2></div></div>
 							<div class="clearfix"></div>
-							<p>Publié le : {{ event.date|date('d/m/Y') }}</i></p>
+							<p>Publié le : {{ event.date|date('d/m/Y') }}</p>
 						</div>	
                         {% if event.mainImage is not null%}
-						    <div class="post-img"><img src="{{asset('event.mainImage')}}" alt="//"></div>
+						    <div class="post-img"><img src="{{asset(event.mainImage.webPath)}}" alt="Photo Evénement" style="width:unset; max-height:130px;"></div>
                         {% endif %}
 						<p> Date(s) : {{ event.event.beginningDateEvent|date('d/m/Y') }}
 						{% if event.event.beginningDateEvent != event.event.endingDateEvent %}

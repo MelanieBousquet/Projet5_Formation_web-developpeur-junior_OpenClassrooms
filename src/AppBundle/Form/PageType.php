@@ -18,7 +18,7 @@ class PageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('published', CheckboxType::class, array('label' => 'Publié', 'label_attr' => array('class' => 'control-label col-md-3 col-sm-3 col-xs-12')))
+            ->add('published', CheckboxType::class, array('label' => 'Publié', 'label_attr' => array('class' => 'control-label col-md-3 col-sm-3 col-xs-12'), 'required' => false))
             ->add('title', TextType::class, array('label' => 'Titre', 'label_attr' => array('class' => 'control-label col-md-3 col-sm-3 col-xs-12')))
             ->add('nameInMenu', TextType::class, array('label'=> 'Nom dans le menu', 'label_attr' => array('class' => 'control-label col-md-3 col-sm-3 col-xs-12')))
             ->add('content', TextAreaType::class, array('label' => 'Contenu', 'required' => false, 'label_attr' => array('class' => 'control-label col-md-3 col-sm-3 col-xs-12')))

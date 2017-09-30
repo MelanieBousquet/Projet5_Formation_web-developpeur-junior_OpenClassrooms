@@ -3,8 +3,8 @@
 {% block CSSfiles %}
 {{ parent() }}
 <style>
-    .appbundle_publication_place_lat, 
-    .appbundle_publication_place_lng {
+    #appbundle_publication_place_lat, 
+    #appbundle_publication_place_lng {
         display: none;
     }
 </style>
@@ -85,8 +85,6 @@
     <!-- bootstrap-daterangepicker -->
     <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-    <!-- jQuery Tags Input -->
-    <script src="{{ asset('vendors/jquery.tagsinput/src/jquery.tagsinput.js') }}"></script>
     <!-- Switchery - IOS7 style switches  for checkboxes -->
     <script src="{{ asset('vendors/switchery/dist/switchery.min.js') }}"></script>
     <!-- Select2 - Customizable select box -->
@@ -95,6 +93,8 @@
     <script src="{{ asset('vendors/autosize/dist/autosize.min.js') }}"></script>
     <script src="{{ asset('js/collection-form.js') }}"></script>
     <script src="{{ asset('js/dynamic-form.js')}}"></script>
+    {% if app.request.query.get("state") == 'perdu' or app.request.query.get("state") == 'trouvé' %}
+        
     <script>
         function initMap() {
             var input = document.getElementById('appbundle_publication_place_address');
@@ -130,7 +130,7 @@
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDqnF7_sYGUDLj0BkECfFUxwyVqCGn99o&libraries=places&callback=initMap" async defer></script>
-    
+    {% endif %}
     
 {% endblock %}
 

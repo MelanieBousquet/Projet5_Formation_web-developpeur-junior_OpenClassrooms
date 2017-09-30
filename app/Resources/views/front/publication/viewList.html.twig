@@ -30,7 +30,7 @@
 							<p>{{ publication.date|date('d/m/Y') }} <i class="icon-dot"></i></p>
 						</div>	
                         {% if publication.mainImage is not null %}
-						    <div class="post-img"><img src="{{asset('publication.mainImage')}}" alt="//"></div>
+						    <div class="post-img"><img src="{{ asset(publication.mainImage.webPath)}}" alt="Photo publication" style="width:unset; max-height:130px;"></div>
                         
                         {% endif %}
 						<p>{{ publication.content|raw }}</p>
