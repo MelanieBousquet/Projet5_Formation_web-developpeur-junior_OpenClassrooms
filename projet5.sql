@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 30 Septembre 2017 à 06:51
+-- Généré le :  Sam 30 Septembre 2017 à 21:43
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.0.10
 
@@ -46,11 +46,16 @@ CREATE TABLE `animal` (
 
 INSERT INTO `animal` (`id`, `sex_id`, `breed_id`, `type_identification_id`, `name`, `birthday`, `sterilised`, `identificationNumber`, `description`, `user_id`, `main_image_id`) VALUES
 (1, 1, 1, 1, 'Jaffa', '2015-05-15', 1, '346U309', 'Chat sociable et câlin', 19, 1),
-(10, 2, 1, 1, 'Blah', '2017-09-01', 1, '0945902', 'Chat sociable et câlin', 24, NULL),
+(10, 2, 1, 1, 'Bille', '2017-09-01', 1, '0945902', '<p>Chat sociable et c&acirc;lin</p>', 24, 66),
 (14, 2, 1, 1, 'Jaffa2', '2015-01-27', 1, 'RQGQRG', 'Gentil, joueur, câin', NULL, 53),
-(20, 4, NULL, 3, 'test', NULL, 0, NULL, NULL, 43, NULL),
-(26, 1, NULL, 1, 'Mistigri', '2017-02-01', 1, 'non précisé', '<p>Mistigri est un chat tr&egrave;s attachant et c&acirc;lin.</p>', NULL, NULL),
-(28, 1, NULL, 1, 'Mistigri', '2017-02-01', 1, NULL, '<p>Mistigri est un chat tr&egrave;s attachant et c&acirc;lin.</p>', NULL, NULL);
+(20, 4, 1, 3, 'test', NULL, 0, NULL, NULL, 43, 70),
+(26, 1, 1, 1, 'Mistigri', '2017-02-01', 1, 'non précisé', '<p>Mistigri est un chat tr&egrave;s attachant et c&acirc;lin.</p>', NULL, NULL),
+(28, 1, 1, 1, 'Mistigri', '2017-02-01', 1, NULL, '<p>Mistigri est un chat tr&egrave;s attachant et c&acirc;lin.</p>', NULL, 52),
+(29, 2, 2, 1, 'Lulu', '2016-09-14', 1, NULL, '<p>Chat c&acirc;lin et joueur</p>', NULL, 58),
+(30, 2, 1, 1, 'Titi', '2015-11-12', 1, NULL, '<p>Calme mais apeur&eacute;e</p>', NULL, 60),
+(31, 1, 1, 1, 'Riri', '2017-04-19', 1, NULL, '<p>Chaton joueur et vif</p>', NULL, 63),
+(32, 1, 1, 1, 'Loulou', '2016-09-01', 1, NULL, '<p>Chaton joueur et tr&egrave;s sociable</p>', NULL, 64),
+(33, 1, 1, 4, 'Caramel', '2017-05-12', 0, NULL, '<p>Chaton tr&egrave;s sociable</p>', NULL, 68);
 
 -- --------------------------------------------------------
 
@@ -78,7 +83,14 @@ INSERT INTO `animal_state` (`id`, `animal_id`, `state_id`, `date`, `publication_
 (13, 14, 4, '2017-09-26', 23, 1),
 (14, 20, 1, '2017-09-29', NULL, 1),
 (26, 10, 1, '2017-09-17', NULL, 1),
-(28, 28, 1, '2017-09-02', NULL, 1);
+(28, 28, 1, '2017-09-02', NULL, 1),
+(29, 29, 1, '2017-09-12', NULL, 1),
+(30, 30, 4, '2017-09-08', NULL, 1),
+(31, 31, 4, '2017-09-09', NULL, 1),
+(32, 32, 4, '2017-09-01', NULL, 0),
+(33, 32, 6, '2017-09-09', NULL, 1),
+(34, 33, 5, '2017-09-01', NULL, 0),
+(35, 33, 7, '2017-09-07', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -226,10 +238,6 @@ CREATE TABLE `image` (
 
 INSERT INTO `image` (`id`, `animal_id`, `extension`, `alt`, `date`) VALUES
 (1, 1, 'jpeg', 'DSC_0636.JPG', '2017-09-12'),
-(7, 10, 'jpeg', 'grey-background-005.jpg', '2017-09-12'),
-(11, 1, 'jpeg', 'DSC_0164.JPG', '2017-09-12'),
-(12, 1, 'jpeg', 'DSC_0461_1.JPG', '2017-09-12'),
-(13, 1, 'jpeg', 'DSC_0583.JPG', '2017-09-12'),
 (32, NULL, 'jpeg', 'DSC_0159.JPG', '2017-09-17'),
 (36, NULL, 'jpeg', 'P1150290.JPG', '2017-09-25'),
 (37, NULL, 'jpeg', 'P1150253.JPG', '2017-09-26'),
@@ -248,7 +256,21 @@ INSERT INTO `image` (`id`, `animal_id`, `extension`, `alt`, `date`) VALUES
 (54, 14, 'jpeg', 'benevolat.jpg', '2017-09-30'),
 (55, NULL, 'jpeg', 'dons.jpg', '2017-09-30'),
 (56, NULL, 'jpeg', 'benevolat.jpg', '2017-09-30'),
-(57, NULL, 'jpeg', 'benevolat.jpg', '2017-09-30');
+(57, NULL, 'jpeg', 'benevolat.jpg', '2017-09-30'),
+(58, 29, 'jpeg', 'dons.jpg', '2017-09-30'),
+(59, 29, 'jpeg', 'benevolat.jpg', '2017-09-30'),
+(60, 30, 'jpeg', 'dons.jpg', '2017-09-30'),
+(61, 30, 'jpeg', 'benevolat.jpg', '2017-09-30'),
+(62, 31, 'jpeg', 'benevolat.jpg', '2017-09-30'),
+(63, 31, 'jpeg', 'dons.jpg', '2017-09-30'),
+(64, 32, 'jpeg', 'benevolat.jpg', '2017-09-30'),
+(65, 32, 'jpeg', 'dons.jpg', '2017-09-30'),
+(66, 10, 'jpeg', 'benevolat.jpg', '2017-09-30'),
+(67, 10, 'jpeg', 'dons.jpg', '2017-09-30'),
+(68, 33, 'jpeg', 'benevolat.jpg', '2017-09-30'),
+(69, 33, 'jpeg', 'dons.jpg', '2017-09-30'),
+(70, 20, 'jpeg', 'dons.jpg', '2017-09-30'),
+(71, 20, 'jpeg', 'benevolat.jpg', '2017-09-30');
 
 -- --------------------------------------------------------
 
@@ -267,11 +289,11 @@ CREATE TABLE `image_publication` (
 
 INSERT INTO `image_publication` (`image_id`, `publication_id`) VALUES
 (1, 10),
-(11, 10),
-(12, 10),
 (37, 22),
 (48, 12),
 (49, 12),
+(53, 23),
+(54, 23),
 (55, 1),
 (56, 11),
 (57, 13);
@@ -297,7 +319,8 @@ CREATE TABLE `note` (
 
 INSERT INTO `note` (`id`, `animal_id`, `date`, `message`, `user_id`, `publication_id`) VALUES
 (10, 1, '2017-09-17 11:21:56', 'Testé FeLV et FIV = neg\r\nPhlegmon base de la queue \r\n=> 5 jours d\'antibio (amox)', 44, NULL),
-(14, NULL, '2017-09-17 18:49:08', 'Présente pour le week-end', 44, 1);
+(14, NULL, '2017-09-17 18:49:08', 'Présente pour le week-end', 44, 1),
+(19, NULL, '2017-09-30 21:31:45', '<p>test</p>', 45, 11);
 
 -- --------------------------------------------------------
 
@@ -382,7 +405,7 @@ INSERT INTO `publication` (`id`, `event_id`, `published`, `date`, `title`, `cont
 (20, NULL, 1, '2017-09-25 08:35:34', 'Publication Test', 'Texte Publication Test', '2017-09-25 08:35:34', NULL, NULL),
 (21, NULL, 1, '2017-09-25 08:35:34', 'Publication Test', 'Texte Publication Test', '2017-09-25 08:35:34', NULL, NULL),
 (22, 10, 1, '2017-09-26 11:47:30', 'Week-end Portes Ouvertes', 'Venez rencontrer les animaux à l\'adoption', '2017-09-26 11:47:30', 37, NULL),
-(23, NULL, 1, '2017-09-27 21:42:21', 'Jaffa2', 'Animal perdu le 26/09 vers 19h. \r\nPorte collier rouge', '2017-09-27 00:00:00', NULL, 1);
+(23, NULL, 1, '2017-09-27 21:42:21', 'Jaffa2', 'Animal perdu le 26/09 vers 19h. \r\nPorte collier rouge', '2017-09-27 00:00:00', 53, 1);
 
 -- --------------------------------------------------------
 
@@ -693,12 +716,12 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `animal`
 --
 ALTER TABLE `animal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT pour la table `animal_state`
 --
 ALTER TABLE `animal_state`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT pour la table `breed`
 --
@@ -728,22 +751,22 @@ ALTER TABLE `description`
 -- AUTO_INCREMENT pour la table `event`
 --
 ALTER TABLE `event`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT pour la table `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 --
 -- AUTO_INCREMENT pour la table `note`
 --
 ALTER TABLE `note`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT pour la table `page`
 --
 ALTER TABLE `page`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT pour la table `place`
 --
@@ -753,7 +776,7 @@ ALTER TABLE `place`
 -- AUTO_INCREMENT pour la table `publication`
 --
 ALTER TABLE `publication`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT pour la table `sex`
 --
