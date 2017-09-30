@@ -87,7 +87,7 @@
                                 <span>
                                     <b>{{ note.user.userPseudo|capitalize }} - {{ note.date|date("d/m/Y") }}</b>
                                 </span>
-                                <span class="message">{{ note.message|nl2br }}</span>
+                                <span class="message">{{ note.message|raw }}</span>
                             </a>
                         </li>
                     {% endfor %}
