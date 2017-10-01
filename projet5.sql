@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 30 Septembre 2017 à 22:01
+-- Généré le :  Dim 01 Octobre 2017 à 13:04
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.0.10
 
@@ -55,8 +55,7 @@ INSERT INTO `animal` (`id`, `sex_id`, `breed_id`, `type_identification_id`, `nam
 (30, 2, 1, 1, 'Titi', '2015-11-12', 1, NULL, '<p>Calme mais apeur&eacute;e</p>', NULL, 60),
 (31, 1, 1, 1, 'Riri', '2017-04-19', 1, NULL, '<p>Chaton joueur et vif</p>', NULL, 63),
 (32, 1, 1, 1, 'Loulou', '2016-09-01', 1, NULL, '<p>Chaton joueur et tr&egrave;s sociable</p>', NULL, 64),
-(33, 1, 1, 4, 'Caramel', '2017-05-12', 0, NULL, '<p>Chaton tr&egrave;s sociable</p>', NULL, 68),
-(34, 2, 1, 3, 'nehngoiqG', '2017-10-15', 1, NULL, '<p>VEDVEK?B</p>\r\n<p>FBFWSBN KSWLD</p>\r\n<p>DNDXND</p>\r\n<p>ND</p>\r\n<p>NWD</p>\r\n<p>N</p>\r\n<p>WDN</p>\r\n<p>DWN</p>\r\n<p>DW</p>\r\n<p>NGD</p>\r\n<p>N</p>', NULL, NULL);
+(33, 1, 1, 4, 'Caramel', '2017-05-12', 0, NULL, '<p>Chaton tr&egrave;s sociable</p>', NULL, 68);
 
 -- --------------------------------------------------------
 
@@ -85,14 +84,13 @@ INSERT INTO `animal_state` (`id`, `animal_id`, `state_id`, `date`, `publication_
 (14, 20, 1, '2017-09-29', NULL, 1),
 (26, 10, 1, '2017-09-17', NULL, 1),
 (28, 28, 1, '2017-09-02', NULL, 1),
-(29, 29, 1, '2017-09-12', NULL, 1),
+(29, 29, 1, '2017-09-12', 32, 1),
 (30, 30, 4, '2017-09-08', NULL, 1),
 (31, 31, 4, '2017-09-09', NULL, 1),
 (32, 32, 4, '2017-09-01', NULL, 0),
 (33, 32, 6, '2017-09-09', NULL, 1),
 (34, 33, 5, '2017-09-01', NULL, 0),
-(35, 33, 7, '2017-09-07', NULL, 1),
-(36, 34, 1, '2017-10-19', NULL, 1);
+(35, 33, 7, '2017-09-07', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -143,19 +141,6 @@ INSERT INTO `category` (`id`, `name`) VALUES
 (3, 'conseils'),
 (1, 'lasso'),
 (2, 'nousaider');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `comment`
---
-
-CREATE TABLE `comment` (
-  `id` int(11) NOT NULL,
-  `publication_id` int(11) NOT NULL,
-  `date` datetime NOT NULL,
-  `message` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -272,7 +257,8 @@ INSERT INTO `image` (`id`, `animal_id`, `extension`, `alt`, `date`) VALUES
 (68, 33, 'jpeg', 'benevolat.jpg', '2017-09-30'),
 (69, 33, 'jpeg', 'dons.jpg', '2017-09-30'),
 (70, 20, 'jpeg', 'dons.jpg', '2017-09-30'),
-(71, 20, 'jpeg', 'benevolat.jpg', '2017-09-30');
+(71, 20, 'jpeg', 'benevolat.jpg', '2017-09-30'),
+(72, 29, 'jpeg', 'benevolat.jpg', '2017-10-01');
 
 -- --------------------------------------------------------
 
@@ -292,13 +278,18 @@ CREATE TABLE `image_publication` (
 INSERT INTO `image_publication` (`image_id`, `publication_id`) VALUES
 (1, 10),
 (37, 22),
+(45, 10),
 (48, 12),
 (49, 12),
 (53, 23),
 (54, 23),
 (55, 1),
 (56, 11),
-(57, 13);
+(57, 13),
+(58, 31),
+(58, 32),
+(59, 31),
+(59, 32);
 
 -- --------------------------------------------------------
 
@@ -368,7 +359,7 @@ CREATE TABLE `place` (
 --
 
 INSERT INTO `place` (`id`, `address`, `lat`, `lng`) VALUES
-(1, '41 Rue de la Poste, Puyoo, France', NULL, NULL);
+(1, '41 Rue de la Poste, Puyoo, France', 43.5278084, -0.91798700000004);
 
 -- --------------------------------------------------------
 
@@ -407,7 +398,9 @@ INSERT INTO `publication` (`id`, `event_id`, `published`, `date`, `title`, `cont
 (20, NULL, 1, '2017-09-25 08:35:34', 'Publication Test', 'Texte Publication Test', '2017-09-25 08:35:34', NULL, NULL),
 (21, NULL, 1, '2017-09-25 08:35:34', 'Publication Test', 'Texte Publication Test', '2017-09-25 08:35:34', NULL, NULL),
 (22, 10, 1, '2017-09-26 11:47:30', 'Week-end Portes Ouvertes', 'Venez rencontrer les animaux à l\'adoption', '2017-09-26 11:47:30', 37, NULL),
-(23, NULL, 1, '2017-09-27 21:42:21', 'Jaffa2', 'Animal perdu le 26/09 vers 19h. \r\nPorte collier rouge', '2017-09-27 00:00:00', 53, 1);
+(23, NULL, 1, '2017-09-27 21:42:21', 'Jaffa2', '<p>Animal perdu le 26/09 vers 19h. Porte collier rouge</p>', '2017-09-27 00:00:00', 53, 1),
+(31, NULL, 0, '2017-10-01 12:32:57', 'Lulu', '<p>a</p>', '2017-10-01 00:00:00', 58, NULL),
+(32, NULL, 0, '2017-10-01 12:43:29', 'Lulu', '<p>k</p>', '2017-10-01 00:00:00', 59, NULL);
 
 -- --------------------------------------------------------
 
@@ -532,7 +525,7 @@ INSERT INTO `user` (`id`, `password`, `salt`, `roles`, `email`, `user_pseudo`, `
 (21, '$2y$13$isJ27QBwkYW9ifkMPxzEfeQxeTVjAD5dFwVr27wu5Z9AaRS6ASZ1G', NULL, 'a:1:{i:0;s:9:"ROLE_USER";}', 'test@test.com', 'segsfle', 1, NULL, 0),
 (22, '$2y$13$Bo4cNR55N.d5mZP0LOkfw.QSQSVFdnTopJmU3wgnBRZA1SE1xBgTu', NULL, 'a:1:{i:0;s:9:"ROLE_USER";}', 'tescct@test.com', 'segsflecc', 1, NULL, 0),
 (23, '$2y$13$q7LJTS8lOQDbC0XxeN2pNOhWQS3CBNwSOvFow4zu0LWZRa..nWdFC', NULL, 'a:1:{i:0;s:9:"ROLE_USER";}', 'a@a.fr', 'dsfqF', 1, NULL, 0),
-(24, '$2y$13$epwWTIDC.j1hrCM9VIu7POwlEN26A7KuDgt3/SAkrKFPaqI.cAPeq', NULL, 'a:1:{i:0;s:7:"ROLE_FA";}', 'ccc@d.com', 'ccc', 1, NULL, 0),
+(24, '$2y$13$epwWTIDC.j1hrCM9VIu7POwlEN26A7KuDgt3/SAkrKFPaqI.cAPeq', NULL, 'a:1:{i:0;s:9:"ROLE_USER";}', 'ccc@d.com', 'ccc', 1, NULL, 0),
 (25, '$2y$13$7YSmFVl.DWSsivFxwjzxdeGmQQp816wY6MEalK/bf.1CK5dUYvWzy', NULL, 'a:1:{i:0;s:9:"ROLE_USER";}', 'dd@dd.dd', 'dssd', 1, NULL, 0),
 (26, '$2y$13$6lxClakwMk86Z2mgJjrj4uiG9EMc5xlq8iEHlcPdRe7wZ1S4rXvSG', NULL, 'a:1:{i:0;s:9:"ROLE_USER";}', 'ddc@dd.dd', 'dssdvv', 1, NULL, 0),
 (27, '$2y$13$und7t1ULqb/qD/Mx9tbK8.aPo7K0ni8XsS9YRmSz1XbffpoMUXdd2', NULL, 'a:1:{i:0;s:9:"ROLE_USER";}', 'ddnc@dd.dd', 'dssdvvn', 1, NULL, 0),
@@ -594,13 +587,6 @@ ALTER TABLE `breed`
 ALTER TABLE `category`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `UNIQ_64C19C15E237E06` (`name`);
-
---
--- Index pour la table `comment`
---
-ALTER TABLE `comment`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_9474526C38B217A7` (`publication_id`);
 
 --
 -- Index pour la table `contact`
@@ -735,11 +721,6 @@ ALTER TABLE `breed`
 ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT pour la table `comment`
---
-ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT pour la table `contact`
 --
 ALTER TABLE `contact`
@@ -758,7 +739,7 @@ ALTER TABLE `event`
 -- AUTO_INCREMENT pour la table `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT pour la table `note`
 --
@@ -778,7 +759,7 @@ ALTER TABLE `place`
 -- AUTO_INCREMENT pour la table `publication`
 --
 ALTER TABLE `publication`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT pour la table `sex`
 --
@@ -836,12 +817,6 @@ ALTER TABLE `animal_state`
 --
 ALTER TABLE `breed`
   ADD CONSTRAINT `FK_F8AF884FC54C8C93` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`);
-
---
--- Contraintes pour la table `comment`
---
-ALTER TABLE `comment`
-  ADD CONSTRAINT `FK_9474526C38B217A7` FOREIGN KEY (`publication_id`) REFERENCES `publication` (`id`);
 
 --
 -- Contraintes pour la table `description`

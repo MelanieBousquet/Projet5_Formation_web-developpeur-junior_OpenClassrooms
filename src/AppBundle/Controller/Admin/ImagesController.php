@@ -151,21 +151,31 @@ class ImagesController extends Controller
         $em->persist($objectById);
         $em->flush();
         
+        $request->getSession()->getFlashBag()->add('info', "L'image principale a bien été modifiée !");
+        
+        // Depending on the object of the images, define the route and its attributes
         switch($object) {
             case 'animal' :
-                $route = 'admin_animal_images';
+                $route = 'admin_animal_card';
+                $attr =  array('id' => $objectId);
                 break;
             case 'publication' :
-                $route = 'admin_publication_images';
+                if ($objectById->getAnimalState() == true) {
+                    $route = 'admin_animal_publication_card';
+                    $state = $objectById->getAnimalState()->getState()->getType() ;
+                    $animalStateId = $objectById->getAnimalState()->getId();
+                    $attr =  array('state' => $state, 'animalStateId' => $animalStateId,'publicationId' => $objectId) ;
+                } else {
+                    $route = 'admin_publication_images';
+                    $attr = array('id' => $objectId);
+                }
                 break;
             case 'event' :
                 $route = 'admin_event_images';
+                $attr = array('id' => $objectId);
                 break;
         }
-
-        $request->getSession()->getFlashBag()->add('info', "L'image principale a bien été modifiée !");
-                    
-        return $this->redirectToRoute($route, array('id' => $objectId));
+        return $this->redirectToRoute($route, $attr);
     }
     
     
@@ -185,16 +195,26 @@ class ImagesController extends Controller
             throw new NotFoundHttpException("L'image d'id ".$imageId. " que vous souhaitez supprimer n'existe pas.");
         }
         
+        // Depending on the object of the images, define the route and its attributes
         switch($object) {
             case 'animal' :
                 $em->remove($image);
-                $route = 'admin_animal_images';
+                $route = 'admin_animal_publication_card';
+                $attr =  array('id' => $objectId);
                 break;
             case 'publication' :
                 $publication = $em->getRepository('AppBundle:Publication')->findOneById($objectId);
                 $publication->removeImage($image);
                 $em->persist($publication);
-                $route = 'admin_publication_images';
+                 if ($objectById->getAnimalState() == true) {
+                    $route = 'admin_animal_publication_card';
+                    $state = $objectById->getAnimalState()->getState()->getType() ;
+                    $animalStateId = $objectById->getAnimalState()->getId();
+                    $attr =  array('state' => $state, 'animalStateId' => $animalStateId,'publicationId' => $objectId) ;
+                } else {
+                    $route = 'admin_publication_images';
+                    $attr = array('id' => $objectId);
+                }
                 break;
             case 'event' :
                 $em->remove($image);
@@ -206,7 +226,7 @@ class ImagesController extends Controller
 
         $request->getSession()->getFlashBag()->add('info', "L'image a bien été supprimée.");
         
-        return $this->redirectToRoute($route, array('id' => $objectId));
+        return $this->redirectToRoute($route, $attr);
 
     }
 

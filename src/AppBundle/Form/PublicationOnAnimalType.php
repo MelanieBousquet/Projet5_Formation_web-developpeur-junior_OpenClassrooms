@@ -24,7 +24,7 @@ class PublicationOnAnimalType extends AbstractType
                 'widget' => 'single_text',
                 'label' => false
             ))
-            ->add('content', TextAreaType::class, array('required' => true))
+            ->add('content', TextAreaType::class, array('required' => false))
             ->add('Enregistrer', SubmitType::class)
         ;
     }
