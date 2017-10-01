@@ -41,7 +41,7 @@
 						    {% if publication.mainImage is not null %}
 							<img style="max-height:500px; width:unset;" src="{{ asset(publication.mainImage.webPath) }}" alt="Photo principale de l'animal">
 							{% else %}
-							<img style="max-height:500px; width:unset;" src="{{ asset('uploads/img/7.jpeg') }}" alt="photo par défaut">
+							<img style="max-height:500px; width:unset;" src="{{ asset('img/default.jpeg') }}" alt="photo par défaut">
 							{% endif %}
 						</div>
 						{% for image in publication.images %}
@@ -61,7 +61,7 @@
 							{% if publication.mainImage is not null %}
 							<img src="{{ asset(publication.mainImage.webPath) }}" alt="Photo principale d e l'animale">
 							{% else %}
-							<img src="{{ asset('uploads/img/7.jpeg') }}" alt="photo par défaut">
+							<img src="{{ asset('img/default.jpeg') }}" alt="photo par défaut">
 							{% endif %}
 							</li>
 							{% for key, image in publication.images %}

@@ -28,9 +28,9 @@
                             <div class="image view view-first">
                                 <a href="{{ path('admin_publication_card', { 'id': publication.getId() }) }}">
                                     {% if publication.mainImage is not null %}
-                                            <img style="width: 100%; display: block;" src="{{ asset(publication.mainImage.webPath) }}" alt="{{ publication.mainImage.alt }}"/>
+                                            <img style="width: 100%; display: block;" src="{{ asset(publication.mainImage.webPath) }}" alt="Photo de la publication"/>
                                     {% else %}
-                                        <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut"/>
+                                        <img style="width: 100%; display: block;" src="{{ asset('img/default.jpeg') }}" alt="image par défaut"/>
                                     {% endif %}
                                 </a>
                             </div>

@@ -30,7 +30,7 @@
                                                     {% if animal.mainImage  %}
                                                         <img src="{{ asset(animal.mainImage.webPath) }}" title="{{ animal.name }}" alt="Photo de l'animal" width="150" />
                                                     {% else %}
-                                                        <img src="{{ asset('uploads/img/7.jpeg') }}" title="{{ animal.name }}" alt="Image par défaut" width="150" />
+                                                        <img src="{{ asset('img/default.jpeg') }}" title="{{ animal.name }}" alt="Image par défaut" width="150" />
                                                     {% endif %}
                                                     <figcaption style="position:absolute; top:-5px; left:0;">
                                                         <a href="{{ path('admin_host_families_remove_animal', {'userId': user.id, 'animalId': animal.id }) }}" class="btn btn-danger btn-xs" title="Retirer cet animal de cette famille d'accueil"><i class="fa fa-times-circle"></i></a>
@@ -60,7 +60,7 @@
                                                                     {% if animalAlone.mainImage is not null %}
                                                                         <img src="{{ asset(animalAlone.mainImage.webPath) }}" alt="Photo de l'animal" />
                                                                     {% else %}
-                                                                        <img src="{{ asset('uploads/img/7.jpeg') }}" alt="Image par défaut" />
+                                                                        <img src="{{ asset('img/default.jpeg') }}" alt="Image par défaut" />
                                                                     {% endif %}
                                                                     <p>{{ animalAlone.name }}</p>
                                                                 </a>

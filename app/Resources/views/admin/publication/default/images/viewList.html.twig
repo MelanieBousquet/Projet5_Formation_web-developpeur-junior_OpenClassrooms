@@ -150,7 +150,7 @@ body {
                             {% if publication.mainImage is not null %}
                                 <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(publication.mainImage.webPath) }}" id="0" alt="Photo de la publication" />
                             {% else %}
-                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" id="0" alt="image par défaut" />
+                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset('img/default.jpeg') }}" id="0" alt="image par défaut" />
                             {% endif %}
                         </div>
                         <div class="caption">
@@ -186,7 +186,7 @@ body {
                         {% if publication.mainImage is not null %}
                             <img class="cursor" src="{{ asset(publication.mainImage.webPath) }}" style="width:100%">
                         {% else %}
-                            <img class="cursor" src="{{ asset('uploads/img/7.jpeg') }}" style="width:100%">
+                            <img class="cursor" src="{{ asset('img/default.jpeg') }}" style="width:100%">
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') %}
                         <div class="caption-container">
