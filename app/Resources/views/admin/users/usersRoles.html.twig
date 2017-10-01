@@ -35,7 +35,25 @@
                                     <tr>
                                         <td>{{ user.getUserPseudo()|capitalize }}</td>
                                         <td>{{ user.getEmail()|capitalize }}</td>
-                                        <td><a href="#" class="btn btn-danger" title="Supprimer ce membre de la catégorie 'Familles d'accueil'"><i class="fa fa-trash-o"></i> Famille d'accueil </a></td>
+                                        <td><button class="btn btn-danger" title="Supprimer ce membre de la catégorie 'Familles d'accueil'" data-toggle="modal" data-target="#faDialog{{ user.id }}"><i class="fa fa-trash"></i> Famille d'accueil</button></td>
+                                        
+                                        <div class="modal fade" id="faDialog{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Confirmation requise</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Souhaitez-vous vraiment supprimer cet utilisateur de la catégorie 'Famille(s) d'accueil' ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                    <a href="{{ path('admin_set_user_role', { 'id': user.getId() , 'role' : 'ROLE_USER' }) }}" class="btn btn-primary">Confirmer</a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
                                     </tr>
                                 {% endfor %}
                             </tbody>

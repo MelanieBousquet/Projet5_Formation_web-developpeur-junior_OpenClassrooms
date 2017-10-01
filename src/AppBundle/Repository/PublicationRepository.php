@@ -158,6 +158,8 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('p');
         
         $qb 
+            ->andWhere('p.published = :boolean')
+            ->setParameter('boolean', true)
             ->innerJoin('p.animalState', 'ls')
             ->addSelect('ls')
             ->innerJoin('ls.state', 'st')
