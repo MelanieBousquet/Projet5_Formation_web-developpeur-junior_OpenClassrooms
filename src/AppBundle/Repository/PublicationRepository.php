@@ -162,7 +162,7 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
             ->addSelect('ls')
             ->innerJoin('ls.state', 'st')
             ->addSelect('st')
-            ->andWhere('st.type = :state')
+            ->andWhere('ls.currentState = true AND st.type = :state')
             ->setParameter('state', $state) 
             ->orderBy('p.updatedDate', 'DESC')
         ;
