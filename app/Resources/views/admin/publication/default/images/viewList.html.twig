@@ -148,7 +148,7 @@ body {
                     <div class="thumbnail">
                         <div class="image view view-first">
                             {% if publication.mainImage is not null %}
-                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(publication.mainImage.webPath) }}" id="0" alt="{{ publication.mainImage.alt }}" />
+                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(publication.mainImage.webPath) }}" id="0" alt="Photo de la publication" />
                             {% else %}
                                 <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" id="0" alt="image par défaut" />
                             {% endif %}
@@ -165,7 +165,7 @@ body {
                 <div class="col-md-55">
                     <div class="thumbnail">
                         <div class="image view view-first">
-                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" id="{{ key + 1}}" alt="{{ image.alt }}"/>
+                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" id="{{ key + 1}}" alt="photo de la publication"/>
                         </div>
                         {% if is_granted('ROLE_ADMIN') %}
                             <div class="caption">    

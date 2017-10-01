@@ -26,7 +26,7 @@
                     <div class="image view view-first">
                         <a href="{{ path('admin_animal_card', { 'id': animal.getId() }) }}">
                             {% if animal.mainImage is not null %}
-                                <img style="width: 100%; display: block;" src="{{ asset(animal.mainImage.webPath) }}" alt="{{ animal.mainImage.alt }}"/>
+                                <img style="width: 100%; display: block;" src="{{ asset(animal.mainImage.webPath) }}" alt="Photo principale de l'animal"/>
                             {% else %}
                                 <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut"/>
                             {% endif %}

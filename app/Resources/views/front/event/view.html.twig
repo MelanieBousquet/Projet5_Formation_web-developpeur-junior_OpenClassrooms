@@ -28,7 +28,7 @@
 							<p>Publié le : {{ event.date|date('d/m/Y') }}</p>
 						</div>	
 						{% if event.mainImage is not null %}
-						    <div class="post-img"><img src="{{ asset(event.mainImage.webPath) }}" alt="Image publication"></div>
+						    <div class="post-img"><img src="{{ asset(event.mainImage.webPath) }}" alt="photo de l'événement"></div>
                         {% endif%}
                         <p><strong>Lieu :</strong> {{ event.event.place }}</p>
                         <p><strong>Date(s) :</strong> {{ event.event.beginningDateEvent|date('d/m/Y') }}

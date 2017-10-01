@@ -32,7 +32,7 @@
 			<div class="banner ">
 				<ul>                        
 					<li data-transition="fade" data-slotamount="1">
-						<img src="{{ asset('img/slider01.jpg') }}" alt="//" />
+						<img src="{{ asset('img/slider01.jpg') }}" alt="Photo d'un animal" />
 						<div 
 							class="caption lfb " 
 							data-x="left"
@@ -48,7 +48,7 @@
 					</li>
 
 					<li data-transition="3dcurtain-vertical" data-slotamount="1">
-						<img src="{{ asset('img/slider02.jpg') }}" alt="//" />
+						<img src="{{ asset('img/slider02.jpg') }}" alt="Photo d'un animal" />
 						<div 
 							class="caption lfb " 
 							data-x="left"
@@ -62,7 +62,7 @@
 					</li> 
 
 					<li data-transition="papercut" data-slotamount="1">
-						<img src="{{ asset('img/slider03.jpg') }}" alt="//" />
+						<img src="{{ asset('img/slider03.jpg') }}" alt="Photo d'un animal" />
 						<div 
 							class="caption lfb " 
 							data-x="left"
@@ -88,9 +88,7 @@
 				<div class="row">
 					<div class="col-md-9">
 					    {% if animalsOnAdoption[0].mainImage is not null %}
-						    <img src="{{ asset(animalsOnAdoption[0].mainImage.webPath) }}" alt="animal à l'adoption" class="img-rounded thumb">
-						{% elseif animalsOnAdoption[0].images[0] is not null %}
-						    <img src="{{ asset(animalsOnAdoption[0].images[0].webPath) }}" alt="animal à l'adoption" class="img-rounded thumb">
+						    <img src="{{ asset(animalsOnAdoption[0].mainImage.webPath) }}" alt="photo animal à l'adoption" class="img-rounded thumb">
 				        {% else %}
 				        <img src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
 				        {% endif %}
@@ -136,7 +134,7 @@
 										<span class="txt">{{ publication.animalState.animal.name }}</span>
 									</div>
 									{% if publication.mainImage is not null %}
-                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="animal à l'adoption" class="img-rounded thumb">
+                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="photo animal à l'adoption" class="img-rounded thumb">
                                     {% else %}
                                         <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
                                     {% endif %}
@@ -168,7 +166,7 @@
 										<span class="txt">{{ publication.animalState.animal.name }}</span>
 									</div>
 									{% if publication.mainImage is not null %}
-                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="animal perdu" class="img-rounded thumb">
+                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="Photo animal perdu" class="img-rounded thumb">
                                     
                                     {% else %}
                                         <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
@@ -202,7 +200,7 @@
 										<span class="txt">{{ publication.animalState.animal.name }}</span>
 									</div>
 									{% if publication.mainImage is not null %}
-                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="animal trouvé" class="img-rounded thumb">
+                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="photo animal trouvé" class="img-rounded thumb">
                                     {% else %}
                                         <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut">
                                     {% endif %}
@@ -237,9 +235,9 @@
 					</div>
 					<div class="col-md-5">
 						{% if lastPublications[0].mainImage is not null %}
-                            <img  src="{{ asset(lastPublications[0].mainImage.webPath) }}" alt="actualité" class="img-rounded thumb" >
+                            <img  src="{{ asset(lastPublications[0].mainImage.webPath) }}" alt="photo actualité" class="img-rounded thumb" >
                         {% else %}
-                            <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="actualité">
+                            <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="photo actualité">
                         {% endif %}
 					</div>
 				</div>
@@ -250,7 +248,7 @@
 					</div>
 					<div class="col-md-5">
                     {% if lastPublications[1].mainImage is not null %}
-                            <img  src="{{ asset(lastPublications[1].mainImage.webPath) }}" alt="actualité" class="img-rounded thumb">
+                            <img  src="{{ asset(lastPublications[1].mainImage.webPath) }}" alt="photo actualité" class="img-rounded thumb">
                        {% else %}
                             <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="actualité">
                         {% endif %}
@@ -287,9 +285,9 @@
 				<div class="row coupon">
 					<div class="col-sm-4">
 						 {% if lastEvent.mainImage is not null %}
-                            <img  src="{{ asset(lastEvent.mainImage.webPath) }}" alt="actualité" class="img-rounded thumb">
+                            <img  src="{{ asset(lastEvent.mainImage.webPath) }}" alt="photo événement" class="img-rounded thumb">
                         {% else %}
-                            <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="actualité">
+                            <img  src="{{ asset('uploads/img/7.jpeg') }}" alt="photo événement">
                         {% endif %}
 					</div>
 					<div class="col-sm-7">

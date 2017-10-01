@@ -27,7 +27,7 @@
                             <div class="image view view-first">
                                 <a href="{{ path('admin_event_card', { 'id': event.getId() }) }}">
                                     {% if event.mainImage is not null %}
-                                            <img style="width: 100%; display: block;" src="{{ asset(event.mainImage.webPath) }}" alt="{{ event.mainImage.alt }}"/>
+                                            <img style="width: 100%; display: block;" src="{{ asset(event.mainImage.webPath) }}" alt="Photo de l'événement"/>
                                     {% else %}
                                         <img style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut"/>
                                     {% endif %}

@@ -148,7 +148,7 @@ body {
                     <div class="thumbnail">
                         <div class="image view view-first">
                             {% if animal.mainImage is not null %}
-                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(animal.mainImage.webPath) }}" id="0" alt="{{ animal.mainImage.alt }}" />
+                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(animal.mainImage.webPath) }}" id="0" alt="photo principale de l'animal" />
                             {% else %}
                                 <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" id="0" alt="image par défaut" />
                             {% endif %}
@@ -165,7 +165,7 @@ body {
                 <div class="col-md-55">
                     <div class="thumbnail">
                         <div class="image view view-first">
-                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" id="{{ key + 1}}" alt="{{ image.alt }}"/>
+                                <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" id="{{ key + 1}}" alt="Photo de l'animal"/>
                         </div>
                         {% if is_granted('ROLE_ADMIN') %}
                             <div class="caption">    

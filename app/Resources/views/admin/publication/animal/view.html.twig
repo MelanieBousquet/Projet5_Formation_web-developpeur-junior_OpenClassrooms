@@ -122,7 +122,7 @@
                         <div class="thumbnail">
                             <div class="image view view-first">
                                 {% if publication.mainImage is not null %}
-                                    <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(publication.mainImage.webPath) }}" id="0" alt="{{ publication.mainImage.alt }}" />
+                                    <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(publication.mainImage.webPath) }}" id="0" alt="Photo de la publication" />
                                 {% else %}
                                     <img class="cursor" style="width: 100%; display: block;" src="{{ asset('uploads/img/7.jpeg') }}" id="0" alt="image par défaut" />
                                 {% endif %}
@@ -138,7 +138,7 @@
                     <div class="col-md-55">
                         <div class="thumbnail">
                             <div class="image view view-first">
-                                    <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}"  alt="{{ image.alt }}"/>
+                                    <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}"  alt="Photo de la publication"/>
                             </div>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('admin_object_mainimage', {'object': 'publication', 'objectId': publication.id, 'imageId':image.id}) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photo principale</a>
@@ -155,7 +155,7 @@
                     <div class="col-md-55">
                         <div class="thumbnail">
                             <div class="image view view-first">
-                                    <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" id="" alt="{{ image.alt }}"/>
+                                    <img class="gallery cursor" style="width: 100%; display: block;" src="{{ asset(image.webPath) }}" id="" alt="Photo de la publication"/>
                             </div>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('admin_animal_publication_add_image', {'publicationId' : publication.id , 'imageId': image.id }) }}" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> Photos de la publication</a>

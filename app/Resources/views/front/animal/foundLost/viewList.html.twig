@@ -63,7 +63,7 @@
 									</div>
 								
                                     {% if publication.mainImage is not null %}
-                                    <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="photo principale"/>
+                                    <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="photo principale de l'animal"/>
                                     {% else %}
                                     <img class="animal-image" src="{{ asset('uploads/img/7.jpeg') }}" alt="photo par défaut"/>
                                     {% endif %}

@@ -18,7 +18,7 @@
                 <div class="col-md-7 col-sm-7 col-xs-12">
                     <div class="product-image">
                         {% if animal.mainImage is not null %}
-                            <img src="{{ asset(animal.mainImage.webPath) }}" alt="{{ animal.mainImage.alt }}" />
+                            <img src="{{ asset(animal.mainImage.webPath) }}" alt="Photo de l'animal" />
                         {% else %}
                             <img src="{{ asset('uploads/img/7.jpeg') }}" alt="image par défaut" />
                         {% endif %}
@@ -27,7 +27,7 @@
                         {% if animal.images %}
                             {% for image in animal.images %}
                             <a style="overflow:hidden;">
-                                <img src="{{ asset(image.webPath) }}" alt="{{ asset(image.alt) }}" />
+                                <img src="{{ asset(image.webPath) }}" alt="Photo de l'animal" />
                             </a>
                             {% endfor %}
                         {% endif %}
