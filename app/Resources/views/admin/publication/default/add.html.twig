@@ -29,34 +29,38 @@
 
         <div class="form-group">
             {{ form_label(form.title, "Titre", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-            {{ form_errors(form.title) }}
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_widget(form.title, {'attr': {'class': 'form-control col-md-7 col-xs-12'}}) }}
             </div>
+            <div>{{ form_errors(form.title) }}</div>
         </div>
 
         <div class="form-group">
             {{ form_label(form.content, "Description", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-            {{ form_errors(form.content) }}
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_widget(form.content, {'attr': {'class': 'form-control resizable_textarea col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+                <div>{{ form_errors(form.content) }}</div>
             </div>
         </div>
 
         <div class="form-group">
             {{ form_label(form.images, "Photos", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-            {{ form_errors(form.images) }}
+            <div>{{ form_errors(form.images) }}</div>
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {{ form_widget(form.images, {'attr': {'class': 'form-control col-md-7 col-xs-12', 'style': 'height:100%;'}}) }}
+                {{ form_widget(form.images, {'attr': {'style': 'height:100%;'}}) }}
+                <a href="#" id="add_image" class="btn btn-default">Ajouter une photo</a>
             </div>
-            <a href="#" id="add_image" class="btn btn-default">Ajouter une photo</a>
+            
         </div>
         
         <div class="form-group">
             {{ form_label(form.published, "Publier", {'label_attr': {'class': 'control-label col-md-3 col-sm-3 col-xs-12'}}) }}
-            {{ form_errors(form.published) }}
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_widget(form.published, {'attr': {'class': 'js-switch'}}) }}
+                <div>{{ form_errors(form.published) }}</div>
             </div>
         </div>
 
