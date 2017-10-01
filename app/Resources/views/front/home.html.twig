@@ -1,6 +1,5 @@
 {% extends "front/base.html.twig" %}
 
-<!-- Meta description for SEO -->
 {% block metaDescription %}
 <meta name="description" content="Page d'accueil - Association animale pour la prise en charge des animaux errants et abandonnés" />
 {% endblock %}
@@ -88,7 +87,7 @@
 		<!-- begin Featured Pooch -->
 		<article class="featured">
 			<div class="container">
-				<header><h2>{{ animalsOnAdoption[0].title }}</h2></header>
+                <header><h2><a href="{{ path('front_adoption_animal_card', {'id': animalsOnAdoption[0].id }) }}">{{ animalsOnAdoption[0].title }}</a></h2></header>
 
 				<div class="row">
 					<div class="col-md-9">
