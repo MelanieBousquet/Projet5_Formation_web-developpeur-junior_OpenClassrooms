@@ -60,6 +60,7 @@ class PublicationRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('pas.id IS NULL')
             ->andWhere('p.event IS NULL')
             ->orderBy('p.updatedDate', 'DESC')
+             ->andWhere('p.published = true')
             ->setMaxResults(2)
         ;
         return $qb
