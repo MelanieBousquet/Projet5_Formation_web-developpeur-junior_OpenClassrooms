@@ -68,7 +68,8 @@ class Publication
     private $content;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AnimalState", mappedBy="publication")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AnimalState", mappedBy="publication", cascade={"persist"})
+     * @ORM\joinColumn(onDelete="SET NULL")
      * @Assert\Valid()
      */
     private $animalState;

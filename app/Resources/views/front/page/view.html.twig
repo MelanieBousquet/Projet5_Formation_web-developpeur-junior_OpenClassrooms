@@ -1,7 +1,7 @@
 {% extends "front/base.html.twig" %}
 
 {% block metaDescription %}
-<meta name="description" content="Association animale pour la prise en charge des animaux errants et abandonnés - {{ app.request.attributes.get('category') }} - {{ page.title }} " />
+<meta name="description" content="Association animale pour la prise en charge des animaux errants et abandonnés - {{ app.request.attributes.get('categoryName') }} - {{ page.title }} " />
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
 		<div class="row">
 			<div class="col-md-12" style="text-align:center;">
 			    {% if page.image is not null%}
-				    <img src="{{ asset(page.image.webPath) }}" alt="photo {{ page.title }}" style="width:unset; heigth:400px;"/>
+				    <img src="{{ asset(page.image.webPath) }}" alt="photo {{ page.title }}" style="width:unset; max-height:400px; max-width:100%;"/>
                 {% endif %}
 			</div>
            <br/>

@@ -28,6 +28,7 @@ class PublicationOnAnimalController extends Controller
      * View a specific publication of animalstate and edit images
      *
      * @Route("/admin/animal/{state}/{animalStateId}/publication/{publicationId}/fiche", name="admin_animal_publication_card", requirements={"animalStateId": "\d+", "publicationId": "\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function viewAction($state, $animalStateId, $publicationId, Request $request)
     {
@@ -64,6 +65,7 @@ class PublicationOnAnimalController extends Controller
      * Add an animal image to the publication
      *
      * @Route("/admin/animal/publication/{publicationId}/image/{imageId}", name="admin_animal_publication_add_image", requirements={"publicationId" : "\d+", "imageId" : "\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function addImageAction($publicationId, $imageId, Request $request) 
     {
@@ -104,6 +106,7 @@ class PublicationOnAnimalController extends Controller
      * Remove an animal image from the publication
      *
      * @Route("/admin/animal/publication/{publicationId}/image/{imageId}/supprimer", name="admin_animal_publication_remove_image", requirements={"publicationId" : "\d+", "imageId" : "\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function removeImageAction($publicationId, $imageId, Request $request) 
     {
@@ -239,7 +242,7 @@ class PublicationOnAnimalController extends Controller
     }
 
     /**
-     * Delete a Animal
+     * Delete a publication on animal
      *
      * @Route("/admin/animal/publication/{id}/supprimer", name="admin_animal_publication_delete", requirements={"id": "\d+"})
      * @Security("has_role('ROLE_ADMIN')")

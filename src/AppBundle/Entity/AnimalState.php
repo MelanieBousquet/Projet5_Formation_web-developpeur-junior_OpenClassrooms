@@ -51,6 +51,7 @@ class AnimalState
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Publication", inversedBy="animalState", cascade={"persist", "remove"})
      * @Assert\Valid()
+     * @ORM\joinColumn(onDelete="SET NULL")
      */
     private $publication;
     

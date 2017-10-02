@@ -224,14 +224,21 @@ class Image
         $width = 800;
         $newPath = $this->getUploadRootDir();
         
-        // Get orientation informations
-        $exif = exif_read_data($originalImage);
-        if (array_key_exists('Orientation', $exif)) {
-            $orientation = $exif['Orientation'];
+        // Get orientation informations, if $exif function not working, stop it
+        try{
+            $exif = exif_read_data($originalImage);
+            if (array_key_exists('Orientation', $exif)) {
+             $orientation = $exif['Orientation'];
+            } else {
+                $orientation = null;
+            }
+        } catch (\Exception $e) {
+            $exif = null;
         }
+        
 
-        // Resize dimensions are bigger than original image, move to the folder and stop processing
-        if ($width > $width_orig){
+        // Resize dimensions are bigger than original image, or exif function not working, move to the folder and stop processing
+        if ($width > $width_orig || $exif == null){
             // Move to folder
             $this->file->move(
                 $this->getUploadRootDir(), // Folder
@@ -265,7 +272,7 @@ class Image
         // Copy  $gd_image_src (original image) in $gd_image_dest 
         imagecopyresampled($gd_image_dest, $gd_image_src, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
         
-        if ($orientation) {
+        if ($orientation != null) {
             // Fix orientation
             switch($orientation)
             {

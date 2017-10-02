@@ -1,20 +1,23 @@
 {% extends "front/base.html.twig" %}
    
 {% block content %}
-    <section>
-        <div class="row">
-			<div class="col-xs-12"><h2 class="header">Création de compte</h2></div>
-		</div>
-        <article class="container">
-            {{ form_start(form) }}
-            {{ form_row(form.userPseudo) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.plainPassword.first) }}
-            {{ form_row(form.plainPassword.second) }}
+   <section >
+       <article class="container">
+            <div class="row">
+                <div class="col-xs-12"><h2>Enregistrement</h2></div>
+            </div>
 
-            <button type="submit">S'enregistrer</button>
-            {{ form_end(form) }}
-        </article>
+            <div class="container">
+                {{ form_start(form) }}
+                {{ form_row(form.userPseudo) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.plainPassword.first) }}
+                {{ form_row(form.plainPassword.second) }}
+
+                <button type="submit" class="btn btn-default">S'enregistrer</button>
+                {{ form_end(form) }}
+            </div>
+       </article>
     </section>
 
 {% endblock %}

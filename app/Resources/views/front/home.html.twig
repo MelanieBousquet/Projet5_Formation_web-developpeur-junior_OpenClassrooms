@@ -83,7 +83,8 @@
 			</div>
 		</article>
 		<!-- End Slider -->
-
+        
+        {% if animalsOnAdoption is not empty %}
 		<!-- begin Featured Pooch -->
 		<article class="featured">
 			<div class="container">
@@ -114,112 +115,123 @@
 			</div>     
 		</article>
 		<!-- end Featured Pooch -->
-
+        
 		
 		<!-- Our Puppies -->
 		<article class="puppies">
-		<div class="container">
+            <div class="container">
 
-			<div class="row">
-				<div class="col-xs-12"><h2>Derniers animaux à l'adoption</h2></div>
-			</div>
+                <div class="row">
+                    <div class="col-xs-12"><h2>Derniers animaux à l'adoption</h2></div>
+                </div>
 
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="grid">
-						<ul>
-						    {% for publication in animalsOnAdoption %}
-							<li>
-								<a class="container-img" href="{{ path('front_adoption_animal_card', {'id': publication.id }) }}">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">{{ publication.animalState.animal.sex.type }}</span>
-										<span class="wks">{{ publication.animalState.animal.age }}</span>
-										<span class="txt">{{ publication.animalState.animal.name }}</span>
-									</div>
-									{% if publication.mainImage is not null %}
-                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="photo animal à l'adoption" class="img-rounded thumb">
-                                    {% else %}
-                                        <img class="animal-image" src="{{ asset('img/default.jpeg') }}" alt="image par défaut">
-                                    {% endif %}
-								</a>
-							</li>
-							{% endfor %}
-							
-						</ul>
-					</div>
-				</div>
-			 </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="grid">
+                            <ul>
+                                {% for publication in animalsOnAdoption %}
+                                <li>
+                                    <a class="container-img" href="{{ path('front_adoption_animal_card', {'id': publication.id }) }}">
+                                        <div class="more">
+                                            <i class="icon-search pull-right"></i>
+                                            <span class="price">{{ publication.animalState.animal.sex.type }}</span>
+                                            <span class="wks">{{ publication.animalState.animal.age }}</span>
+                                            <span class="txt">{{ publication.animalState.animal.name }}</span>
+                                        </div>
+                                        {% if publication.mainImage is not null %}
+                                            <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="photo animal à l'adoption" class="img-rounded thumb">
+                                        {% else %}
+                                            <img class="animal-image" src="{{ asset('img/default.jpeg') }}" alt="image par défaut">
+                                        {% endif %}
+                                    </a>
+                                </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </article>
+        {% endif %}
 			 
-			 <div class="row">
-				<div class="col-xs-12"><h2>Derniers animaux perdus</h2></div>
-			</div>
-			
-			{% if animalsLost|length != 0 %}
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="grid">
-						<ul>
-						    {% for publication in animalsLost %}
-							<li>
-								<a class="container-img" href="{{ path('front_animal_found_lost_card', {'state': 'perdu', 'id': publication.id }) }}">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">{{ publication.animalState.animal.sex.type }}</span>
-										<span class="wks">{{ publication.animalState.animal.age }}</span>
-										<span class="txt">{{ publication.animalState.animal.name }}</span>
-									</div>
-									{% if publication.mainImage is not null %}
-                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="Photo animal perdu" class="img-rounded thumb">
-                                    
-                                    {% else %}
-                                        <img class="animal-image" src="{{ asset('img/default.jpeg') }}" alt="image par défaut">
-                                    {% endif %}
-								</a>
-							</li>
-							{% endfor %}
-							
-						</ul>
-					</div>
-				</div>
-			 </div>
-			 {% endif %}
+         {% if animalsLost|length != 0 %}
+         <article class="puppies">
+             <div class="container">
+                 <div class="row">
+                    <div class="col-xs-12"><h2>Derniers animaux perdus</h2></div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="grid">
+                            <ul>
+                                {% for publication in animalsLost %}
+                                <li>
+                                    <a class="container-img" href="{{ path('front_animal_found_lost_card', {'state': 'perdu', 'id': publication.id }) }}">
+                                        <div class="more">
+                                            <i class="icon-search pull-right"></i>
+                                            <span class="price">{{ publication.animalState.animal.sex.type }}</span>
+                                            <span class="wks">{{ publication.animalState.animal.age }}</span>
+                                            <span class="txt">{{ publication.animalState.animal.name }}</span>
+                                        </div>
+                                        {% if publication.mainImage is not null %}
+                                            <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="Photo animal perdu" class="img-rounded thumb">
+
+                                        {% else %}
+                                            <img class="animal-image" src="{{ asset('img/default.jpeg') }}" alt="image par défaut">
+                                        {% endif %}
+                                    </a>
+                                </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </article>
+        {% endif %}
 			 
-			 {% if animalsFound|length != 0 %}
-			  <div class="row">
-				<div class="col-xs-12"><h2>Derniers animaux trouvés</h2></div>
-			</div>
-			
-            <div class="row">
-				<div class="col-xs-12">
-					<div class="grid">
-						<ul>
-						    {% for publication in animalsFound %}
-							<li>
-								<a class="container-img" href="{{ path('front_animal_found_lost_card', {'state': 'trouvé', 'id': publication.id }) }}">
-									<div class="more">
-										<i class="icon-search pull-right"></i>
-										<span class="price">{{ publication.animalState.animal.sex.type }}</span>
-										<span class="wks">{{ publication.animalState.animal.age }}</span>
-										<span class="txt">{{ publication.animalState.animal.name }}</span>
-									</div>
-									{% if publication.mainImage is not null %}
-                                        <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="photo animal trouvé" class="img-rounded thumb">
-                                    {% else %}
-                                        <img class="animal-image" src="{{ asset('img/default.jpeg') }}" alt="image par défaut">
-                                    {% endif %}
-								</a>
-							</li>
-							{% endfor %}
-							
-						</ul>
-					</div>
-				</div>
-			 </div>
+        {% if animalsFound|length != 0 %}
+        <article class="puppies">
+                 <div class="container">
+                      <div class="row">
+                        <div class="col-xs-12"><h2>Derniers animaux trouvés</h2></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="grid">
+                                <ul>
+                                    {% for publication in animalsFound %}
+                                    <li>
+                                        <a class="container-img" href="{{ path('front_animal_found_lost_card', {'state': 'trouvé', 'id': publication.id }) }}">
+                                            <div class="more">
+                                                <i class="icon-search pull-right"></i>
+                                                <span class="price">{{ publication.animalState.animal.sex.type }}</span>
+                                                <span class="wks">{{ publication.animalState.animal.age }}</span>
+                                                <span class="txt">{{ publication.animalState.animal.name }}</span>
+                                            </div>
+                                            {% if publication.mainImage is not null %}
+                                                <img class="animal-image" src="{{ asset(publication.mainImage.webPath) }}" alt="photo animal trouvé" class="img-rounded thumb">
+                                            {% else %}
+                                                <img class="animal-image" src="{{ asset('img/default.jpeg') }}" alt="image par défaut">
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+
+                                </ul>
+                            </div>
+                        </div>
+                     </div>
+                 </div>
+        </article>
 			 {% endif %}
 
-		</div>     
-		</article>
+		
 		<!-- end Our Puppies -->
 
 		<!-- Our Services -->

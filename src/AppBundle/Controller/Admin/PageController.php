@@ -61,7 +61,7 @@ class PageController extends Controller
             $em->flush();
 
             $request->getSession()->getFlashBag()->add('info', 'La page a bien été modifiée !');
-            return $this->redirectToRoute('admin_pages', array('category' => $category));
+            return $this->redirectToRoute('admin_pages', array('categoryId' => $categoryId));
         }
 
         return $this->render('admin/page/viewEdit.html.twig', array(

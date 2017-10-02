@@ -1,7 +1,7 @@
 {% extends "admin/base.html.twig" %}
 
 
-{% block title %}{{ parent() }}Ajout d'une publication sur un animal {% endblock %}
+{% block title %}{{ parent() }}Edition d'une publication sur un animal {% endblock %}
 
 {% block CSSfiles %}
     {{ parent() }}
@@ -22,7 +22,7 @@
     </style>
 {% endblock %}
 
-{% block contentTitle %}Nouvelle publication{% endblock %}
+{% block contentTitle %}Edition publication{% endblock %}
 
 {% block content %}
    <div class="x-content">
@@ -67,6 +67,7 @@
 
         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
             {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-primary'}}) }}
+            <a class="btn btn-info btn-xs pull-right" href="{{ path('admin_animal_card', {'id': publication.animalState.animal.id})}}" ><i class="fa fa-arrow-left"></i></a>
         </div>
         </div>
 
